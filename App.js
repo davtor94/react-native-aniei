@@ -7,9 +7,47 @@ import {
   TextInput,
   KeyboardAvoidingView,
   TouchableOpacity,
+  Alert,
   ScrollView } from 'react-native';
 import Login from './src/components/login/login';
 export default class App extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      nip: "",
+      codigo : ""
+    }
+  }
+  handleChangeCodigo = (typedText) =>{
+    this.setState({codigo: typedText});
+  }
+
+  handleChangeNip = (typedText) =>{
+    this.setState({nip: typedText});
+  }
+
+  onPressIngresar = () => {
+    algo = JSON.stringify({
+      codigo: this.state.codigo,
+      nip: this.state.nip
+    });
+    Alert.alert(algo)
+    fetch('http://148.202.152.33/ws_general.php', {
+
+  method: 'POST',
+  headers: new Headers({
+           'Content-Type': 'application/x-www-form-urlencoded',
+  }),
+  body: "codigo="+ this.state.codigo+ "&nip="+ this.state.nip
+}).then((response) =>  response.text())
+.then((responseText) => {
+  Alert.alert(responseText)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
   render() {
     return (
       <KeyboardAvoidingView
@@ -29,20 +67,60 @@ export default class App extends React.Component {
                    autoCorrect={false}
                    keyboardType='default'
                    returnKeyType="next"
-                   placeholder='username'/>
+                   onChangeText={this.handleChangeCodigo}
+                   value={this.state.codigo}
+                   placeholder='CODIGO'/>
 
           <TextInput style = {styles.input}
                   autoCapitalize="none"
                   returnKeyType="go"
                   ref={(input)=> this.passwordInput = input}
-                  placeholder='Password'
+                  placeholder='NIP'
+                  onChangeText={this.handleChangeNip}
+                  value={this.state.nip}
                   secureTextEntry/>
+
+        <TouchableOpacity style={styles.buttonContainer}
+                       onPress={this.onPressIngresar}
+                       >
+               <Text  style={styles.buttonText}>INGRESAR</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.buttonSignin}
+                       onPress={this.onPressRegistrar}
+                       >
+               <Text  style={styles.buttonText}>REGISTRAR</Text>
+        </TouchableOpacity>
+
       </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  buttonText:{
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '700'
+},
+  buttonContainer:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#2980b6',
+        height: 30,
+        marginTop: 15,
+        borderRadius: 25,
+        width: 60 + "%"
+    },
+    buttonSignin:{
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#84a5ba',
+          height: 30,
+          marginTop: 15,
+          borderRadius: 25,
+          width: 60 + "%"
+      },
   container: {
     flex: 1,
     backgroundColor: '#fff',
