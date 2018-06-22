@@ -95,10 +95,7 @@ onPressRegistrar(routeName){
                        >
                <Text  style={styles.buttonText}>REGISTRAR</Text>
         </TouchableOpacity>
-        <Button
-  title="Go back"
-  onPress={() => this.props.navigation.goBack()}
-/>
+
         </KeyboardAvoidingView>
     );
   }

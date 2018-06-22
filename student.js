@@ -39,6 +39,20 @@ export default class Student extends Component{
                                    returnKeyType="next"
                                    placeholder='CODIGO'>
                           </TextInput>
+                          <TextInput
+                                     style = {styles.input}
+                                     autoCapitalize="none"
+                                     autoCorrect={false}
+                                     keyboardType='default'
+                                     returnKeyType="next"
+                                     placeholder='CODIGO'>
+                            </TextInput>
+
+                            <TouchableOpacity style={styles.buttonSignin}
+                              onPress={Alert.alert("Ingresa codigo y nip correspondientes al siiau")}
+                            >
+                                <Text  style={styles.buttonText}>ingresar</Text>
+                            </TouchableOpacity>
             </View>
 
             );
@@ -53,12 +67,13 @@ export default class Student extends Component{
     render() {
         return (
           <View>
+            {this.renderiAmStudent()}
             <TouchableOpacity style={styles.buttonSignin}
               onPress={this.toggleiAmStudent}
             >
-                <Text  style={styles.buttonText}>REGISTRAR</Text>
+                <Text  style={styles.buttonText}>Soy UDG</Text>
             </TouchableOpacity>
-            {this.renderiAmStudent()}
+
           </View>
       );
   }
@@ -77,7 +92,7 @@ const styles = StyleSheet.create({
         height: 30,
         marginTop: 15,
         borderRadius: 25,
-        width: 60 + "%"
+        width:150
     },
     buttonSignin:{
           alignItems: 'center',
@@ -86,7 +101,7 @@ const styles = StyleSheet.create({
           height: 30,
           marginTop: 15,
           borderRadius: 25,
-          width: 60 + "%"
+          width: 150
       },
   container: {
     flex: 1,
@@ -100,7 +115,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 5,
     height: 30,
-    width: 60 + "%",
+    width: 120,
     borderColor: 'gray',
     borderRadius: 25,
     borderWidth: StyleSheet.hairlineWidth
