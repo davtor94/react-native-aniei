@@ -21,6 +21,12 @@ constructor(props){
     nip: "",
     codigo : "",
     iAmStudent: false,
+    usuario: "",
+    password: "",
+    password2: "",
+    correo: "",
+    nombre: "",
+    institucion: "",
   }
 }
 handleChangeCodigo = (typedText) =>{
@@ -31,11 +37,13 @@ handleChangeNip = (typedText) =>{
   this.setState({nip: typedText});
 }
 toggleiAmStudent = () => {
+    Alert.alert("Ingrese codigo y nip correspondiendtes a siiau")
     this.setState({
         iAmStudent: !this.state.iAmStudent
     });
 }
 onPressIngresar = () => {
+
   fetch('http://148.202.152.33/ws_general.php', {
 
 method: 'POST',
@@ -45,7 +53,16 @@ headers: new Headers({
 body: "codigo="+ this.state.codigo+ "&nip="+ this.state.nip
 }).then((response) =>  response.text())
 .then((responseText) => {
-Alert.alert(responseText)
+//Alert.alert(responseText)
+var res = responseText.split(",")
+this.setState({
+  usuario: res[1],
+  password: this.state.nip,
+  password2: this.state.nip,
+  nombre: res[2],
+  institucion: res[3] + "(" + res[4] +")",
+  iAmStudent: false,
+  });
   })
   .catch((error) => {
     console.error(error);
@@ -55,7 +72,8 @@ Alert.alert(responseText)
 renderiAmStudent() {
     if (this.state.iAmStudent) {
         return (
-          <View>
+          <View
+            style = {styles.containerStudent}>
 
                     <TextInput
                                style = {styles.input}
@@ -77,9 +95,8 @@ renderiAmStudent() {
                               value={this.state.nip}
                               secureTextEntry/>
 
-                        <TouchableOpacity style={styles.buttonSignin}
-                          onPress={this.onPressIngresar}
-                        >
+                       <TouchableOpacity style={styles.buttonContainer}
+                          onPress={this.onPressIngresar}>
                             <Text  style={styles.buttonText}>ingresar</Text>
                         </TouchableOpacity>
         </View>
@@ -101,20 +118,31 @@ renderiAmStudent() {
         behavior="padding"
         style={styles.container}>
         {this.renderiAmStudent()}
-        <TouchableOpacity style={styles.buttonSignin}
-          onPress={this.toggleiAmStudent}
-        >
+        <TouchableOpacity style={styles.buttonStudent}
+          onPress={this.toggleiAmStudent}>
             <Text  style={styles.buttonText}>Soy UDG</Text>
         </TouchableOpacity>
+        <TextInput
+                  style = {styles.input}
+                   autoCapitalize="words"
+                   onSubmitEditing={() => this.nombreInput.focus()}
+                   autoCorrect={false}
+                   keyboardType='default'
+                   returnKeyType="next"
+                   value={this.state.usuario}
+                   placeholder='Usuario'>
+        </TextInput>
 
         <TextInput
                   style = {styles.input}
                    autoCapitalize="none"
+                   ref={(input)=> this.nombreInput = input}
                    onSubmitEditing={() => this.passwordInput.focus()}
                    autoCorrect={false}
                    keyboardType='default'
                    returnKeyType="next"
-                   placeholder='NOMBRE'>
+                   value={this.state.nombre}
+                   placeholder='Nombre'>
         </TextInput>
 
         <TextInput style = {styles.input}
@@ -122,9 +150,8 @@ renderiAmStudent() {
                 returnKeyType="next"
                 onSubmitEditing={() => this.passwordInput2.focus()}
                 ref={(input)=> this.passwordInput = input}
-                placeholder='CONTRASEÑÑA'
-                onChangeText={this.handleChangeNip}
-                value={this.state.nip}
+                placeholder='Contraseña'
+                value={this.state.password}
                 secureTextEntry>
       </TextInput>
 
@@ -132,32 +159,33 @@ renderiAmStudent() {
               autoCapitalize="none"
               returnKeyType="next"
               ref={(input)=> this.passwordInput2 = input}
-              placeholder='REPETIR CONTRASEÑÑA'
-              onChangeText={this.handleChangeNip}
-              value={this.state.nip}
+              placeholder='Repetir Contraseña'
+              onSubmitEditing={() => this.institucionInput.focus()}
+              value={this.state.password2}
               secureTextEntry>
     </TextInput>
 
     <TextInput style = {styles.input}
             autoCapitalize="none"
             returnKeyType="next"
-            ref={(input)=> this.passwordInput = input}
-            placeholder='CONTRASEÑÑA'
-            onChangeText={this.handleChangeNip}>
+            onSubmitEditing={() => this.correoInput.focus()}
+            ref={(input)=> this.institucionInput = input}
+            placeholder='Institucion'
+            value={this.state.institucion}
+            value={this.state.institucion}>
   </TextInput>
 
   <TextInput style = {styles.input}
           autoCapitalize="none"
-          returnKeyType="next"
-          ref={(input)=> this.passwordInput = input}
-          placeholder='CONTRASEÑÑA'
-          onChangeText={this.handleChangeNip}
+          returnKeyType="go"
+          ref={(input)=> this.correoInput = input}
+          placeholder='Correo'
+          value={this.state.correo}
           secureTextEntry>
 </TextInput>
-
-
-
-
+<TouchableOpacity style={styles.buttonContainer}>
+     <Text  style={styles.buttonText}>Registrate</Text>
+ </TouchableOpacity>
       </KeyboardAvoidingView>
     );
   }
@@ -176,13 +204,15 @@ const styles = StyleSheet.create({
         height: 30,
         marginTop: 15,
         borderRadius: 25,
-        width: 200
+        width: 200,
+        alignSelf: 'flex-end',
     },
-    buttonSignin:{
+    buttonStudent:{
           alignItems: 'center',
+          marginTop: 15,
           justifyContent: 'center',
           backgroundColor: '#84a5ba',
-          height: 30,
+          height: 50,
           marginTop: 15,
           borderRadius: 25,
           width: 200
@@ -191,16 +221,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
   },
-
+  containerStudent: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+  },
 
   input : {
     textAlign: 'center',
-    marginTop: 5,
-    height: 30,
-    width: 200,
-    borderColor: 'gray',
+    marginTop: 25,
+    height: 40,
+    width: 300,
+    borderColor: 'black',
     borderRadius: 25,
     borderWidth: StyleSheet.hairlineWidth
   },
