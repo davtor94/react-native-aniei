@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   Alert,
   Button,
+  Keyboard,
   ScrollView } from 'react-native';
-
 import Student   from './student';
 export default class Register extends Component {
   static navigationOptions = {
@@ -21,6 +21,7 @@ constructor(props){
     nip: "",
     codigo : "",
     iAmStudent: false,
+    keyboard: false,
     usuario: "",
     password: "",
     password2: "",
@@ -29,15 +30,69 @@ constructor(props){
     institucion: "",
   }
 }
+
+handleChange = (event) => {
+
+  const target = event.target;
+  const name = target.name;
+  Alert.alert(event.typedText + name)
+  this.setState({
+    [name]: event.typedText
+  });
+}
+
+
+componentDidMount () {
+  this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+  this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+}
+
+componentWillUnmount () {
+  this.keyboardDidShowListener.remove();
+  this.keyboardDidHideListener.remove();
+}
+
+_keyboardDidShow = () =>{
+  this.setState({
+    keyboard: true,
+  });
+}
+
+_keyboardDidHide = () => {
+  this.setState({
+    keyboard: false,
+  });
+}
+
 handleChangeCodigo = (typedText) =>{
   this.setState({codigo: typedText});
 }
-
 handleChangeNip = (typedText) =>{
   this.setState({nip: typedText});
 }
+handleChangeNip = (typedText) =>{
+  this.setState({nip: typedText});
+}
+handleChangeUsuario = (typedText) =>{
+  this.setState({usuario: typedText});
+}
+handleChangePassword = (typedText) =>{
+  this.setState({password: typedText});
+}
+handleChangePassword2 = (typedText) =>{
+  this.setState({password2: typedText});
+}
+handleChangeEmail = (typedText) =>{
+  this.setState({email: typedText});
+}
+handleChangeInstitucion = (typedText) =>{
+  this.setState({institucion: typedText});
+}
 toggleiAmStudent = () => {
+  if(!this.state.iAmStudent){
     Alert.alert("Ingrese codigo y nip correspondiendtes a siiau")
+  }
+
     this.setState({
         iAmStudent: !this.state.iAmStudent
     });
@@ -54,18 +109,26 @@ body: "codigo="+ this.state.codigo+ "&nip="+ this.state.nip
 }).then((response) =>  response.text())
 .then((responseText) => {
 //Alert.alert(responseText)
-var res = responseText.split(",")
-this.setState({
-  usuario: res[1],
-  password: this.state.nip,
-  password2: this.state.nip,
-  nombre: res[2],
-  institucion: res[3] + "(" + res[4] +")",
-  iAmStudent: false,
+if(responseText == "0"){
+  Alert.alert("Codigo o nip invalido")
+  this.setState({
+    iAmStudent: false,
   });
+}else{
+  var res = responseText.split(",")
+  this.setState({
+    usuario: res[1],
+    password: this.state.nip,
+    password2: this.state.nip,
+    nombre: res[2],
+    institucion: res[3] + "(" + res[4] +")",
+    iAmStudent: false,
+    });
+}
   })
   .catch((error) => {
     console.error(error);
+    Alert.alert("Conexion a internet interrumpida")
   });
 }
 
@@ -78,20 +141,28 @@ renderiAmStudent() {
                     <TextInput
                                style = {styles.input}
                                autoCapitalize="none"
-                               onSubmitEditing={() => this.passwordInput.focus()}
+                               onSubmitEditing={() => this.nipInput.focus()}
                                autoCorrect={false}
                                keyboardType='default'
                                returnKeyType="next"
-                               onChangeText={this.handleChangeCodigo}
+                               onChangeText={(typedText) =>{
+                                 this.setState({
+                                   codigo: typedText,
+                                 });
+                               }}
                                value={this.state.codigo}
                                placeholder='CODIGO'>
                       </TextInput>
                       <TextInput style = {styles.input}
                               autoCapitalize="none"
                               returnKeyType="go"
-                              ref={(input)=> this.passwordInput = input}
+                              ref={(input)=> this.nipInput = input}
                               placeholder='NIP'
-                              onChangeText={this.handleChangeNip}
+                              onChangeText={(typedText) =>{
+                                this.setState({
+                                  nip: typedText,
+                                });
+                              }}
                               value={this.state.nip}
                               secureTextEntry/>
 
@@ -110,82 +181,117 @@ renderiAmStudent() {
     }
 }
 
-
   render() {
         const { navigate } = this.props.navigation;
     return (
       <KeyboardAvoidingView
+        style={styles.container}
         behavior="padding"
-        style={styles.container}>
+        >
         {this.renderiAmStudent()}
         <TouchableOpacity style={styles.buttonStudent}
           onPress={this.toggleiAmStudent}>
             <Text  style={styles.buttonText}>Soy UDG</Text>
         </TouchableOpacity>
         <TextInput
-                  style = {styles.input}
+                  style = { this.state.keyboard ? styles.inputSmall : styles.input}
                    autoCapitalize="words"
                    onSubmitEditing={() => this.nombreInput.focus()}
                    autoCorrect={false}
                    keyboardType='default'
                    returnKeyType="next"
                    value={this.state.usuario}
+                   onChangeText={(typedText) =>{
+                     this.setState({
+                       usuario: typedText,
+                     });
+                   }}
+                   value={this.state.usuario}
                    placeholder='Usuario'>
         </TextInput>
 
         <TextInput
-                  style = {styles.input}
+          style = { this.state.keyboard ? styles.inputSmall : styles.input}
                    autoCapitalize="none"
                    ref={(input)=> this.nombreInput = input}
                    onSubmitEditing={() => this.passwordInput.focus()}
                    autoCorrect={false}
                    keyboardType='default'
+                   onChangeText={(typedText) =>{
+                     this.setState({
+                       nombre: typedText,
+                     });
+                   }}
                    returnKeyType="next"
                    value={this.state.nombre}
                    placeholder='Nombre'>
         </TextInput>
 
-        <TextInput style = {styles.input}
+        <TextInput
+          style = { this.state.keyboard ? styles.inputSmall : styles.input}
                 autoCapitalize="none"
                 returnKeyType="next"
                 onSubmitEditing={() => this.passwordInput2.focus()}
                 ref={(input)=> this.passwordInput = input}
                 placeholder='Contraseña'
+                onChangeText={(typedText) =>{
+                  this.setState({
+                    password: typedText,
+                  });
+                }}
                 value={this.state.password}
+                secureTextEntry>
+        </TextInput>
+
+        <TextInput
+          style = { this.state.keyboard ? styles.inputSmall : styles.input}
+                autoCapitalize="none"
+                returnKeyType="next"
+                ref={(input)=> this.passwordInput2 = input}
+                placeholder='Repetir Contraseña'
+                onChangeText={(typedText) =>{
+                  this.setState({
+                    password2: typedText,
+                  });
+                }}
+                onSubmitEditing={() => this.institucionInput.focus()}
+                value={this.state.password2}
                 secureTextEntry>
       </TextInput>
 
-      <TextInput style = {styles.input}
-              autoCapitalize="none"
-              returnKeyType="next"
-              ref={(input)=> this.passwordInput2 = input}
-              placeholder='Repetir Contraseña'
-              onSubmitEditing={() => this.institucionInput.focus()}
-              value={this.state.password2}
-              secureTextEntry>
-    </TextInput>
+        <TextInput
+          style = { this.state.keyboard ? styles.inputSmall : styles.input}
+                autoCapitalize="none"
+                returnKeyType="next"
+                onSubmitEditing={() => this.correoInput.focus()}
+                ref={(input)=> this.institucionInput = input}
+                placeholder='Institucion'
+                onChangeText={(typedText) =>{
+                  this.setState({
+                    institucion: typedText,
+                  });
+                }}
+                value={this.state.institucion}
+                value={this.state.institucion}>
+      </TextInput>
 
-    <TextInput style = {styles.input}
-            autoCapitalize="none"
-            returnKeyType="next"
-            onSubmitEditing={() => this.correoInput.focus()}
-            ref={(input)=> this.institucionInput = input}
-            placeholder='Institucion'
-            value={this.state.institucion}
-            value={this.state.institucion}>
-  </TextInput>
-
-  <TextInput style = {styles.input}
-          autoCapitalize="none"
-          returnKeyType="go"
-          ref={(input)=> this.correoInput = input}
-          placeholder='Correo'
-          value={this.state.correo}
-          secureTextEntry>
-</TextInput>
-<TouchableOpacity style={styles.buttonContainer}>
-     <Text  style={styles.buttonText}>Registrate</Text>
- </TouchableOpacity>
+        <TextInput
+          style = { this.state.keyboard ? styles.inputSmall : styles.input}
+                autoCapitalize="none"
+                returnKeyType="go"
+                ref={(input)=> this.correoInput = input}
+                placeholder='Correo'
+                onChangeText={(typedText) =>{
+                  this.setState({
+                    correo: typedText,
+                  });
+                }}
+                value={this.state.correo}
+            >
+      </TextInput>
+        <TouchableOpacity style={styles.buttonContainer}>
+             <Text  style={styles.buttonText}>Registrate</Text>
+         </TouchableOpacity>
       </KeyboardAvoidingView>
     );
   }
@@ -193,6 +299,7 @@ renderiAmStudent() {
 
 const styles = StyleSheet.create({
   buttonText:{
+
     color: '#fff',
     textAlign: 'center',
     fontWeight: '700'
@@ -201,11 +308,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#2980b6',
-        height: 30,
-        marginTop: 15,
+        height: 40,
+        marginTop: 25,
         borderRadius: 25,
         width: 200,
-        alignSelf: 'flex-end',
+      alignContent: 'flex-end',
     },
     buttonStudent:{
           alignItems: 'center',
@@ -229,8 +336,19 @@ const styles = StyleSheet.create({
 
   input : {
     textAlign: 'center',
-    marginTop: 25,
+    padding: 5,
+    marginTop: 20,
     height: 40,
+    width: 300,
+    borderColor: 'black',
+    borderRadius: 25,
+    borderWidth: StyleSheet.hairlineWidth
+  },
+
+  inputSmall : {
+    textAlign: 'center',
+    marginTop: 5,
+    height: 30,
     width: 300,
     borderColor: 'black',
     borderRadius: 25,
