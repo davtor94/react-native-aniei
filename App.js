@@ -7,6 +7,7 @@ import {
 import { createStackNavigator } from 'react-navigation';
 import Login from './login';
 import Register from './register';
+import Main from './main';
 
 
 
@@ -14,9 +15,10 @@ const RootStack = createStackNavigator(
   {
     Login: Login,
     Register: Register,
+    Main: Main,
   },
   {
-    initialRouteName: 'Login',
+    initialRouteName: 'Main',
     navigationOptions: {
       headerStyle: {
         backgroundColor: '#f4511e',
