@@ -20,8 +20,9 @@ const RootStack = createStackNavigator(
   {
     initialRouteName: 'Main',
     navigationOptions: {
+      title: 'Conferencias "Aniei 2018"',
       headerStyle: {
-        backgroundColor: '#f4511e',
+        backgroundColor: '#2980b6',
       },
       headerTintColor: '#fff',
       headerTitleStyle: {

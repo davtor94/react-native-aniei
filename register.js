@@ -63,31 +63,6 @@ _keyboardDidHide = () => {
     keyboard: false,
   });
 }
-
-handleChangeCodigo = (typedText) =>{
-  this.setState({codigo: typedText});
-}
-handleChangeNip = (typedText) =>{
-  this.setState({nip: typedText});
-}
-handleChangeNip = (typedText) =>{
-  this.setState({nip: typedText});
-}
-handleChangeUsuario = (typedText) =>{
-  this.setState({usuario: typedText});
-}
-handleChangePassword = (typedText) =>{
-  this.setState({password: typedText});
-}
-handleChangePassword2 = (typedText) =>{
-  this.setState({password2: typedText});
-}
-handleChangeEmail = (typedText) =>{
-  this.setState({email: typedText});
-}
-handleChangeInstitucion = (typedText) =>{
-  this.setState({institucion: typedText});
-}
 toggleiAmStudent = () => {
   if(!this.state.iAmStudent){
     Alert.alert("Ingrese codigo y nip correspondiendtes a siiau")
@@ -145,7 +120,7 @@ renderiAmStudent() {
                                autoCorrect={false}
                                keyboardType='default'
                                returnKeyType="next"
-                               onChangeText={(typedText) =>{
+                               onChangeText={(typedText) => {
                                  this.setState({
                                    codigo: typedText,
                                  });
@@ -348,7 +323,7 @@ const styles = StyleSheet.create({
   inputSmall : {
     textAlign: 'center',
     marginTop: 5,
-    height: 30,
+    height: 10 + "%",
     width: 300,
     borderColor: 'black',
     borderRadius: 25,

@@ -7,27 +7,45 @@ import {
   ScrollView,
 TouchableOpacity, } from 'react-native';
   import { createBottomTabNavigator } from 'react-navigation';
-  class Main extends React.Component {
-  static navigationOptions = {
-  title: 'Coferencias',
-  };
-
+  class OracleScreen extends React.Component {
+    static navigationOptions = {
+  title: 'Oracle',
+};
   render() {
     return (
       <View
         style={styles.container}>
-        <Text>putos!</Text>
+        <Text>Bienvenido!</Text>
         <TouchableOpacity style={styles.buttonSignin}
-                    onPress={() =>this.props.navigation.navigate('Register')}
+                    onPress={() =>this.props.navigation.navigate('Login')}
                        >
-               <Text  style={styles.buttonText}>REGISTRAR</Text>
+               <Text  style={styles.buttonText}>Inicia Sesion</Text>
         </TouchableOpacity>
         </View>
     );
   }
 }
 
-class SettingsScreen extends React.Component {
+class IbmScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>todos!</Text>
+      </View>
+    );
+  }
+}
+class HpScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>todos!</Text>
+      </View>
+    );
+  }
+}
+
+class IntelScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -47,7 +65,10 @@ const styles = StyleSheet.create({
   },
 
 });
+
 export default createBottomTabNavigator({
-  Main: Main,
-  Settings: SettingsScreen,
+  Oracle: OracleScreen,
+  IBM: IbmScreen,
+  intel: IntelScreen,
+  HP: HpScreen,
 });
