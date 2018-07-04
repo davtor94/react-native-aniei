@@ -8,6 +8,7 @@ import { createStackNavigator } from 'react-navigation';
 import Login from './login';
 import Register from './register';
 import Main from './main';
+import QrScanner from './qr'
 
 
 
@@ -16,6 +17,7 @@ const RootStack = createStackNavigator(
     Login: Login,
     Register: Register,
     Main: Main,
+    QrScreen: QrScanner,
   },
   {
     initialRouteName: 'Main',

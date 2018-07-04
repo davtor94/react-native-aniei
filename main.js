@@ -21,6 +21,11 @@ TouchableOpacity, } from 'react-native';
                        >
                <Text  style={styles.buttonText}>Inicia Sesion</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonSignin}
+                    onPress={() =>this.props.navigation.navigate('QrScreen')}
+                       >
+               <Text  style={styles.buttonText}>Asistencia</Text>
+        </TouchableOpacity>
         </View>
     );
   }
