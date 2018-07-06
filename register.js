@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
   inputSmall : {
     textAlign: 'center',
     marginTop: 5,
-    height: 10 + "%",
+    height: 10 ,
     width: 300,
     borderColor: 'black',
     borderRadius: 25,
