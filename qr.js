@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   Alert,
+  Button,
   Linking,
   Dimensions,
   LayoutAnimation,
@@ -45,7 +46,6 @@ export default class QrScanner extends Component {
 
   render() {
     return (
-      
       <View style={styles.container}>
         {this.state.hasCameraPermission === null
           ? <Text>Pidiendo permisos de camara</Text>

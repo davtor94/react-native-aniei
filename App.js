@@ -30,6 +30,14 @@ const RootStack = createStackNavigator(
       headerTitleStyle: {
         fontWeight: 'bold',
       },
+      headerRight: (
+      <Button
+        style
+        onPress={() => alert('This is a button!')}
+        title="Perfil"
+        color="#207ab2"
+      />
+      ),
     },
   }
 );

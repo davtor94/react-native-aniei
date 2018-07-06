@@ -10,17 +10,17 @@ import {
   ScrollView,
 TouchableOpacity, } from 'react-native';
   import { createBottomTabNavigator } from 'react-navigation';
-  import { Card, ListItem, Button, Icon } from 'react-native-elements'
+  import { Card, ListItem, Button, Icon } from 'react-native-elements';
+   import ActionBar from 'react-native-action-bar';
 
 
   class OracleScreen extends React.Component {
-    static navigationOptions = {
-  title: 'Oracle',
-};
+
   render() {
     return (
       <View
         style={styles.container}>
+        
         <Text>Bienvenido!</Text>
         <TouchableOpacity style={styles.buttonSignin}
                     onPress={() =>this.props.navigation.navigate('Login')}
@@ -62,14 +62,38 @@ class IntelScreen extends React.Component {
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <FlatList
           data={[
-            {key: 'El internet de las cosas', descripcion: 'Que equivocados estabamos Al pensar que la eternidad iba a ser Para siempre estare'},
-            {key: 'How to be happy in a depressing world', descripcion: 'me prometiste why me mentiste Te prometi nunca mentir fijate Un castigo haz de merecer'},
-            {key: '5 pasos para no ser un ingeniero', descripcion: 'decepcion es algo que no hubo entre los dos Why al final tu lo hiciste algo real Tacha todas las veces que te dije algo de este corazon Retiro lo dicho'},
-            {key: 'Medicina alternativa y remedios caseros', descripcion: 'recuerda que siempre tu fuiste Quien me daba ganas de ser un hombre de bien No tienes mas corazon lo diste a beneficencia de el Pobre de el'},
-            {key: 'Cómo generar dinero con dos sencillas aplicaciones desde casa', descripcion: 'Pinche chango'},
-            {key: 'INSERTE TEXTO AQUI', descripcion: 'Quiero comer comida comestible'},
-            {key: 'No puedo creer que leiste todo', descripcion: 'Otro item generico con la misma imagen'},
-            {key: 'Tardé mucho en escribirlo, gracias :D', descripcion: 'Puto :)'},
+            {
+              key: 'El internet de las cosas', 
+              descripcion: 'Que equivocados estabamos Al pensar que la eternidad iba a ser Para siempre estare'
+            },
+            {
+              key: 'How to be happy in a depressing world',
+              descripcion: 'me prometiste why me mentiste Te prometi nunca mentir fijate Un castigo haz de merecer'
+            },
+            {
+              key: '5 pasos para no ser un ingeniero',
+              descripcion: 'decepcion es algo que no hubo entre los dos Why al final tu lo hiciste algo real Tacha todas las veces que te dije algo de este corazon Retiro lo dicho'
+            },
+            {
+              key: 'Medicina alternativa y remedios caseros', 
+              descripcion: 'recuerda que siempre tu fuiste Quien me daba ganas de ser un hombre de bien No tienes mas corazon lo diste a beneficencia de el Pobre de el'
+            },
+            {
+              key: 'Cómo generar dinero con dos sencillas aplicaciones desde casa', 
+              descripcion: 'Pinche chango'
+            },
+            {
+              key: 'INSERTE TEXTO AQUI', 
+              descripcion: 'Quiero comer comida comestible'
+            },
+            {
+              key: 'No puedo creer que leiste todo', 
+              descripcion: 'Otro item generico con la misma imagen'
+            },
+            {
+              key: 'Tardé mucho en escribirlo, gracias :D', 
+              descripcion: 'Puto :)'
+            },
           ]}
           renderItem={({item}) => 
           	<View style={{width: Dimensions.get('window').width}}>
@@ -83,7 +107,6 @@ class IntelScreen extends React.Component {
 				   	{item.descripcion}
 				  </Text>
 				  <Button
-				    icon={<Icon name='code' color='#ffffff' />}
 				    backgroundColor='#03A9F4'
 				    buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
 				    title='Más información'
@@ -113,4 +136,5 @@ export default createBottomTabNavigator({
   IBM: IbmScreen,
   intel: IntelScreen,
   HP: HpScreen,
-});
+},
+);
