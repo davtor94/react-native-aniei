@@ -10,9 +10,12 @@ import {
   Alert,
   Button,
   ScrollView } from 'react-native';
+
+  
 export default class Login extends React.Component {
   static navigationOptions = {
   title: 'Inicia Sesion',
+  headerRight: '',
   };
 
   constructor(props){

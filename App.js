@@ -1,16 +1,16 @@
 import React from 'react';
 import {
+  Alert,
   View,
   Text,
+  StyleSheet,
   Button
 } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import Login from './login';
 import Register from './register';
 import Main from './main';
-import QrScanner from './qr'
-
-
+import QrScanner from './qr';
 
 const RootStack = createStackNavigator(
   {
@@ -30,21 +30,28 @@ const RootStack = createStackNavigator(
       headerTitleStyle: {
         fontWeight: 'bold',
       },
-      headerRight: (
-      <Button
-        style
-        onPress={() => alert('This is a button!')}
-        title="Perfil"
-        color="#207ab2"
-      />
-      ),
     },
   }
 );
 
+const styles = StyleSheet.create({
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
+});
+
 export default class App extends React.Component {
-  render() {
-    return <RootStack />;
+  render(){
+    return (
+    <View style={{flex:1, backgroundColor: '#f3f3f3'}}>
+        <RootStack/>
+      </View>
+
+      );
+
   }
+
 }
 //Prueba

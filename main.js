@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { createStackNavigator } from 'react-navigation';  
+
 import {
   Alert,
   FlatList,
@@ -10,18 +12,32 @@ import {
   ScrollView,
 TouchableOpacity, } from 'react-native';
   import { createBottomTabNavigator } from 'react-navigation';
-  import { Card, ListItem, Button, Icon } from 'react-native-elements';
+  import { Card, ListItem, Button } from 'react-native-elements';
    import ActionBar from 'react-native-action-bar';
+  import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+
+  
+  class FButton extends React.Component {
+    render(){
+      return(
+        <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate('Login')} 
+        renderIcon = {()=>(<Icon name="md-person" style={styles.actionButtonIcon} />)} 
+        />
+      
+        );
+    }
+  }
 
 
   class OracleScreen extends React.Component {
-
   render() {
     return (
       <View
         style={styles.container}>
         
-        <Text>Bienvenido!</Text>
+        <Text>¡Bienvenido!</Text>
         <TouchableOpacity style={styles.buttonSignin}
                     onPress={() =>this.props.navigation.navigate('Login')}
                        >
@@ -32,6 +48,7 @@ TouchableOpacity, } from 'react-native';
                        >
                <Text  style={styles.buttonText}>Asistencia</Text>
         </TouchableOpacity>
+        <FButton navegador={this.props.navigation}/>
         </View>
     );
   }
@@ -42,6 +59,7 @@ class IbmScreen extends React.Component {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Esto es de Intel</Text>
+        <FButton navegador={this.props.navigation}/>
       </View>
     );
   }
@@ -51,6 +69,7 @@ class HpScreen extends React.Component {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Esto es de HP</Text>
+        <FButton navegador={this.props.navigation}/>
       </View>
     );
   }
@@ -115,6 +134,7 @@ class IntelScreen extends React.Component {
 				</Card>
           	</View>}
         />
+        <FButton navegador={this.props.navigation}/>
       </View>
     );
   }
@@ -128,13 +148,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
 
 });
 
 export default createBottomTabNavigator({
   Oracle: OracleScreen,
   IBM: IbmScreen,
-  intel: IntelScreen,
+  Intel: IntelScreen,
   HP: HpScreen,
 },
 );
+
+

@@ -18,6 +18,7 @@ import { AsyncStorage } from "react-native"
 export default class QrScanner extends Component {
   static navigationOptions = {
   title: 'Tomar asistencia',
+  headerRight: '',
   };
 
   state = {
@@ -45,6 +46,7 @@ export default class QrScanner extends Component {
   };
 
   render() {
+    
     return (
       <View style={styles.container}>
         {this.state.hasCameraPermission === null
@@ -78,7 +80,6 @@ export default class QrScanner extends Component {
         <TouchableOpacity style={styles.url}>
           <Text style={styles.urlText}>
             Escanea el código que se encuentra en el auditorio
-           
           </Text>
         </TouchableOpacity>
       
