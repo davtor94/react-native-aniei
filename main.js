@@ -48,11 +48,37 @@ import Icon from 'react-native-vector-icons/Ionicons';
                        >
                <Text  style={styles.buttonText}>Asistencia</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonSignin}
+                    onPress= {_loadDatabases}
+                       >
+               <Text  style={styles.buttonText}>Cargar todas las bases de datos</Text>
+        </TouchableOpacity>
+
         <FButton navegador={this.props.navigation}/>
         </View>
     );
   }
 }
+
+_loadDatabases=() => {
+  fetch('https://javiermorenot96.000webhostapp.com/aniei/getAllConferences.php', {
+  method: 'POST',
+  headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      }
+    }).then((response) =>  response.json())
+      .then(( ) => {
+        Alert.alert(responseJson[0].title)
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+}
+
+_saveConference
+                    
+
 
 class IbmScreen extends React.Component {
   render() {
