@@ -11,6 +11,7 @@ import Login from './login';
 import Register from './register';
 import Main from './main';
 import QrScanner from './qr';
+import ConferenceDescriptionScreen from './conference-description';
 
 const RootStack = createStackNavigator(
   {
@@ -18,6 +19,7 @@ const RootStack = createStackNavigator(
     Register: Register,
     Main: Main,
     QrScreen: QrScanner,
+    Conference: ConferenceDescriptionScreen,
   },
   {
     initialRouteName: 'Main',
