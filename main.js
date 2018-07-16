@@ -68,16 +68,13 @@ _loadDatabases=() => {
       'Content-Type': 'application/json',
       }
     }).then((response) =>  response.json())
-      .then(( ) => {
+      .then((responseJson) => {
         Alert.alert(responseJson[0].title)
         })
         .catch((error) => {
           console.error(error);
         });
 }
-
-_saveConference
-                    
 
 
 class IbmScreen extends React.Component {
