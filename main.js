@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createStackNavigator } from 'react-navigation';  
+import { createStackNavigator } from 'react-navigation';
 
 import {
   Alert,
@@ -18,14 +18,14 @@ TouchableOpacity, } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-  
+
   class FButton extends React.Component {
     render(){
       return(
-        <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate('Login')} 
-        renderIcon = {()=>(<Icon name="md-person" style={styles.actionButtonIcon} />)} 
+        <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate('Login')}
+        renderIcon = {()=>(<Icon name="md-person" style={styles.actionButtonIcon} />)}
         />
-      
+
         );
     }
   }
@@ -36,7 +36,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
     return (
       <View
         style={styles.container}>
-        
+
         <Text>¡Bienvenido!</Text>
         <TouchableOpacity style={styles.buttonSignin}
                     onPress={() =>this.props.navigation.navigate('Login')}
@@ -108,7 +108,7 @@ class IntelScreen extends React.Component {
         <FlatList
           data={[
             {
-              key: 'El internet de las cosas', 
+              key: 'El internet de las cosas',
               descripcion: 'Que equivocados estabamos Al pensar que la eternidad iba a ser Para siempre estare'
             },
             {
@@ -120,27 +120,27 @@ class IntelScreen extends React.Component {
               descripcion: 'decepcion es algo que no hubo entre los dos Why al final tu lo hiciste algo real Tacha todas las veces que te dije algo de este corazon Retiro lo dicho'
             },
             {
-              key: 'Medicina alternativa y remedios caseros', 
+              key: 'Medicina alternativa y remedios caseros',
               descripcion: 'recuerda que siempre tu fuiste Quien me daba ganas de ser un hombre de bien No tienes mas corazon lo diste a beneficencia de el Pobre de el'
             },
             {
-              key: 'Cómo generar dinero con dos sencillas aplicaciones desde casa', 
+              key: 'Cómo generar dinero con dos sencillas aplicaciones desde casa',
               descripcion: 'Pinche chango'
             },
             {
-              key: 'INSERTE TEXTO AQUI', 
+              key: 'INSERTE TEXTO AQUI',
               descripcion: 'Quiero comer comida comestible'
             },
             {
-              key: 'No puedo creer que leiste todo', 
+              key: 'No puedo creer que leiste todo',
               descripcion: 'Otro item generico con la misma imagen'
             },
             {
-              key: 'Tardé mucho en escribirlo, gracias :D', 
+              key: 'Tardé mucho en escribirlo, gracias :D',
               descripcion: 'Puto :)'
             },
           ]}
-          renderItem={({item}) => 
+          renderItem={({item}) =>
           	<View style={{width: Dimensions.get('window').width}}>
           		<Card
 				  title={item.key}
@@ -155,7 +155,7 @@ class IntelScreen extends React.Component {
 				    backgroundColor='#03A9F4'
 				    buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
 				    title='Más información'
-				    onPress={()=>{Alert.alert("Aqui debe enviarte a la conferencia "+item.key)}} 
+				    onPress={()=>{this.props.navigation.navigate('Conference', {nombre:item.key})}}
 				    />
 				</Card>
           	</View>}
@@ -189,5 +189,3 @@ export default createBottomTabNavigator({
   HP: HpScreen,
 },
 );
-
-
