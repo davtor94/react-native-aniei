@@ -10,14 +10,16 @@ import {
   View,
   Image,
   ScrollView,
-TouchableOpacity, } from 'react-native';
+  TouchableOpacity,
+  AsyncStorage,
+  RefreshControl} from 'react-native';
   import { createBottomTabNavigator } from 'react-navigation';
   import { Card, ListItem, Button } from 'react-native-elements';
    import ActionBar from 'react-native-action-bar';
   import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-
+const fileName = "conferencias";
 
   class FButton extends React.Component {
     render(){
@@ -25,13 +27,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
         <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate('Login')}
         renderIcon = {()=>(<Icon name="md-person" style={styles.actionButtonIcon} />)}
         />
-
         );
     }
   }
 
 
-  class OracleScreen extends React.Component {
+class OracleScreen extends React.Component {
+
   render() {
     return (
       <View
@@ -54,30 +56,60 @@ import Icon from 'react-native-vector-icons/Ionicons';
                <Text  style={styles.buttonText}>Cargar todas las bases de datos</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity style={styles.buttonSignin}
+                    onPress= {_getLocalDatabases}
+                       >
+               <Text  style={styles.buttonText}>Mostrar datos desde local</Text>
+        </TouchableOpacity>
+
         <FButton navegador={this.props.navigation}/>
         </View>
     );
   }
 }
 
-_loadDatabases=() => {
+_loadDatabases= function() {
+  this.setState({refreshing: true});
   fetch('https://javiermorenot96.000webhostapp.com/aniei/getAllConferences.php', {
   method: 'POST',
   headers: {
-      Accept: 'application/json',
+      'Accept': 'application/json, text/plain',
       'Content-Type': 'application/json',
       }
     }).then((response) =>  response.json())
-      .then(( ) => {
-        Alert.alert(responseJson[0].title)
+      .then((responseJson) => {
+          const bases = JSON.stringify(responseJson);
+          _saveDatabases(bases);
+          //Alert.alert(responseJson[0].title);
+          this.setState({refreshing: false});
+          this.setState({data:responseJson});
         })
         .catch((error) => {
           console.error(error);
         });
 }
+_saveDatabases = async(basesString) => {
+  try {
+    await AsyncStorage.setItem(fileName, basesString);
+  } catch (error) {
+      console.console.error();
+  }
+}
+_getLocalDatabases = async() =>{
+  try {
+    const value = await AsyncStorage.getItem(fileName);
+    if (value !== null) {
+      // We have data!!
+      const valueJson = JSON.parse(value);
+      Alert.alert(valueJson[0].title);
+      //console.log(value);
+    }
+   } catch (error) {
+     // Error retrieving data
+     console.error(error);
 
-_saveConference
-                    
+   }
+}
 
 
 class IbmScreen extends React.Component {
@@ -102,54 +134,36 @@ class HpScreen extends React.Component {
 }
 
 class IntelScreen extends React.Component {
+  constructor(props) {
+  super(props);
+  this.state = {
+    refreshing: false,
+    data: null,
+  };
+  this._loadDatabases = _loadDatabases.bind(this);
+  this._loadDatabases();
+}
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <FlatList
-          data={[
-            {
-              key: 'El internet de las cosas',
-              descripcion: 'Que equivocados estabamos Al pensar que la eternidad iba a ser Para siempre estare'
-            },
-            {
-              key: 'How to be happy in a depressing world',
-              descripcion: 'me prometiste why me mentiste Te prometi nunca mentir fijate Un castigo haz de merecer'
-            },
-            {
-              key: '5 pasos para no ser un ingeniero',
-              descripcion: 'decepcion es algo que no hubo entre los dos Why al final tu lo hiciste algo real Tacha todas las veces que te dije algo de este corazon Retiro lo dicho'
-            },
-            {
-              key: 'Medicina alternativa y remedios caseros',
-              descripcion: 'recuerda que siempre tu fuiste Quien me daba ganas de ser un hombre de bien No tienes mas corazon lo diste a beneficencia de el Pobre de el'
-            },
-            {
-              key: 'Cómo generar dinero con dos sencillas aplicaciones desde casa',
-              descripcion: 'Pinche chango'
-            },
-            {
-              key: 'INSERTE TEXTO AQUI',
-              descripcion: 'Quiero comer comida comestible'
-            },
-            {
-              key: 'No puedo creer que leiste todo',
-              descripcion: 'Otro item generico con la misma imagen'
-            },
-            {
-              key: 'Tardé mucho en escribirlo, gracias :D',
-              descripcion: 'Puto :)'
-            },
-          ]}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._loadDatabases}
+            />
+          }
+          data={this.state.data}
           renderItem={({item}) =>
           	<View style={{width: Dimensions.get('window').width}}>
           		<Card
-				  title={item.key}
+				  title={item.title}
 				  image={require('./Conferencia.jpg')}>
 				  <Text style={{fontWeight: 'bold'}}>
 				  	Descripción:
 				  </Text>
 				  <Text style={{marginBottom: 10}}>
-				   	{item.descripcion}
+				   	{item.description}
 				  </Text>
 				  <Button
 				    backgroundColor='#03A9F4'
@@ -164,7 +178,17 @@ class IntelScreen extends React.Component {
       </View>
     );
   }
+
+  _onRefresh = () => {
+      this.setState({refreshing: true});
+      fetch('https://javiermorenot96.000webhostapp.com/aniei/getAllConferences.php').then(() => {
+        this.setState({refreshing: false});
+      });
+    }
+
+
 }
+
 
 
 const styles = StyleSheet.create({
