@@ -111,52 +111,44 @@ export default class ConferenceDescriptionScreen extends React.Component {
 
   render() {
     return (
-      <View style={{flex:1, backgroundColor: '#f3f3f3'}}>
-      <MapView style={styles.map} initialRegion={{
-        latitude: 20.656940,
-        longitude: -103.326103,
-        latitudeDelta: 0.00486419504430,
-        longitudeDelta: 0.00401428176900,
-      }}
-      showsUserLocation={true}
-      showsMyLocationButton={false}
-      showsPointsOfInterest={false}
-      showsTraffic={false}
-      toolbarEnabled={false}
+      <View style={styles.container}>
+        <Text>Nombre: </Text>
+        <Text>Descrpción: </Text>
+        <Text>Ponente: </Text>
+        <MapView style={styles.map} initialRegion={{
+          latitude: 20.656940,
+          longitude: -103.326103,
+          latitudeDelta: 0.00486419504430,
+          longitudeDelta: 0.00401428176900,
+        }}
+        showsUserLocation={true}
+        showsMyLocationButton={false}
+        showsPointsOfInterest={false}
+        showsTraffic={false}
+        toolbarEnabled={false}
 
-      onUserLocationChange={(e) => {
-        this.setState({
-          latitude: e.nativeEvent.coordinate.latitude,
-          longitude: e.nativeEvent.coordinate.longitude,
-        });
-        this.mergeLot();
-      }}
-      onPress={() => { this._callShowDirections() }}
-      >
+        onUserLocationChange={(e) => {
+          this.setState({
+            latitude: e.nativeEvent.coordinate.latitude,
+            longitude: e.nativeEvent.coordinate.longitude,
+          });
+          this.mergeLot();
+        }}
+        onPress={() => { this._callShowDirections() }}
+        >
 
-       {!!this.state.destLatitude && !!this.state.destLongitude && <MapView.Marker
-          coordinate={{"latitude":this.state.destLatitude,"longitude":this.state.destLongitude}}
-          title={"Your Destination"}
-          pinColor='#2DFF96'
-        />}
+         {!!this.state.destLatitude && !!this.state.destLongitude && <MapView.Marker
+            coordinate={{"latitude":this.state.destLatitude,"longitude":this.state.destLongitude}}
+            title={"Your Destination"}
+            pinColor='#2DFF96'
+          />}
 
-       {!!this.state.latitude && !!this.state.longitude && this.state.x == 'true' && <MapView.Polyline
-            coordinates={this.state.coords}
-            strokeWidth={6}
-            strokeColor='#FF962E'/>
-        }
-      </MapView>
-      <ActionButton buttonColor="rgba(231,76,60,1)" position="center" buttonText="Hola" verticalOrientation="down" offsetY={100}>
-        <ActionButton.Item buttonColor='#9b59b6' title="Pinche" onPress={() => console.log("notes tapped!")}>
-          <Icon name="md-create" style={styles.actionButtonIcon} />
-        </ActionButton.Item>
-        <ActionButton.Item buttonColor='#3498db' title="Javier" onPress={() => {}}>
-          <Icon name="md-notifications-off" style={styles.actionButtonIcon} />
-        </ActionButton.Item>
-        <ActionButton.Item buttonColor='#1abc9c' title="Imbecil" onPress={() => {}}>
-          <Icon name="md-done-all" style={styles.actionButtonIcon} />
-        </ActionButton.Item>
-      </ActionButton>
+         {!!this.state.latitude && !!this.state.longitude && this.state.x == 'true' && <MapView.Polyline
+              coordinates={this.state.coords}
+              strokeWidth={6}
+              strokeColor='#FF962E'/>
+          }
+        </MapView>
       </View>
     );
   }
@@ -183,13 +175,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    shadowOffset:{  width: 10,  height: 10,  },
+    shadowColor: 'black',
+    shadowOpacity: 1.0,
   },
 
   map: {
     position: 'absolute',
-    width: 40 + "%",
-    height: 40 + "%",
-    bottom: 0,
+    width: 80 + "%",
+    height: 30 + "%",
+    bottom: 10 + "%",
   },
   actionButtonIcon: {
     fontSize: 20,
