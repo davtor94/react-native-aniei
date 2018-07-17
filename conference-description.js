@@ -12,14 +12,11 @@ import {
   ScrollView } from 'react-native';
 
 import MapView from 'react-native-maps';
-import Polyline from '@mapbox/polyline';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-import { OpenMapDirections } from 'react-native-navigation-directions';
+import {OpenMapDirections} from 'react-native-navigation-directions';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyDwZV5fTTvjjDhjYUp7El3AFGnfQ39hhmw';
-
 
 export default class ConferenceDescriptionScreen extends React.Component {
   static navigationOptions = {
@@ -40,35 +37,22 @@ export default class ConferenceDescriptionScreen extends React.Component {
       destLongitude:-103.326958,
     };
 
-    this.mergeLot = this.mergeLot.bind(this);
-
   }
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-       (position) => {
-         this.setState({
-           latitude: position.coords.latitude,
-           longitude: position.coords.longitude,
-           error: null,
-         });
-         this.mergeLot();
-       },
-       (error) => this.setState({ error: error.message }),
-       { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
-     );
+    this._getCurrentPosition();
    }
-
-  mergeLot(){
-    if (this.state.latitude != null && this.state.longitude!=null)
-     {
-       let concatLot = this.state.latitude +","+this.state.longitude
-       this.setState({
-         concat: concatLot
-       }, () => {
-         this.getDirections(concatLot, this.state.destLatitude + ',' + this.state.destLongitude);
-       });
-     }
-
+   _getCurrentPosition = () => {
+     navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.setState({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            error: null,
+          });
+        },
+        (error) => this.setState({ error: error.message }),
+        { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
+      );
    }
    _callShowDirections = () => {
      const startPoint = {
@@ -85,70 +69,60 @@ export default class ConferenceDescriptionScreen extends React.Component {
         console.log(res)
       });
     }
-   async getDirections(startLoc, destinationLoc) {
-
-     try {
-           console.log("getDirections");
-             let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${ startLoc }&destination=${ destinationLoc }&mode=walking`)
-             let respJson = await resp.json();
-             let points = Polyline.decode(respJson.routes[0].overview_polyline.points);
-             let coords = points.map((point, index) => {
-                 return  {
-                     latitude : point[0],
-                     longitude : point[1]
-                 }
-             })
-             this.setState({coords: coords})
-             this.setState({x: "true"})
-             return coords
-         } catch(error) {
-           console.log('error al obtener ruta')
-             this.setState({x: "error"})
-             return error
-         }
-     }
-
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Nombre: </Text>
-        <Text>Descrpción: </Text>
-        <Text>Ponente: </Text>
-        <MapView style={styles.map} initialRegion={{
-          latitude: 20.656940,
-          longitude: -103.326103,
-          latitudeDelta: 0.00486419504430,
-          longitudeDelta: 0.00401428176900,
-        }}
-        showsUserLocation={true}
-        showsMyLocationButton={false}
-        showsPointsOfInterest={false}
-        showsTraffic={false}
-        toolbarEnabled={false}
-
-        onUserLocationChange={(e) => {
-          this.setState({
-            latitude: e.nativeEvent.coordinate.latitude,
-            longitude: e.nativeEvent.coordinate.longitude,
-          });
-          this.mergeLot();
-        }}
-        onPress={() => { this._callShowDirections() }}
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.text}>Nombre: </Text>
+          <Text style={styles.text}>Descripción: </Text>
+          <Text style={styles.text}>Ponente: </Text>
+          <Text style={styles.text}>Auditorio: </Text>
+          <Text style={styles.text}>Hora: </Text>
+        </View>
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={() =>this.props.navigation.navigate('Rating')}//('QrScreen')}
         >
+          <Text  style={styles.buttonText}>¡Quiero asistir!</Text>
+        </TouchableOpacity>
+        <View style={styles.mapContainer}>
+          <MapView style={styles.map} initialRegion={{
+            latitude: 20.656940,
+            longitude: -103.326103,
+            latitudeDelta: 0.00486419504430,
+            longitudeDelta: 0.00401428176900,
+          }}
+          showsUserLocation={true}
+          showsMyLocationButton={false}
+          showsPointsOfInterest={false}
+          showsTraffic={false}
+          toolbarEnabled={false}
 
-         {!!this.state.destLatitude && !!this.state.destLongitude && <MapView.Marker
-            coordinate={{"latitude":this.state.destLatitude,"longitude":this.state.destLongitude}}
-            title={"Your Destination"}
-            pinColor='#2DFF96'
-          />}
+          onUserLocationChange={(e) => {
+            this.setState({
+              latitude: e.nativeEvent.coordinate.latitude,
+              longitude: e.nativeEvent.coordinate.longitude,
+            });
+          }}
+          onPress={() => {
+            if (this.state.latitude != null){
+              this._callShowDirections();
+            }
+            else {
+              this._getCurrentPosition();
+              Alert.alert("Por favor enciende tu ubicación");
+            }
+          }}
+          >
 
-         {!!this.state.latitude && !!this.state.longitude && this.state.x == 'true' && <MapView.Polyline
-              coordinates={this.state.coords}
-              strokeWidth={6}
-              strokeColor='#FF962E'/>
-          }
-        </MapView>
+           {!!this.state.destLatitude && !!this.state.destLongitude && <MapView.Marker
+              coordinate={{"latitude":this.state.destLatitude,"longitude":this.state.destLongitude}}
+              title={"Your Destination"}
+              pinColor='#2DFF96'
+            />}
+          </MapView>
+        </View>
       </View>
     );
   }
@@ -175,16 +149,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowOffset:{  width: 10,  height: 10,  },
-    shadowColor: 'black',
-    shadowOpacity: 1.0,
   },
-
-  map: {
+  descriptionContainer: {
+    position: 'absolute',
+    backgroundColor: '#fff',
+    alignItems: 'flex-start',
+    justifyContent: 'space-around',
+    top: 10,
+    width: 80 + "%",
+    height: 40 + "%",
+  },
+  mapContainer: {
     position: 'absolute',
     width: 80 + "%",
     height: 30 + "%",
     bottom: 10 + "%",
+  },
+  map: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  text: {
+    fontSize: 19,
+    fontWeight: 'bold',
   },
   actionButtonIcon: {
     fontSize: 20,
