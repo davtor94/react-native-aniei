@@ -78,15 +78,12 @@ _loadDatabases= function() {
       }
     }).then((response) =>  response.json())
       .then((responseJson) => {
-<<<<<<< HEAD
           const bases = JSON.stringify(responseJson);
           _saveDatabases(bases);
           //Alert.alert(responseJson[0].title);
           this.setState({refreshing: false});
           this.setState({data:responseJson});
-=======
         Alert.alert(responseJson[0].title)
->>>>>>> 3b06f9f9631ac91f79eebc3d7d45dc008ff0da6a
         })
         .catch((error) => {
           console.error(error);
@@ -111,13 +108,8 @@ _getLocalDatabases = async() =>{
    } catch (error) {
      // Error retrieving data
      console.error(error);
-
-<<<<<<< HEAD
    }
 }
-
-=======
->>>>>>> 3b06f9f9631ac91f79eebc3d7d45dc008ff0da6a
 
 class IbmScreen extends React.Component {
   render() {
