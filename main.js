@@ -50,11 +50,6 @@ class OracleScreen extends React.Component {
                        >
                <Text  style={styles.buttonText}>Asistencia</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonSignin}
-                    onPress= {_loadDatabases}
-                       >
-               <Text  style={styles.buttonText}>Cargar todas las bases de datos</Text>
-        </TouchableOpacity>
 
         <TouchableOpacity style={styles.buttonSignin}
                     onPress= {_getLocalDatabases}
@@ -68,7 +63,7 @@ class OracleScreen extends React.Component {
   }
 }
 
-_loadDatabases= function() {
+_downloadConferencesData= function() {
   this.setState({refreshing: true});
   fetch('https://javiermorenot96.000webhostapp.com/aniei/getAllConferences.php', {
   method: 'POST',
@@ -83,12 +78,30 @@ _loadDatabases= function() {
           //Alert.alert(responseJson[0].title);
           this.setState({refreshing: false});
           this.setState({data:responseJson});
-        Alert.alert(responseJson[0].title)
+          Alert.alert("Desde api")
+
         })
         .catch((error) => {
           console.error(error);
         });
 }
+_loadConferencesData = async function(){
+  try {
+    const value = await AsyncStorage.getItem(fileName);
+    if (value !== null) {
+      const valueJson = JSON.parse(value);
+      this.setState({data:valueJson});
+      Alert.alert("Desde local")
+    }else{
+      this._downloadConferencesData();
+    }
+
+   } catch (error) {
+     // Error retrieving data
+     console.error(error);
+   }
+}
+
 _saveDatabases = async(basesString) => {
   try {
     await AsyncStorage.setItem(fileName, basesString);
@@ -105,6 +118,8 @@ _getLocalDatabases = async() =>{
       Alert.alert(valueJson[0].title);
       //console.log(value);
     }
+    return valueJson;
+
    } catch (error) {
      // Error retrieving data
      console.error(error);
@@ -139,8 +154,10 @@ class IntelScreen extends React.Component {
     refreshing: false,
     data: null,
   };
-  this._loadDatabases = _loadDatabases.bind(this);
-  this._loadDatabases();
+  this._downloadConferencesData = _downloadConferencesData.bind(this);
+  this._loadConferencesData = _loadConferencesData.bind(this);
+  this._loadConferencesData();
+  //this._downloadConferencesData();
 }
   render() {
     return (
@@ -149,7 +166,7 @@ class IntelScreen extends React.Component {
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
-              onRefresh={this._loadDatabases}
+              onRefresh={this._downloadConferencesData}
             />
           }
           data={this.state.data}
@@ -168,7 +185,11 @@ class IntelScreen extends React.Component {
 				    backgroundColor='#03A9F4'
 				    buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
 				    title='Más información'
+<<<<<<< HEAD
 				    onPress={()=>{this.props.navigation.navigate('Conference', item)}}
+=======
+				    onPress={()=>{this.props.navigation.navigate('Conference', {nombre:item.id})}}
+>>>>>>> 96409e11696f5e0fc2009361ffd06d93e2e8eae9
 				    />
 				</Card>
           	</View>}
