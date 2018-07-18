@@ -40,6 +40,10 @@ export default class ConferenceDescriptionScreen extends React.Component {
   }
   componentDidMount() {
     this._getCurrentPosition();
+    this.setState({
+      destLatitude:JSON.parse(this.props.navigation.getParam('latitude', '')),
+      destLongitude:JSON.parse(this.props.navigation.getParam('longitude', '')),
+    });
    }
    _getCurrentPosition = () => {
      navigator.geolocation.getCurrentPosition(
@@ -78,13 +82,14 @@ export default class ConferenceDescriptionScreen extends React.Component {
     const date = navigation.getParam('date', '');
     const startTime = navigation.getParam('startTime', '');
     const endTime = navigation.getParam('endTime', '');
+    const locationName = navigation.getParam('locationName', '');
 
     return (
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.descriptionContainer}>
           <Text style={styles.text}>Título: {title}</Text>
           <Text style={styles.text}>Descripción: {description}</Text>
-          <Text style={styles.text}>Auditorio: {title}</Text>
+          <Text style={styles.text}>Auditorio: {locationName}</Text>
           <Text style={styles.text}>Ponente: {speaker}</Text>
           <Text style={styles.text}>Fecha: {date}</Text>
           <Text style={styles.text}>Hora: {startTime} - {endTime}</Text>
@@ -124,26 +129,34 @@ export default class ConferenceDescriptionScreen extends React.Component {
             }
           }}
           >
-
            {!!this.state.destLatitude && !!this.state.destLongitude && <MapView.Marker
               coordinate={{"latitude":this.state.destLatitude,"longitude":this.state.destLongitude}}
-              title={"Your Destination"}
+              title={locationName}
               pinColor='#2DFF96'
             />}
           </MapView>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
 
 
 const styles = StyleSheet.create({
-  buttonText:{
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: '700'
-},
+  contentContainer: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+  },
+  descriptionContainer: {
+    backgroundColor: '#fff',
+    alignItems: 'flex-start',
+    justifyContent: 'space-around',
+    top: 10,
+    width: 80 + "%",
+  },
+  mapContainer: {
+
+  },
   buttonContainer:{
         alignItems: 'center',
         justifyContent: 'center',
@@ -152,42 +165,18 @@ const styles = StyleSheet.create({
         marginTop: 15,
         borderRadius: 25,
         width: 60 + "%"
-    },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  descriptionContainer: {
-    position: 'absolute',
-    backgroundColor: '#fff',
-    alignItems: 'flex-start',
-    justifyContent: 'space-around',
-    top: 10,
-    width: 80 + "%",
-    height: 40 + "%",
-  },
-  mapContainer: {
-    position: 'absolute',
-    width: 80 + "%",
-    height: 30 + "%",
-    bottom: 10 + "%",
+  buttonText:{
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '700'
   },
   map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    width: 200,
+    height: 300,
   },
   text: {
     fontSize: 19,
     fontWeight: 'bold',
-  },
-  actionButtonIcon: {
-    fontSize: 20,
-    height: 22,
-    color: 'white',
   },
 });
