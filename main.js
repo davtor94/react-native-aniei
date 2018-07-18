@@ -30,6 +30,31 @@ const fileName = "conferencias";
         );
     }
   }
+  class MyCard extends React.Component{
+    render(){
+      return(
+        <View style={{width: Dimensions.get('window').width}}>
+          <Card
+            title={this.props.item.title}
+            image={require('./Conferencia.jpg')}>
+            <Text style={{fontWeight: 'bold'}}>
+              Descripción:
+            </Text>
+            <Text numberOfLines={3} style={{marginBottom: 10}}>
+              {this.props.item.description}
+            </Text>
+            <Button
+              backgroundColor='#03A9F4'
+              buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+              title='Más información'
+              onPress={()=>{this.props.navegador.navigate('Conference', this.props.item)}}
+              />
+         </Card>
+        </View>
+
+      );
+    }
+  }
 
 
 class OracleScreen extends React.Component {
@@ -51,19 +76,13 @@ class OracleScreen extends React.Component {
                <Text  style={styles.buttonText}>Asistencia</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonSignin}
-                    onPress= {_getLocalDatabases}
-                       >
-               <Text  style={styles.buttonText}>Mostrar datos desde local</Text>
-        </TouchableOpacity>
-
         <FButton navegador={this.props.navigation}/>
         </View>
     );
   }
 }
 
-_downloadConferencesData= function() {
+_downloadConferencesData= function(companyName) {
   this.setState({refreshing: true});
   fetch('https://javiermorenot96.000webhostapp.com/aniei/getAllConferences.php', {
   method: 'POST',
@@ -74,34 +93,43 @@ _downloadConferencesData= function() {
     }).then((response) =>  response.json())
       .then((responseJson) => {
           const bases = JSON.stringify(responseJson);
+          const filteredConferences = _filterConferences(companyName,responseJson);
           _saveDatabases(bases);
-          //Alert.alert(responseJson[0].title);
           this.setState({refreshing: false});
-          this.setState({data:responseJson});
-          Alert.alert("Desde api")
-
+          this.setState({data:filteredConferences});
+          //Alert.alert("Desde api")
         })
         .catch((error) => {
           console.error(error);
         });
 }
-_loadConferencesData = async function(){
+_loadConferencesData = async function(companyName){
   try {
     const value = await AsyncStorage.getItem(fileName);
     if (value !== null) {
       const valueJson = JSON.parse(value);
-      this.setState({data:valueJson});
-      Alert.alert("Desde local")
+      const filteredConferences = _filterConferences(companyName,valueJson);
+      this.setState({data:filteredConferences});
+      //Alert.alert("Desde local")
     }else{
       this._downloadConferencesData();
     }
-
    } catch (error) {
-     // Error retrieving data
      console.error(error);
    }
 }
-
+_filterConferences = function(companyName,conferences){
+  var filtered = [];
+  var i, filteredCount=0;
+  const size = conferences.length;
+  for(i=0;i<size;i++){
+    if(conferences[i]['companyName']==companyName){
+      filtered[filteredCount]=conferences[i];
+      filteredCount++;
+    }
+  }
+  return filtered;
+}
 _saveDatabases = async(basesString) => {
   try {
     await AsyncStorage.setItem(fileName, basesString);
@@ -109,29 +137,56 @@ _saveDatabases = async(basesString) => {
       console.console.error();
   }
 }
-_getLocalDatabases = async() =>{
+_getLocalDatabases = async() =>{ //Esta funcion es de prueba
   try {
     const value = await AsyncStorage.getItem(fileName);
     if (value !== null) {
-      // We have data!!
       const valueJson = JSON.parse(value);
       Alert.alert(valueJson[0].title);
-      //console.log(value);
     }
-    return valueJson;
-
    } catch (error) {
-     // Error retrieving data
      console.error(error);
    }
 }
-
+ListEmptyView = () => {
+ return (
+   <View style={{margin: 20, backgroundColor: '#fff',alignItems: 'center',justifyContent: 'center',}}>
+     <Text style={{textAlign: 'center', margin:20}}>Parece que no hay conferencias, desliza hacia abajo para actualizar</Text>
+   </View>
+ );
+}
 class IbmScreen extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      refreshing: false,
+      data: null,
+    };
+    this.companyName = "IBM";
+    this._downloadConferencesData = _downloadConferencesData.bind(this);
+    this._loadConferencesData = _loadConferencesData.bind(this);
+    this._loadConferencesData(this.companyName);
+  }
+
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Esto es de Intel</Text>
+        <FlatList
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={() => {this._downloadConferencesData(this.companyName)}}
+            />
+          }
+          data={this.state.data}
+          renderItem={({item}) =>
+          	 <MyCard item={item} navegador={this.props.navigation}/>
+          }
+          keyExtractor={item => item.id}
+          ListEmptyComponent={ListEmptyView}
+        />
         <FButton navegador={this.props.navigation}/>
+
       </View>
     );
   }
@@ -154,9 +209,11 @@ class IntelScreen extends React.Component {
     refreshing: false,
     data: null,
   };
+  this.companyName = "Intel";//Cambiar por Intel o como esté en la base
   this._downloadConferencesData = _downloadConferencesData.bind(this);
   this._loadConferencesData = _loadConferencesData.bind(this);
-  this._loadConferencesData();
+  this._loadConferencesData(this.companyName);
+
   //this._downloadConferencesData();
 }
   render() {
@@ -166,46 +223,23 @@ class IntelScreen extends React.Component {
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
-              onRefresh={this._downloadConferencesData}
+              onRefresh={() => {this._downloadConferencesData(this.companyName)}}
             />
           }
           data={this.state.data}
           renderItem={({item}) =>
-          	<View style={{width: Dimensions.get('window').width}}>
-          		<Card
-				  title={item.title}
-				  image={require('./Conferencia.jpg')}>
-				  <Text style={{fontWeight: 'bold'}}>
-				  	Descripción:
-				  </Text>
-				  <Text style={{marginBottom: 10}}>
-				   	{item.description}
-				  </Text>
-				  <Button
-				    backgroundColor='#03A9F4'
-				    buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-				    title='Más información'
-				    onPress={()=>{this.props.navigation.navigate('Conference', item)}}
-				    />
-				</Card>
-          	</View>}
+          	 <MyCard item={item} navegador={this.props.navigation}/>
+          }
+          keyExtractor={item => item.id}
+          ListEmptyComponent={ListEmptyView}
+
         />
         <FButton navegador={this.props.navigation}/>
       </View>
     );
   }
 
-  _onRefresh = () => {
-      this.setState({refreshing: true});
-      fetch('https://javiermorenot96.000webhostapp.com/aniei/getAllConferences.php').then(() => {
-        this.setState({refreshing: false});
-      });
-    }
-
-
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
