@@ -185,11 +185,7 @@ class IntelScreen extends React.Component {
 				    backgroundColor='#03A9F4'
 				    buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
 				    title='Más información'
-<<<<<<< HEAD
 				    onPress={()=>{this.props.navigation.navigate('Conference', item)}}
-=======
-				    onPress={()=>{this.props.navigation.navigate('Conference', {nombre:item.id})}}
->>>>>>> 96409e11696f5e0fc2009361ffd06d93e2e8eae9
 				    />
 				</Card>
           	</View>}
