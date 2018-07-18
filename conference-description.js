@@ -71,18 +71,27 @@ export default class ConferenceDescriptionScreen extends React.Component {
     }
 
   render() {
+    const { navigation } = this.props;
+    const title = navigation.getParam('title', '');
+    const description = navigation.getParam('description', '');
+    const speaker = navigation.getParam('speaker', '');
+    const date = navigation.getParam('date', '');
+    const startTime = navigation.getParam('startTime', '');
+    const endTime = navigation.getParam('endTime', '');
+
     return (
       <View style={styles.container}>
         <View style={styles.descriptionContainer}>
-          <Text style={styles.text}>Nombre: </Text>
-          <Text style={styles.text}>Descripción: </Text>
-          <Text style={styles.text}>Ponente: </Text>
-          <Text style={styles.text}>Auditorio: </Text>
-          <Text style={styles.text}>Hora: </Text>
+          <Text style={styles.text}>Título: {title}</Text>
+          <Text style={styles.text}>Descripción: {description}</Text>
+          <Text style={styles.text}>Auditorio: {title}</Text>
+          <Text style={styles.text}>Ponente: {speaker}</Text>
+          <Text style={styles.text}>Fecha: {date}</Text>
+          <Text style={styles.text}>Hora: {startTime} - {endTime}</Text>
         </View>
         <TouchableOpacity
           style={styles.buttonContainer}
-          onPress={() =>this.props.navigation.navigate('Rating')}//('QrScreen')}
+          onPress={() =>this.props.navigation.navigate('QrScreen')}
         >
           <Text  style={styles.buttonText}>¡Quiero asistir!</Text>
         </TouchableOpacity>
