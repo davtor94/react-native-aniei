@@ -13,15 +13,17 @@ import {
   TouchableOpacity,
   AsyncStorage,
   RefreshControl} from 'react-native';
-  import { createBottomTabNavigator } from 'react-navigation';
-  import { Card, ListItem, Button } from 'react-native-elements';
-   import ActionBar from 'react-native-action-bar';
-  import ActionButton from 'react-native-action-button';
+import { createBottomTabNavigator } from 'react-navigation';
+import { Card, ListItem, Button } from 'react-native-elements';
+import ActionBar from 'react-native-action-bar';
+import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const fileName = "conferencias";
+const companyNames = ["Oracle","IBM","Intel","HP","Continental"];
+const noCompany = "Others";
 
-  class FButton extends React.Component {
+class FButton extends React.Component {
     render(){
       return(
         <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate('Login')}
@@ -30,13 +32,13 @@ const fileName = "conferencias";
         );
     }
   }
-  class MyCard extends React.Component{
+class MyCard extends React.Component{
     render(){
       return(
         <View style={{width: Dimensions.get('window').width}}>
           <Card
             title={this.props.item.title}
-            image={require('./Conferencia.jpg')}>
+            image={this.props.imagePath}>
             <Text style={{fontWeight: 'bold'}}>
               Descripción:
             </Text>
@@ -55,29 +57,41 @@ const fileName = "conferencias";
       );
     }
   }
+class BaseScreen extends React.Component {
 
+  constructor(props,companyName,imagePath){
+    super(props);
+    this.state = {
+      refreshing: false,
+      data: null,
+    };
+    this.companyName = companyName;
+    this._downloadConferencesData = _downloadConferencesData.bind(this);
+    this._loadConferencesData = _loadConferencesData.bind(this);
+    this._loadConferencesData(this.companyName);
+    this.imagePath = imagePath;
 
-class OracleScreen extends React.Component {
-
+  }
   render() {
     return (
-      <View
-        style={styles.container}>
-
-        <Text>¡Bienvenido!</Text>
-        <TouchableOpacity style={styles.buttonSignin}
-                    onPress={() =>this.props.navigation.navigate('Login')}
-                       >
-               <Text  style={styles.buttonText}>Inicia Sesión</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonSignin}
-                    onPress={() =>this.props.navigation.navigate('QrScreen')}
-                       >
-               <Text  style={styles.buttonText}>Asistencia</Text>
-        </TouchableOpacity>
-
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <FlatList
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={() => {this._downloadConferencesData(this.companyName)}}
+            />
+          }
+          data={this.state.data}
+          renderItem={({item}) =>
+          	 <MyCard item={item} navegador={this.props.navigation} imagePath={this.imagePath}/>
+          }
+          keyExtractor={item => item.id}
+          ListEmptyComponent={ListEmptyView}
+        />
         <FButton navegador={this.props.navigation}/>
-        </View>
+
+      </View>
     );
   }
 }
@@ -122,12 +136,32 @@ _filterConferences = function(companyName,conferences){
   var filtered = [];
   var i, filteredCount=0;
   const size = conferences.length;
-  for(i=0;i<size;i++){
-    if(conferences[i]['companyName']==companyName){
-      filtered[filteredCount]=conferences[i];
-      filteredCount++;
+  if(companyName!=noCompany)
+  {
+    for(i=0;i<size;i++){
+      if(conferences[i]['companyName']==companyName){
+        filtered[filteredCount]=conferences[i];
+        filteredCount++;
+      }
+    }
+  }else{
+    var j, existent;
+    const companiesCount = companyNames.length;
+    for(i=0;i<size;i++){
+      existent=false;
+      for(j=0;j<companiesCount;j++){
+        if(conferences[i]['companyName']==companyNames[j]){
+          existent=true;
+          break;
+        }
+      }
+      if(!existent){
+        filtered[filteredCount]=conferences[i];
+        filteredCount++;
+      }
     }
   }
+
   return filtered;
 }
 _saveDatabases = async(basesString) => {
@@ -136,7 +170,7 @@ _saveDatabases = async(basesString) => {
   } catch (error) {
       console.console.error();
   }
-}
+}//Esta funcion no es usada, pero sirve de ejemplo
 _getLocalDatabases = async() =>{ //Esta funcion es de prueba
   try {
     const value = await AsyncStorage.getItem(fileName);
@@ -155,90 +189,36 @@ ListEmptyView = () => {
    </View>
  );
 }
-class IbmScreen extends React.Component {
+
+class OracleScreen extends BaseScreen {
   constructor(props){
-    super(props);
-    this.state = {
-      refreshing: false,
-      data: null,
-    };
-    this.companyName = "IBM";
-    this._downloadConferencesData = _downloadConferencesData.bind(this);
-    this._loadConferencesData = _loadConferencesData.bind(this);
-    this._loadConferencesData(this.companyName);
-  }
-
-  render() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <FlatList
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={() => {this._downloadConferencesData(this.companyName)}}
-            />
-          }
-          data={this.state.data}
-          renderItem={({item}) =>
-          	 <MyCard item={item} navegador={this.props.navigation}/>
-          }
-          keyExtractor={item => item.id}
-          ListEmptyComponent={ListEmptyView}
-        />
-        <FButton navegador={this.props.navigation}/>
-
-      </View>
-    );
+    super(props,companyNames[0],require('./oracle_logo.jpg'));
   }
 }
-class HpScreen extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Esto es de HP</Text>
-        <FButton navegador={this.props.navigation}/>
-      </View>
-    );
+class IbmScreen extends BaseScreen {
+  constructor(props){
+    super(props,companyNames[1],require('./ibm_logo.png'));
   }
 }
-
-class IntelScreen extends React.Component {
-  constructor(props) {
-  super(props);
-  this.state = {
-    refreshing: false,
-    data: null,
-  };
-  this.companyName = "Intel";//Cambiar por Intel o como esté en la base
-  this._downloadConferencesData = _downloadConferencesData.bind(this);
-  this._loadConferencesData = _loadConferencesData.bind(this);
-  this._loadConferencesData(this.companyName);
-
-  //this._downloadConferencesData();
-}
-  render() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <FlatList
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={() => {this._downloadConferencesData(this.companyName)}}
-            />
-          }
-          data={this.state.data}
-          renderItem={({item}) =>
-          	 <MyCard item={item} navegador={this.props.navigation}/>
-          }
-          keyExtractor={item => item.id}
-          ListEmptyComponent={ListEmptyView}
-
-        />
-        <FButton navegador={this.props.navigation}/>
-      </View>
-    );
+class IntelScreen extends BaseScreen {
+  constructor(props){
+    super(props,companyNames[2],require('./intel_logo.png'));
   }
-
+}
+class HpScreen extends BaseScreen {
+  constructor(props){
+    super(props,companyNames[3],require('./hp_logo.jpg'));
+  }
+}
+class ContinentalScreen extends BaseScreen {
+  constructor(props){
+    super(props,companyNames[4],require('./continental_logo.png'));
+  }
+}
+class OthersScreen extends BaseScreen {
+  constructor(props){
+    super(props,noCompany,require('./Conferencia.jpg'));
+  }
 }
 
 const styles = StyleSheet.create({
@@ -255,11 +235,12 @@ const styles = StyleSheet.create({
   },
 
 });
-
 export default createBottomTabNavigator({
   Oracle: OracleScreen,
   IBM: IbmScreen,
   Intel: IntelScreen,
   HP: HpScreen,
+  Continental: ContinentalScreen,
+  Más: OthersScreen,
 },
 );

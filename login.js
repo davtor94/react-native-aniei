@@ -11,7 +11,7 @@ import {
   Button,
   ScrollView } from 'react-native';
 
-  
+
 export default class Login extends React.Component {
   static navigationOptions = {
   title: 'Inicia Sesion',
@@ -44,6 +44,7 @@ export default class Login extends React.Component {
 }).then((response) =>  response.text())
 .then((responseText) => {
   Alert.alert(responseText)
+  
     })
     .catch((error) => {
       console.error(error);
@@ -97,6 +98,12 @@ onPressRegistrar(routeName){
                     onPress={() =>this.props.navigation.navigate('Register')}
                        >
                <Text  style={styles.buttonText}>REGISTRAR</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.buttonSignin}
+                    onPress={() =>this.props.navigation.navigate('Profile')}
+                       >
+               <Text  style={styles.buttonText}>Perfil</Text>
         </TouchableOpacity>
 
         </KeyboardAvoidingView>

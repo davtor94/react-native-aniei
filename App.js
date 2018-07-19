@@ -13,6 +13,7 @@ import Main from './main';
 import QrScanner from './qr';
 import ConferenceDescriptionScreen from './conference-description';
 import RatingConference from './rating-conference';
+import ProfileScreen from './profile'
 
 const RootStack = createStackNavigator(
   {
@@ -22,6 +23,7 @@ const RootStack = createStackNavigator(
     QrScreen: QrScanner,
     Conference: ConferenceDescriptionScreen,
     Rating: RatingConference,
+    Profile: ProfileScreen,
   },
   {
     initialRouteName: 'Main',

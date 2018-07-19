@@ -32,7 +32,6 @@ constructor(props){
 }
 
 handleChange = (event) => {
-
   const target = event.target;
   const name = target.name;
   Alert.alert(event.typedText + name)
@@ -40,24 +39,19 @@ handleChange = (event) => {
     [name]: event.typedText
   });
 }
-
-
 componentDidMount () {
   this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
   this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
 }
-
 componentWillUnmount () {
   this.keyboardDidShowListener.remove();
   this.keyboardDidHideListener.remove();
 }
-
 _keyboardDidShow = () =>{
   this.setState({
     keyboard: true,
   });
 }
-
 _keyboardDidHide = () => {
   this.setState({
     keyboard: false,
@@ -67,13 +61,11 @@ toggleiAmStudent = () => {
   if(!this.state.iAmStudent){
     Alert.alert("Ingrese codigo y nip correspondiendtes a siiau")
   }
-
     this.setState({
         iAmStudent: !this.state.iAmStudent
     });
 }
 onPressIngresar = () => {
-
   fetch('http://148.202.152.33/ws_general.php', {
 
 method: 'POST',
