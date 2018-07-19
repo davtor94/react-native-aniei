@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Alert,
   Button,
-  ScrollView } from 'react-native';
+  ScrollView, } from 'react-native';
 
 import MapView from 'react-native-maps';
 import ActionButton from 'react-native-action-button';
@@ -85,14 +85,24 @@ export default class ConferenceDescriptionScreen extends React.Component {
     const locationName = navigation.getParam('locationName', '');
 
     return (
+      <View style={{backgroundColor: '#EBEBEB', flex: 1}}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
+      <Text style={{
+        fontWeight: 'bold',
+        fontSize: 20,
+        textAlign: 'center',
+        width: 80 + "%",
+        marginVertical: 10,
+      }}
+      >{title}</Text>
         <View style={styles.descriptionContainer}>
-          <Text style={styles.text}>Título: {title}</Text>
-          <Text style={styles.text}>Descripción: {description}</Text>
-          <Text style={styles.text}>Auditorio: {locationName}</Text>
-          <Text style={styles.text}>Ponente: {speaker}</Text>
-          <Text style={styles.text}>Fecha: {date}</Text>
-          <Text style={styles.text}>Hora: {startTime} - {endTime}</Text>
+          <Text style={{
+            marginBottom: 20, fontSize: 16, borderRadius: 4, }}>{description}</Text>
+
+          <Text style={styles.text}>Auditorio: <Text style={{fontWeight: 'normal'}}>{locationName}</Text></Text>
+          <Text style={styles.text}>Ponente: <Text style={{fontWeight: 'normal'}}>{speaker}</Text></Text>
+          <Text style={styles.text}>Fecha: <Text style={{fontWeight: 'normal'}}>{date}</Text></Text>
+          <Text style={styles.text}>Hora: <Text style={{fontWeight: 'normal'}}>{startTime} - {endTime}</Text></Text>
         </View>
         <TouchableOpacity
           style={styles.buttonContainer}
@@ -100,7 +110,6 @@ export default class ConferenceDescriptionScreen extends React.Component {
         >
           <Text  style={styles.buttonText}>¡Quiero asistir!</Text>
         </TouchableOpacity>
-        <View style={styles.mapContainer}>
           <MapView style={styles.map} initialRegion={{
             latitude: 20.656940,
             longitude: -103.326103,
@@ -119,24 +128,36 @@ export default class ConferenceDescriptionScreen extends React.Component {
               longitude: e.nativeEvent.coordinate.longitude,
             });
           }}
-          onPress={() => {
-            if (this.state.latitude != null){
-              this._callShowDirections();
-            }
-            else {
-              this._getCurrentPosition();
-              Alert.alert("Por favor enciende tu ubicación");
-            }
-          }}
           >
            {!!this.state.destLatitude && !!this.state.destLongitude && <MapView.Marker
               coordinate={{"latitude":this.state.destLatitude,"longitude":this.state.destLongitude}}
               title={locationName}
-              pinColor='#2DFF96'
             />}
           </MapView>
-        </View>
+          <TouchableOpacity
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#2B8EB5',
+              height: 30,
+              width: 80 + "%",
+              marginTop: 10,
+              marginBottom: 40,
+            }}
+            onPress={() => {
+              if (this.state.latitude != null){
+                this._callShowDirections();
+              }
+              else {
+                this._getCurrentPosition();
+                Alert.alert("Por favor enciende tu ubicación");
+              }
+            }}
+          >
+            <Text  style={styles.buttonText}>Cómo llegar</Text>
+          </TouchableOpacity>
       </ScrollView>
+      </View>
     );
   }
 }
@@ -146,6 +167,9 @@ const styles = StyleSheet.create({
   contentContainer: {
     backgroundColor: '#fff',
     alignItems: 'center',
+    paddingTop: 15,
+    margin: 15,
+    marginBottom: 0,
   },
   descriptionContainer: {
     backgroundColor: '#fff',
@@ -154,29 +178,27 @@ const styles = StyleSheet.create({
     top: 10,
     width: 80 + "%",
   },
-  mapContainer: {
-
-  },
   buttonContainer:{
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#2980b6',
+        backgroundColor: '#2B8EB5',
         height: 30,
         marginTop: 15,
-        borderRadius: 25,
-        width: 60 + "%"
+        marginBottom: 25,
+        width: 80 + "%",
   },
   buttonText:{
     color: '#fff',
     textAlign: 'center',
-    fontWeight: '700'
+    fontWeight: '700',
+    fontSize: 16,
   },
   map: {
-    width: 200,
+    width: 80 + "%",
     height: 300,
   },
   text: {
-    fontSize: 19,
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });
