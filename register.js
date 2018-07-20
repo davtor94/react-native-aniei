@@ -67,38 +67,35 @@ toggleiAmStudent = () => {
 }
 onPressIngresar = () => {
   fetch('http://148.202.152.33/ws_general.php', {
-
-method: 'POST',
-headers: new Headers({
-         'Content-Type': 'application/x-www-form-urlencoded',
-}),
-body: "codigo="+ this.state.codigo+ "&nip="+ this.state.nip
-}).then((response) =>  response.text())
-.then((responseText) => {
-//Alert.alert(responseText)
-if(responseText == "0"){
-  Alert.alert("Codigo o nip invalido")
-  this.setState({
-    iAmStudent: false,
-  });
-}else{
-  var res = responseText.split(",")
-  this.setState({
-    usuario: res[1],
-    password: this.state.nip,
-    password2: this.state.nip,
-    nombre: res[2],
-    institucion: res[3] + "(" + res[4] +")",
-    iAmStudent: false,
+    method: 'POST',
+    headers: new Headers({
+             'Content-Type': 'application/x-www-form-urlencoded',
+    }),
+    body: "codigo="+ this.state.codigo+ "&nip="+ this.state.nip
+    }).then((response) =>  response.text())
+    .then((responseText) => {
+    //Alert.alert(responseText)
+    if(responseText == "0"){
+      Alert.alert("Codigo o nip invalido")
+      this.setState({
+        iAmStudent: false,
+      });
+    }else{
+      var res = responseText.split(",")
+      this.setState({
+        usuario: res[1],
+        password: this.state.nip,
+        password2: this.state.nip,
+        nombre: res[2],
+        institucion: res[3] + "(" + res[4] +")",
+        iAmStudent: false,
+        });
+    }})
+    .catch((error) => {
+      console.error(error);
+      Alert.alert("Conexion a internet interrumpida")
     });
 }
-  })
-  .catch((error) => {
-    console.error(error);
-    Alert.alert("Conexion a internet interrumpida")
-  });
-}
-
 renderiAmStudent() {
     if (this.state.iAmStudent) {
         return (
@@ -256,12 +253,44 @@ renderiAmStudent() {
                 value={this.state.correo}
             >
       </TextInput>
-        <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonContainer} onPress = {this.onPressRegistrar}>
              <Text  style={styles.buttonText}>Registrate</Text>
          </TouchableOpacity>
       </KeyboardAvoidingView>
     );
   }
+
+  onPressRegistrar = () => {
+    var sha1 = require('sha1');
+    var encryptedPassword = sha1(this.state.password);
+    fetch('https://javiermorenot96.000webhostapp.com/aniei/register.php', {
+    method: 'POST',
+    headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+      },
+    body: JSON.stringify({
+      username: this.state.usuario,
+      name: this.state.nombre,
+      password: encryptedPassword,
+      institution: this.state.institucion,
+      email: this.state.correo,
+    })}
+  ).then((response) =>  response.text())
+    .then((responseText) => {
+    //Alert.alert(responseText)
+    if(responseText == "registrado"){
+      Alert.alert("Registado correctamente");
+    }else if(responseText == "usuario repetido"){
+      Alert.alert("Usuario repetido");
+    }else{
+      Alert.alert(responseText);
+    }
+      }).catch((error) => {
+        console.error(error);
+        Alert.alert("Conexion a internet interrumpida")
+      });
+}
 }
 
 const styles = StyleSheet.create({
