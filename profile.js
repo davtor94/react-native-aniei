@@ -21,47 +21,34 @@ export default class ProfileScreen extends React.Component {
   }
   render() {
     return (
-      <View
-        style={styles.container}>
+      <View style={styles.container}>
           <Image
             style={styles.logo}
             source={require('./src/components/images/logo-udg.png')}
             resizeMode="contain"
           />
-        <Text style={styles.regularText}>Usuario</Text>
-        <Text style={styles.regularText}>Nombre real</Text>
-        <Text style={styles.regularText}>Correo</Text>
-        <Text style={styles.regularText}>Institución</Text>
-        </View>
+          <Text style={styles.regularText}>Usuario</Text>
+          <Text style={styles.regularText}>Nombre real</Text>
+          <Text style={styles.regularText}>Correo</Text>
+          <Text style={styles.regularText}>Institución</Text>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   regularText:{
-    color: '#fff',
-    fontWeight: '700'
+    fontSize: 15,
 },
   container: {
     flex: 1,
-    backgroundColor: '#008787',
+    backgroundColor: '#EBEBEB',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   logo: {
-      position: 'relative',
       width: 40 + "%",
       height: 40 + "%",
       opacity : .5,
       margin: 0
-  },
-  input : {
-    textAlign: 'center',
-    marginTop: 5,
-    height: 30,
-    width: 60 + "%",
-    borderColor: 'gray',
-    borderRadius: 25,
-    borderWidth: StyleSheet.hairlineWidth
   },
 });

@@ -44,7 +44,7 @@ export default class Login extends React.Component {
 }).then((response) =>  response.text())
 .then((responseText) => {
   Alert.alert(responseText)
-  
+
     })
     .catch((error) => {
       console.error(error);
@@ -57,13 +57,15 @@ onPressRegistrar(routeName){
 }
   render() {
     return (
+    <View style={{flex: 1}}>
+      <ScrollView style={{margin: 10}}>
       <KeyboardAvoidingView
         behavior="padding"
         style={styles.container}>
           <Image
             style={styles.logo}
             source={require('./src/components/images/logo-udg.png')}
-            resizeMode="contain"
+            resizeMode="cover"
           />
 
         <TextInput
@@ -76,14 +78,14 @@ onPressRegistrar(routeName){
                    returnKeyType="next"
                    onChangeText={this.handleChangeCodigo}
                    value={this.state.codigo}
-                   placeholder='CODIGO'>
+                   placeholder='USUARIO'>
                   </TextInput>
 
           <TextInput style = {styles.input}
                   autoCapitalize="none"
                   returnKeyType="go"
                   ref={(input)=> this.passwordInput = input}
-                  placeholder='NIP'
+                  placeholder='CONTRASEÑA'
                   onChangeText={this.handleChangeNip}
                   value={this.state.nip}
                   secureTextEntry/>
@@ -107,6 +109,8 @@ onPressRegistrar(routeName){
         </TouchableOpacity>
 
         </KeyboardAvoidingView>
+        </ScrollView>
+      </View>
     );
   }
 }
@@ -143,11 +147,10 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-      position: 'relative',
-      width: 40 + "%",
-      height: 40 + "%",
-      opacity : .5,
-      margin: 0
+      width: 150,
+      height: 500,
+      opacity: .5,
+      padding: 10,
   },
 
   input : {
