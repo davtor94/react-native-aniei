@@ -9,7 +9,8 @@ import {
   Alert,
   Button,
   ScrollView,
-  KeyboardAvoidingView } from 'react-native';
+  KeyboardAvoidingView,
+  AsyncStorage } from 'react-native';
   import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 
 
@@ -26,6 +27,16 @@ export default class Login extends React.Component {
       codigo : ""
     }
   }
+  async removeItemValue(key) {
+    try {
+      await AsyncStorage.removeItem(key);
+      return true;
+    }
+    catch(exception) {
+      return false;
+    }
+  }
+
   handleChangeCodigo = (typedText) =>{
     this.setState({codigo: typedText});
   }
@@ -45,7 +56,6 @@ export default class Login extends React.Component {
 }).then((response) =>  response.text())
 .then((responseText) => {
   Alert.alert(responseText)
-
     })
     .catch((error) => {
       console.error(error);

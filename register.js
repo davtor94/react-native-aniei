@@ -8,9 +8,13 @@ import {
   TouchableOpacity,
   Alert,
   Button,
+  AsyncStorage,
   Keyboard,
   ScrollView } from 'react-native';
 import Student   from './student';
+
+const userKey = "usuario";
+
 export default class Register extends Component {
   static navigationOptions = {
   title: 'Registrate',
@@ -29,6 +33,7 @@ constructor(props){
     nombre: "",
     institucion: "",
   }
+  this._loadData();
 }
 
 handleChange = (event) => {
@@ -281,19 +286,39 @@ renderiAmStudent() {
     })}
   ).then((response) =>  response.text())
     .then((responseText) => {
-    //Alert.alert(responseText)
     if(responseText == "registrado"){
-      Alert.alert("Registado correctamente");
+      this._saveData(this.state.usuario);
+      //Guardado con exito
     }else if(responseText == "usuario repetido"){
       Alert.alert("Usuario repetido");
     }else{
-      Alert.alert(responseText);
+      Alert.alert("Ocurrió un error")
     }
       }).catch((error) => {
         console.error(error);
-        Alert.alert("Conexion a internet interrumpida")
+        Alert.alert("Ocurrió un error")
       });
-}
+    }
+
+  _saveData = async(username) => {
+    try {
+      await AsyncStorage.setItem(userKey,username);
+    } catch (error) {
+        console.console.error();
+    }
+  }
+  _loadData = async() =>{
+    try {
+      const value = await AsyncStorage.getItem(userKey);
+      if (value !== null) {
+        return true;
+      }
+      return false;
+     } catch (error) {
+       console.error(error);
+       return false;
+     }
+  }
 }
 
 const styles = StyleSheet.create({
