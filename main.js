@@ -22,14 +22,45 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const fileName = "conferencias";
 const companyNames = ["Oracle","IBM","Intel","HP","Continental"];
 const noCompany = "Others";
+const userKey = "usuario";
+
 
 class FButton extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        navigateTo: 'Login',
+      };
+    }
     render(){
+      var isLogged = this._loadData();
+      if(isLogged === true){
+        //this.setState({navigateTo:'Profile'});
+        this.state.navigateTo="Profile";
+      }else{
+        //this.setState({navigateTo:'Login'});
+        this.state.navigateTo="Login";
+      }
       return(
-        <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate('Login')}
+        <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate(this.state.navigateTo)}
         renderIcon = {()=>(<Icon name="md-person" style={styles.actionButtonIcon} />)}
         />
         );
+    }
+    _loadData = async() =>{
+      try {
+        const value = await AsyncStorage.getItem(userKey);
+        if (value !== null) {
+          Alert.alert("Value "+value)
+          return true;
+        }else{
+          return false;
+
+        }
+       } catch (error) {
+         console.error(error);
+         return false;
+       }
     }
   }
 class MyCard extends React.Component{

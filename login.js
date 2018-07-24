@@ -9,7 +9,9 @@ import {
   TouchableOpacity,
   Alert,
   Button,
-  ScrollView } from 'react-native';
+  ScrollView,
+  AsyncStorage,
+ } from 'react-native';
 
 
 export default class Login extends React.Component {
@@ -25,6 +27,16 @@ export default class Login extends React.Component {
       codigo : ""
     }
   }
+  async removeItemValue(key) {
+    try {
+      await AsyncStorage.removeItem(key);
+      return true;
+    }
+    catch(exception) {
+      return false;
+    }
+  }
+
   handleChangeCodigo = (typedText) =>{
     this.setState({codigo: typedText});
   }
@@ -44,7 +56,6 @@ export default class Login extends React.Component {
 }).then((response) =>  response.text())
 .then((responseText) => {
   Alert.alert(responseText)
-
     })
     .catch((error) => {
       console.error(error);
