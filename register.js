@@ -148,17 +148,17 @@ renderiAmStudent() {
   render() {
         const { navigate } = this.props.navigation;
     return (
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior="padding"
-        >
+      <View style={styles.container}>
+      <ScrollView contentContainerStyle={{}}>
+      <KeyboardAvoidingView behavior="position">
+      <View style={{alignItems: 'center'}}>
         {this.renderiAmStudent()}
         <TouchableOpacity style={styles.buttonStudent}
           onPress={this.toggleiAmStudent}>
             <Text  style={styles.buttonText}>Soy UDG</Text>
         </TouchableOpacity>
         <TextInput
-                  style = { this.state.keyboard ? styles.inputSmall : styles.input}
+                  style = {styles.input}
                    autoCapitalize="words"
                    onSubmitEditing={() => this.nombreInput.focus()}
                    autoCorrect={false}
@@ -175,7 +175,7 @@ renderiAmStudent() {
         </TextInput>
 
         <TextInput
-          style = { this.state.keyboard ? styles.inputSmall : styles.input}
+          style = {styles.input}
                    autoCapitalize="none"
                    ref={(input)=> this.nombreInput = input}
                    onSubmitEditing={() => this.passwordInput.focus()}
@@ -192,7 +192,7 @@ renderiAmStudent() {
         </TextInput>
 
         <TextInput
-          style = { this.state.keyboard ? styles.inputSmall : styles.input}
+          style = {styles.input}
                 autoCapitalize="none"
                 returnKeyType="next"
                 onSubmitEditing={() => this.passwordInput2.focus()}
@@ -208,7 +208,7 @@ renderiAmStudent() {
         </TextInput>
 
         <TextInput
-          style = { this.state.keyboard ? styles.inputSmall : styles.input}
+          style = {styles.input}
                 autoCapitalize="none"
                 returnKeyType="next"
                 ref={(input)=> this.passwordInput2 = input}
@@ -224,7 +224,7 @@ renderiAmStudent() {
       </TextInput>
 
         <TextInput
-          style = { this.state.keyboard ? styles.inputSmall : styles.input}
+          style = {styles.input}
                 autoCapitalize="none"
                 returnKeyType="next"
                 onSubmitEditing={() => this.correoInput.focus()}
@@ -240,7 +240,7 @@ renderiAmStudent() {
       </TextInput>
 
         <TextInput
-          style = { this.state.keyboard ? styles.inputSmall : styles.input}
+          style = {styles.input}
                 autoCapitalize="none"
                 returnKeyType="go"
                 ref={(input)=> this.correoInput = input}
@@ -256,7 +256,10 @@ renderiAmStudent() {
         <TouchableOpacity style={styles.buttonContainer} onPress = {this.onPressRegistrar}>
              <Text  style={styles.buttonText}>Registrate</Text>
          </TouchableOpacity>
+      </View>
       </KeyboardAvoidingView>
+      </ScrollView>
+      </View>
     );
   }
 
@@ -324,6 +327,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
+    margin: 15,
   },
   containerStudent: {
     backgroundColor: '#fff',

@@ -5,11 +5,12 @@ import {
   View,
   Image,
   TextInput,
-  KeyboardAvoidingView,
   TouchableOpacity,
   Alert,
   Button,
-  ScrollView } from 'react-native';
+  ScrollView,
+  KeyboardAvoidingView } from 'react-native';
+  import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 
 
 export default class Login extends React.Component {
@@ -57,60 +58,57 @@ onPressRegistrar(routeName){
 }
   render() {
     return (
-    <View style={{flex: 1}}>
-      <ScrollView style={{margin: 10}}>
-      <KeyboardAvoidingView
-        behavior="padding"
-        style={styles.container}>
-          <Image
-            style={styles.logo}
-            source={require('./src/components/images/logo-udg.png')}
-            resizeMode="cover"
-          />
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={{paddingTop: 15}}>
+          <KeyboardAvoidingView
+            behavior="position"
+          >
+            <Image
+              style={styles.logo}
+              source={require('./src/components/images/logo-udg.png')}
+              resizeMode="contain"
+            />
+            <View style={{flex: 1, alignItems: 'center',}}>
+            <TextInput style = {styles.input}
+                       underlineColorAndroid = "transparent"
+                       autoCapitalize="none"
+                       onSubmitEditing={() => this.passwordInput.focus()}
+                       autoCorrect={false}
+                       keyboardType='default'
+                       returnKeyType="next"
+                       onChangeText={this.handleChangeCodigo}
+                       value={this.state.codigo}
+                       placeholder='USUARIO'/>
 
-        <TextInput
-                  style = {styles.input}
-                  underlineColorAndroid = "transparent"
-                   autoCapitalize="none"
-                   onSubmitEditing={() => this.passwordInput.focus()}
-                   autoCorrect={false}
-                   keyboardType='default'
-                   returnKeyType="next"
-                   onChangeText={this.handleChangeCodigo}
-                   value={this.state.codigo}
-                   placeholder='USUARIO'>
-                  </TextInput>
+              <TextInput style = {styles.input}
+                      autoCapitalize="none"
+                      returnKeyType="go"
+                      ref={(input)=> this.passwordInput = input}
+                      placeholder='CONTRASEÑA'
+                      onChangeText={this.handleChangeNip}
+                      value={this.state.nip}
+                      secureTextEntry/>
+              <TouchableOpacity style={styles.buttonContainer}
+                             onPress={this.onPressIngresar}
+                             >
+                     <Text  style={styles.buttonText}>INGRESAR</Text>
+              </TouchableOpacity>
 
-          <TextInput style = {styles.input}
-                  autoCapitalize="none"
-                  returnKeyType="go"
-                  ref={(input)=> this.passwordInput = input}
-                  placeholder='CONTRASEÑA'
-                  onChangeText={this.handleChangeNip}
-                  value={this.state.nip}
-                  secureTextEntry/>
+              <TouchableOpacity style={styles.buttonSignin}
+                          onPress={() =>this.props.navigation.navigate('Register')}
+                             >
+                     <Text  style={styles.buttonText}>REGISTRAR</Text>
+              </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonContainer}
-                       onPress={this.onPressIngresar}
-                       >
-               <Text  style={styles.buttonText}>INGRESAR</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.buttonSignin}
-                    onPress={() =>this.props.navigation.navigate('Register')}
-                       >
-               <Text  style={styles.buttonText}>REGISTRAR</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.buttonSignin}
-                    onPress={() =>this.props.navigation.navigate('Profile')}
-                       >
-               <Text  style={styles.buttonText}>Perfil</Text>
-        </TouchableOpacity>
-
-        </KeyboardAvoidingView>
-        </ScrollView>
-      </View>
+              <TouchableOpacity style={styles.buttonSignin}
+                          onPress={() =>this.props.navigation.navigate('Profile')}
+                             >
+                     <Text  style={styles.buttonText}>Perfil</Text>
+              </TouchableOpacity>
+              </View>
+            </KeyboardAvoidingView>
+          </ScrollView>
+        </View>
     );
   }
 }
@@ -143,16 +141,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    margin: 15,
   },
-
   logo: {
-      width: 150,
-      height: 500,
+      height: 200,
       opacity: .5,
-      padding: 10,
   },
-
   input : {
     textAlign: 'center',
     marginTop: 5,

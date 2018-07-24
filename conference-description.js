@@ -15,6 +15,7 @@ import MapView from 'react-native-maps';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {OpenMapDirections} from 'react-native-navigation-directions';
+import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyDwZV5fTTvjjDhjYUp7El3AFGnfQ39hhmw';
 
@@ -35,6 +36,15 @@ export default class ConferenceDescriptionScreen extends React.Component {
       x: 'false',
       destLatitude:20.658246,
       destLongitude:-103.326958,
+
+      tableTitle: ['Head', 'Head2', 'Head3', 'Head4'],
+      tableData: [
+        ['1', '2', '3'],
+        ['a', 'b', 'c'],
+        ['1', '2', '3'],
+        ['a', 'b', 'c']
+      ]
+
     };
 
   }
@@ -98,6 +108,15 @@ export default class ConferenceDescriptionScreen extends React.Component {
         <View style={styles.descriptionContainer}>
           <Text style={{
             marginBottom: 20, fontSize: 16, borderRadius: 4, }}>{description}</Text>
+
+          <View style={{flex: 1, backgroundColor: '#fff', width: 100 + "%"}}>
+          <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+            <TableWrapper style={styles.wrapper}>
+              <Col data={this.state.tableTitle} style={styles.title} heightArr={[28,28]} textStyle={styles.text}/>
+              <Rows data={this.state.tableData} textStyle={styles.textTable} flexArr={[1, 1, 1]}/>
+            </TableWrapper>
+          </Table>
+          </View>
 
           <Text style={styles.text}>Auditorio: <Text style={{fontWeight: 'normal'}}>{locationName}</Text></Text>
           <Text style={styles.text}>Ponente: <Text style={{fontWeight: 'normal'}}>{speaker}</Text></Text>
@@ -201,4 +220,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  head: {
+    height: 40,
+    backgroundColor: '#f1f8ff'
+  },
+  textTable: {
+    margin: 6
+  },
+  wrapper: { flexDirection: 'row' },
+  title: { flex: 1, backgroundColor: '#f6f8fa' },
+  row: {  height: 28  },
 });
