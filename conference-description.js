@@ -36,15 +36,6 @@ export default class ConferenceDescriptionScreen extends React.Component {
       x: 'false',
       destLatitude:20.658246,
       destLongitude:-103.326958,
-
-      tableTitle: ['Head', 'Head2', 'Head3', 'Head4'],
-      tableData: [
-        ['1', '2', '3'],
-        ['a', 'b', 'c'],
-        ['1', '2', '3'],
-        ['a', 'b', 'c']
-      ]
-
     };
 
   }
@@ -94,6 +85,8 @@ export default class ConferenceDescriptionScreen extends React.Component {
     const endTime = navigation.getParam('endTime', '');
     const locationName = navigation.getParam('locationName', '');
 
+    const state = this.state;
+
     return (
       <View style={{backgroundColor: '#EBEBEB', flex: 1}}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -110,18 +103,15 @@ export default class ConferenceDescriptionScreen extends React.Component {
             marginBottom: 20, fontSize: 16, borderRadius: 4, }}>{description}</Text>
 
           <View style={{flex: 1, backgroundColor: '#fff', width: 100 + "%"}}>
-          <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+          <Table borderStyle={{borderColor: '#C1C0B9'}}>
             <TableWrapper style={styles.wrapper}>
-              <Col data={this.state.tableTitle} style={styles.title} heightArr={[28,28]} textStyle={styles.text}/>
-              <Rows data={this.state.tableData} textStyle={styles.textTable} flexArr={[1, 1, 1]}/>
+              <Col data={["Auditorio","Ponente","Fecha","Hora"]}
+              style={styles.title}  textStyle={styles.textTitleTable}/>
+              <Rows data={[[locationName],[speaker],[date],[startTime+" - "+endTime]]}
+              flexArr={[2]} style={styles.row} textStyle={styles.textTable}/>
             </TableWrapper>
           </Table>
           </View>
-
-          <Text style={styles.text}>Auditorio: <Text style={{fontWeight: 'normal'}}>{locationName}</Text></Text>
-          <Text style={styles.text}>Ponente: <Text style={{fontWeight: 'normal'}}>{speaker}</Text></Text>
-          <Text style={styles.text}>Fecha: <Text style={{fontWeight: 'normal'}}>{date}</Text></Text>
-          <Text style={styles.text}>Hora: <Text style={{fontWeight: 'normal'}}>{startTime} - {endTime}</Text></Text>
         </View>
         <TouchableOpacity
           style={styles.buttonContainer}
@@ -220,14 +210,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  head: {
-    height: 40,
-    backgroundColor: '#f1f8ff'
-  },
-  textTable: {
-    margin: 6
-  },
+  head: {  height: 40,  backgroundColor: '#f1f8ff'  },
   wrapper: { flexDirection: 'row' },
   title: { flex: 1, backgroundColor: '#f6f8fa' },
-  row: {  height: 28  },
+  row: {  height: 50 },
+  textTable: { paddingHorizontal: 10 },
+  textTitleTable: { textAlign: 'center', fontWeight: 'bold' }
 });
