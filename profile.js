@@ -8,17 +8,20 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Alert,
+  AsyncStorage,
   Button,
   ScrollView } from 'react-native';
 
+const userKey = "usuario";
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
   title: 'Perfil',
   };
   constructor(props){
-    super(props)
+    super(props);
   }
+
   render() {
     return (
       <View style={styles.container}>
@@ -31,9 +34,26 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.regularText}>Nombre real</Text>
           <Text style={styles.regularText}>Correo</Text>
           <Text style={styles.regularText}>Institución</Text>
+          <TouchableOpacity
+                         onPress={()=>this.removeItemValue(userKey)}
+                         >
+                 <Text  style={styles.buttonText}>SALIR</Text>
+          </TouchableOpacity>
       </View>
     );
   }
+
+  removeItemValue = async(key) => {
+    try {
+      await AsyncStorage.removeItem(key);
+      Alert.alert("Bientos");
+      return true;
+    }
+    catch(exception) {
+      return false;
+    }
+  }
+
 }
 
 const styles = StyleSheet.create({

@@ -30,23 +30,33 @@ class FButton extends React.Component {
       super(props);
       this.state = {
         navigateTo: 'Login',
+        renderAgain: false,
       };
     }
     render(){
-      var isLogged = this._loadData();
-      if(isLogged === true){
+      if(this.state.renderAgain === true)
+        this._loadData().then((res) => (res===true)? this.state.navigateTo="Profile" : this.state.navigateTo="Login");
+
+      /*if(isLogged === true){
         //this.setState({navigateTo:'Profile'});
+        Alert.alert("Logueado");
         this.state.navigateTo="Profile";
       }else{
         //this.setState({navigateTo:'Login'});
+        Alert.alert("No logueado");
         this.state.navigateTo="Login";
       }
+      */
       return(
         <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate(this.state.navigateTo)}
         renderIcon = {()=>(<Icon name="md-person" style={styles.actionButtonIcon} />)}
         />
         );
     }
+    componentDidMount(){
+      Alert.alert("Montado");
+    }
+
     _loadData = async() =>{
       try {
         const value = await AsyncStorage.getItem(userKey);
@@ -55,7 +65,6 @@ class FButton extends React.Component {
           return true;
         }else{
           return false;
-
         }
        } catch (error) {
          console.error(error);
