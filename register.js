@@ -303,6 +303,7 @@ renderiAmStudent() {
   _saveData = async(username) => {
     try {
       await AsyncStorage.setItem(userKey,username);
+      Alert.alert("Guardado");
     } catch (error) {
         console.console.error();
     }

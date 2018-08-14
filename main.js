@@ -30,38 +30,22 @@ class FButton extends React.Component {
       super(props);
       this.state = {
         navigateTo: 'Login',
-        renderAgain: false,
       };
     }
-    render(){
-      if(this.state.renderAgain === true)
-        this._loadData().then((res) => (res===true)? this.state.navigateTo="Profile" : this.state.navigateTo="Login");
 
-      /*if(isLogged === true){
-        //this.setState({navigateTo:'Profile'});
-        Alert.alert("Logueado");
-        this.state.navigateTo="Profile";
-      }else{
-        //this.setState({navigateTo:'Login'});
-        Alert.alert("No logueado");
-        this.state.navigateTo="Login";
-      }
-      */
+    render(){
+      this._loadData().then((res) => (res===true)? this.state.navigateTo="Profile" : this.state.navigateTo="Login");
       return(
         <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate(this.state.navigateTo)}
         renderIcon = {()=>(<Icon name="md-person" style={styles.actionButtonIcon} />)}
         />
         );
     }
-    componentDidMount(){
-      Alert.alert("Montado");
-    }
-
     _loadData = async() =>{
       try {
         const value = await AsyncStorage.getItem(userKey);
         if (value !== null) {
-          Alert.alert("Value "+value)
+          //Alert.alert("Logueado Value "+value)
           return true;
         }else{
           return false;
@@ -72,6 +56,7 @@ class FButton extends React.Component {
        }
     }
   }
+
 class MyCard extends React.Component{
     render(){
       return(
@@ -110,6 +95,15 @@ class BaseScreen extends React.Component {
     this._loadConferencesData = _loadConferencesData.bind(this);
     this._loadConferencesData(this.companyName);
     this.imagePath = imagePath;
+
+    willFocus = this.props.navigation.addListener(
+        'willFocus',
+        payload => {
+          this.forceUpdate();
+          //this._loadData().then((res) => (res===true)? this.setState({navigateTo:"Profile"}) : this.setState({navigateTo:"Login"}) );
+          //Alert.alert("Aquí se debe de actualizar");
+        }
+      );
 
   }
   render() {
