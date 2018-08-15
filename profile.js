@@ -40,7 +40,7 @@ export default class ProfileScreen extends React.Component {
                    <Text  style={styles.buttonText}>SALIR</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                           onPress={()=>this._saveData("Valor1")}
+                           onPress={()=>this._saveData("elKuma")}
                            >
                    <Text  style={styles.buttonText}>PROBAR ENTRADA</Text>
             </TouchableOpacity>
