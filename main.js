@@ -43,9 +43,6 @@ class FButton extends React.Component {
         />
         );
     }
-    componentDidMount(){
-      Alert.alert("Montado");
-    }
 
     _loadData = async() =>{
       try {

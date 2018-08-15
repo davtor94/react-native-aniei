@@ -42,24 +42,24 @@ export default class ProfileScreen extends React.Component {
               source={require('./src/components/images/logo_leon_udg.png')}
               resizeMode="contain"
             />
-            <View style={[{flex: 1}, styles.elementsContainer]} >
+            <View style={{flex: 1}} >
               <Text style={styles.regularText}>Usuario: {this.state.user}</Text>
               <Text style={styles.regularText}>Nombre: {this.state.name}</Text>
               <Text style={styles.regularText}>Correo: {this.state.email}</Text>
               <Text style={styles.regularText}>Institución: {this.state.institution}</Text>
+              <TouchableOpacity
+                             onPress={()=>this.removeItemValue(userKey)}
+                             >
+                     <Text  style={styles.buttonText}>SALIR</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                             onPress={()=>this._saveData("elKuma")}
+                             >
+                     <Text  style={styles.buttonText}>PROBAR ENTRADA</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-                           onPress={()=>this.removeItemValue(userKey)}
-                           >
-                   <Text  style={styles.buttonText}>SALIR</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                           onPress={()=>this._saveData("elKuma")}
-                           >
-                   <Text  style={styles.buttonText}>PROBAR ENTRADA</Text>
-            </TouchableOpacity>
         </View>
-        <View style={styles.profileContainer}>
+        <View style={styles.conferencesContainer}>
           <FlatList
             refreshControl={
               <RefreshControl
@@ -69,7 +69,7 @@ export default class ProfileScreen extends React.Component {
             }
             data={this.state.assistances}
             renderItem={({item}) =>
-              <View>
+              <View style={styles.conferenceItem}>
                  <Text style={styles.regularText}>Conferencia: {item.title}</Text>
                  <Text style={styles.regularText}>Calificación: {item.score}</Text>
               </View>
@@ -153,6 +153,31 @@ const styles = StyleSheet.create({
     top: 10,
     width: 90 + "%",
     padding: 10,
+    flex:2,
+  },
+  conferencesContainer: {
+    backgroundColor: '#fff',
+    alignItems: 'flex-start',
+    justifyContent: 'space-around',
+    top: 10,
+    width: 90 + "%",
+    height: 100,
+    padding: 10,
+    marginTop: 5,
+    flex:3,
+  },
+  conferenceItem: {
+    backgroundColor: '#d1eeff',
+    alignItems: 'flex-start',
+    justifyContent: 'space-around',
+    top: 10,
+    width: 100 + "%",
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 2,
+    borderColor: '#ddd',
+    borderBottomWidth: 0,
+    marginTop: 5,
   },
   logo: {
       width: 40 + "%",
