@@ -33,7 +33,9 @@ class FButton extends React.Component {
         renderAgain: false,
       };
     }
+
     render(){
+<<<<<<< HEAD
       if(this.state.renderAgain === true)
         this._loadData().then((res) => (res===true)? this.state.navigateTo="Profile" : this.state.navigateTo="Login");
 
@@ -47,6 +49,9 @@ class FButton extends React.Component {
         this.state.navigateTo="Login";
       }
       */
+=======
+      this._loadData().then((res) => (res===true)? this.state.navigateTo="Profile" : this.state.navigateTo="Login");
+>>>>>>> 2d2026cb272fb298ef17dbd2020c646617e513f4
       return(
         <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate(this.state.navigateTo)}
         renderIcon = {()=>(<Icon name="md-person" style={styles.actionButtonIcon} />)}
@@ -61,7 +66,7 @@ class FButton extends React.Component {
       try {
         const value = await AsyncStorage.getItem(userKey);
         if (value !== null) {
-          Alert.alert("Value "+value)
+          //Alert.alert("Logueado Value "+value)
           return true;
         }else{
           return false;
@@ -73,6 +78,7 @@ class FButton extends React.Component {
     }
 
   }
+
 class MyCard extends React.Component{
     render(){
       const user = this._getUserName();
@@ -128,6 +134,15 @@ class BaseScreen extends React.Component {
     this._loadConferencesData = _loadConferencesData.bind(this);
     this._loadConferencesData(this.companyName);
     this.imagePath = imagePath;
+
+    willFocus = this.props.navigation.addListener(
+        'willFocus',
+        payload => {
+          this.forceUpdate();
+          //this._loadData().then((res) => (res===true)? this.setState({navigateTo:"Profile"}) : this.setState({navigateTo:"Login"}) );
+          //Alert.alert("Aquí se debe de actualizar");
+        }
+      );
 
   }
   render() {
