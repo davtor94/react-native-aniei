@@ -26,7 +26,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
 
   constructor(props) {
     super(props);
-
+    const data = this.props.navigation.getParam('conferenceData', '');
     this.state = {
       latitude: null,
       longitude: null,
@@ -36,14 +36,14 @@ export default class ConferenceDescriptionScreen extends React.Component {
       x: 'false',
       destLatitude:20.658246,
       destLongitude:-103.326958,
+      conferenceData: data,
     };
-
   }
   componentDidMount() {
     this._getCurrentPosition();
     this.setState({
-      destLatitude:JSON.parse(this.props.navigation.getParam('latitude', '')),
-      destLongitude:JSON.parse(this.props.navigation.getParam('longitude', '')),
+      destLatitude:parseFloat(this.state.conferenceData.latitude),
+      destLongitude:parseFloat(this.state.conferenceData.longitude),
     });
    }
    _getCurrentPosition = () => {
@@ -77,15 +77,17 @@ export default class ConferenceDescriptionScreen extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    const title = navigation.getParam('title', '');
-    const description = navigation.getParam('description', '');
-    const speaker = navigation.getParam('speaker', '');
-    const date = navigation.getParam('date', '');
-    const startTime = navigation.getParam('startTime', '');
-    const endTime = navigation.getParam('endTime', '');
-    const locationName = navigation.getParam('locationName', '');
-
     const state = this.state;
+
+    const title = state.conferenceData.title;
+    const description = state.conferenceData.description;
+    const speaker = state.conferenceData.speaker;
+    const date = state.conferenceData.date;
+    const startTime = state.conferenceData.startTime;
+    const endTime = state.conferenceData.endTime;
+    const locationName = state.conferenceData.locationName;
+
+
 
     return (
       <View style={{backgroundColor: '#EBEBEB', flex: 1}}>
@@ -115,7 +117,9 @@ export default class ConferenceDescriptionScreen extends React.Component {
         </View>
         <TouchableOpacity
           style={styles.buttonContainer}
-          onPress={() =>this.props.navigation.navigate('QrScreen')}
+          onPress={() =>this.props.navigation.navigate('QrScreen', {
+            conferenceId:state.conferenceData.id,
+          })}
         >
           <Text  style={styles.buttonText}>¡Quiero asistir!</Text>
         </TouchableOpacity>
@@ -159,7 +163,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
               }
               else {
                 this._getCurrentPosition();
-                Alert.alert("Por favor enciende tu ubicación");
+                Alert.alert("Enciende tu ubicación");
               }
             }}
           >
