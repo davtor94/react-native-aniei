@@ -30,23 +30,33 @@ class FButton extends React.Component {
       super(props);
       this.state = {
         navigateTo: 'Login',
+        renderAgain: false,
       };
     }
     render(){
-      var isLogged = this._loadData();
-      if(isLogged === true){
+      if(this.state.renderAgain === true)
+        this._loadData().then((res) => (res===true)? this.state.navigateTo="Profile" : this.state.navigateTo="Login");
+
+      /*if(isLogged === true){
         //this.setState({navigateTo:'Profile'});
+        Alert.alert("Logueado");
         this.state.navigateTo="Profile";
       }else{
         //this.setState({navigateTo:'Login'});
+        Alert.alert("No logueado");
         this.state.navigateTo="Login";
       }
+      */
       return(
         <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate(this.state.navigateTo)}
         renderIcon = {()=>(<Icon name="md-person" style={styles.actionButtonIcon} />)}
         />
         );
     }
+    componentDidMount(){
+      Alert.alert("Montado");
+    }
+
     _loadData = async() =>{
       try {
         const value = await AsyncStorage.getItem(userKey);
@@ -55,16 +65,17 @@ class FButton extends React.Component {
           return true;
         }else{
           return false;
-
         }
        } catch (error) {
          console.error(error);
          return false;
        }
     }
+
   }
 class MyCard extends React.Component{
     render(){
+      const user = this._getUserName();
       return(
         <View style={{width: Dimensions.get('window').width}}>
           <Card
@@ -80,12 +91,28 @@ class MyCard extends React.Component{
               backgroundColor='#03A9F4'
               buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
               title='Más información'
-              onPress={()=>{this.props.navegador.navigate('Conference', this.props.item)}}
+              onPress={() => this.props.navegador.navigate('Conference', {
+                conferenceData: this.props.item,
+                username: user,
+              })}
               />
          </Card>
         </View>
 
       );
+    }
+    _getUserName = async() =>{
+      try {
+        const value = await AsyncStorage.getItem(userKey);
+        if (value !== null) {
+          return value;
+        }else{
+          return false;
+        }
+       } catch (error) {
+         console.error(error);
+         return false;
+       }
     }
   }
 class BaseScreen extends React.Component {

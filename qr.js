@@ -21,11 +21,17 @@ export default class QrScanner extends Component {
   headerRight: '',
   };
 
-  state = {
-    hasCameraPermission: null,
-    lastScannedUrl: null,
-    valorLeido: null
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasCameraPermission: null,
+      lastScannedUrl: null,
+      valorLeido: null,
+      username:JSON.parse(this.props.navigation.getParam('latitude', '')),
+      conferenceId:JSON.parse(this.props.navigation.getParam('id', '')),
+    };
+
+  }
 
   componentDidMount() {
     this._requestCameraPermission();
@@ -46,7 +52,7 @@ export default class QrScanner extends Component {
   };
 
   render() {
-    
+
     return (
       <View style={styles.container}>
         {this.state.hasCameraPermission === null
@@ -69,7 +75,7 @@ export default class QrScanner extends Component {
 
         <StatusBar hidden />
       </View>
-     
+
 
     );
   }
@@ -82,7 +88,7 @@ export default class QrScanner extends Component {
             Escanea el código que se encuentra en el auditorio
           </Text>
         </TouchableOpacity>
-      
+
       </View>
       );
   }
@@ -124,7 +130,7 @@ export default class QrScanner extends Component {
     if (this.state.lastScannedUrl) {
       AsyncStorage.setItem("UnValor",this.state.lastScannedUrl);
       console.log('QR detectado');
-      Alert.alert(
+      /*Alert.alert(
       '¿Abrir URL?',
       this.state.lastScannedUrl,
       [
@@ -133,11 +139,32 @@ export default class QrScanner extends Component {
           onPress: () => Linking.openURL(this.state.lastScannedUrl),
         },
         { text: 'No',
-         onPress: this._handlePressCancel 
+         onPress: this._handlePressCancel
         },
       ],
       { cancellable: false }
-    );    
+    );*/
+    fetch('https://javiermorenot96.000webhostapp.com/aniei/register.php', {
+    method: 'POST',
+    headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+      },
+    body: JSON.stringify({
+      username: this.state.usuario,
+      name: this.state.nombre,
+      password: encryptedPassword,
+      institution: this.state.institucion,
+      email: this.state.correo,
+    })}
+  ).then((response) =>  response.text())
+    .then((responseText) => {
+      Alert.alert(responseText);
+      }).catch((error) => {
+        console.error(error);
+        Alert.alert("Ocurrió un error")
+      });
+
     }
   };
 
