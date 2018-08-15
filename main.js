@@ -35,23 +35,8 @@ class FButton extends React.Component {
     }
 
     render(){
-<<<<<<< HEAD
-      if(this.state.renderAgain === true)
-        this._loadData().then((res) => (res===true)? this.state.navigateTo="Profile" : this.state.navigateTo="Login");
-
-      /*if(isLogged === true){
-        //this.setState({navigateTo:'Profile'});
-        Alert.alert("Logueado");
-        this.state.navigateTo="Profile";
-      }else{
-        //this.setState({navigateTo:'Login'});
-        Alert.alert("No logueado");
-        this.state.navigateTo="Login";
-      }
-      */
-=======
       this._loadData().then((res) => (res===true)? this.state.navigateTo="Profile" : this.state.navigateTo="Login");
->>>>>>> 2d2026cb272fb298ef17dbd2020c646617e513f4
+      
       return(
         <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate(this.state.navigateTo)}
         renderIcon = {()=>(<Icon name="md-person" style={styles.actionButtonIcon} />)}
