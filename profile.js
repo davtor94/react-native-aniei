@@ -13,6 +13,7 @@ import {
   AsyncStorage,
   Button,
   ScrollView } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const userKey = "usuario";
 
@@ -47,19 +48,21 @@ export default class ProfileScreen extends React.Component {
               <Text style={styles.regularText}>Nombre: {this.state.name}</Text>
               <Text style={styles.regularText}>Correo: {this.state.email}</Text>
               <Text style={styles.regularText}>Institución: {this.state.institution}</Text>
-              <TouchableOpacity
-                             onPress={()=>this.removeItemValue(userKey)}
-                             >
-                     <Text  style={styles.buttonText}>SALIR</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                             onPress={()=>this._saveData("elKuma")}
-                             >
-                     <Text  style={styles.buttonText}>PROBAR ENTRADA</Text>
-              </TouchableOpacity>
             </View>
+            <TouchableOpacity
+                           onPress={()=>this._saveData("elKuma")}
+                           >
+                   <Text  style={styles.buttonText}>PROBAR ENTRADA</Text>
+            </TouchableOpacity>
         </View>
+        <Button
+          backgroundColor='#03A9F4'
+          buttonStyle={[{alignSelf: 'center', width: "90%", borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, marginTop: 10}]}
+          title='Cerrar sesión'
+          onPress={() => this.exitConfirmation()}
+          />
         <View style={styles.conferencesContainer}>
+          <Text style={styles.titleText}>Mis asistencias</Text>
           <FlatList
             refreshControl={
               <RefreshControl
@@ -70,8 +73,8 @@ export default class ProfileScreen extends React.Component {
             data={this.state.assistances}
             renderItem={({item}) =>
               <View style={styles.conferenceItem}>
-                 <Text style={styles.regularText}>Conferencia: {item.title}</Text>
-                 <Text style={styles.regularText}>Calificación: {item.score}</Text>
+                 <Text style={styles.conferenceTextTitle}>{item.title}</Text>
+                 <Text style={styles.conferenceText}>Compañia: {item.companyName}</Text>
               </View>
             }
             keyExtractor={item => item.conferenceID}
@@ -81,10 +84,21 @@ export default class ProfileScreen extends React.Component {
       </View>
     );
   }
-  removeItemValue = async(key) => {
+  exitConfirmation = ()=>{
+    Alert.alert(
+      '¿Cerrar sesión?',
+      'Tu sesión sirve para tomar asistencia a las conferencias',
+      [
+        {text: 'Cancelar', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Salir', onPress:this.removeItemValue },
+      ],
+      { cancelable: true }
+    )
+  }
+  removeItemValue = async() => {
     try {
-      await AsyncStorage.removeItem(key);
-      Alert.alert("Bientos");
+      await AsyncStorage.removeItem(userKey);
+      this.props.navigation.goBack();
       return true;
     }
     catch(exception) {
@@ -141,6 +155,22 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'left',
   },
+  titleText:{
+    fontSize: 17,
+    textAlign: 'left',
+  },
+  conferenceTextTitle:{
+    fontSize: 17,
+    textAlign: 'center',
+    color: '#ffffff',
+    fontWeight: 'bold',
+  },
+  conferenceText:{
+    fontSize: 15,
+    textAlign: 'left',
+    color: '#ffffff',
+    fontWeight: 'bold',
+  },
   container: {
     flex: 1,
     backgroundColor: '#EBEBEB',
@@ -164,13 +194,13 @@ const styles = StyleSheet.create({
     height: 100,
     padding: 10,
     marginTop: 5,
+    marginBottom: 5,
     flex:3,
   },
   conferenceItem: {
-    backgroundColor: '#d1eeff',
+    backgroundColor: '#0ea0ba',
     alignItems: 'flex-start',
     justifyContent: 'space-around',
-    top: 10,
     width: 100 + "%",
     padding: 10,
     borderWidth: 1,
@@ -183,7 +213,7 @@ const styles = StyleSheet.create({
       width: 40 + "%",
       height: 40 + "%",
       opacity : .5,
-      margin: 0.
-
+      margin: 0.4,
+      alignSelf: 'center',
   },
 });
