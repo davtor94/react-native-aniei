@@ -10,6 +10,7 @@ import {
   Alert,
   Button,
   ScrollView, } from 'react-native';
+  import { AsyncStorage } from "react-native";
 
 import MapView from 'react-native-maps';
 import ActionButton from 'react-native-action-button';
@@ -18,6 +19,9 @@ import {OpenMapDirections} from 'react-native-navigation-directions';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyDwZV5fTTvjjDhjYUp7El3AFGnfQ39hhmw';
+
+const userKey = "usuario";
+const minutosFaltantes = 15
 
 export default class ConferenceDescriptionScreen extends React.Component {
   static navigationOptions = {
@@ -74,6 +78,50 @@ export default class ConferenceDescriptionScreen extends React.Component {
         console.log(res)
       });
     }
+  _verifyDate = () => {
+    const state = this.state;
+    const startTime = state.conferenceData.startTime;
+    const endTime = state.conferenceData.endTime;
+
+    const startTimeArray = startTime.split(':');
+    const endTimeArray = endTime.split(':');
+    const startHour = startTimeArray[0];
+    const endHour = endTimeArray[0];
+    const startMinute = startTimeArray[1];
+    const endMinute = endTimeArray[1];
+
+    var currentDate = new Date();
+    var totalCurrentMinutes = currentDate.getHours() * 60 + currentDate.getMinutes();
+    var totalStartMinutes = parseInt(startHour) * 60 + parseInt(startMinute);
+    var totalEndMinutes = parseInt(endHour) * 60 + parseInt(endMinute);
+
+    if (totalStartMinutes - totalCurrentMinutes <= minutosFaltantes ) {
+      if (totalEndMinutes > totalCurrentMinutes ) {
+        return true;
+      }
+      else {
+        Alert.alert("La conferencia ya terminó o está por terminar");
+        return false;
+      }
+    }
+    else {
+      Alert.alert("Solo te puedes registrar faltando 15 minutos o menos");
+      return false;
+    }
+  }
+  _getUserName = async() =>{
+    try {
+      const value = await AsyncStorage.getItem(userKey);
+      if (value !== null) {
+        return value;
+      }else{
+        return false;
+      }
+     } catch (error) {
+       console.error(error);
+       return false;
+     }
+  };
 
   render() {
     const { navigation } = this.props;
@@ -86,17 +134,6 @@ export default class ConferenceDescriptionScreen extends React.Component {
     const startTime = state.conferenceData.startTime;
     const endTime = state.conferenceData.endTime;
     const locationName = state.conferenceData.locationName;
-
-    const startTimeArray = startTime.split(':');
-    const endTimeArray = endTime.split(':');
-    const startHour = startTimeArray[0];
-    const startHour = endTimeArray[0];
-
-    var date = new Date();
-    if (date.getHours() == ) {
-
-    }
-    console.log(date.getHours());
 
     return (
       <View style={{backgroundColor: '#EBEBEB', flex: 1}}>
@@ -127,10 +164,16 @@ export default class ConferenceDescriptionScreen extends React.Component {
         <TouchableOpacity
           style={styles.buttonContainer}
           onPress={() => {
-
-            this.props.navigation.navigate('QrScreen', {
-            conferenceId:state.conferenceData.id,
-            });
+            if (this._getUserName()) {
+              if (this._verifyDate()) {
+                this.props.navigation.navigate('QrScreen', {
+                conferenceId:state.conferenceData.id,
+                });
+              }
+            }
+            else {
+              Alert.alert("Necesitas iniciar sesión");
+            }
 
           }}
         >
