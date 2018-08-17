@@ -154,20 +154,6 @@ export default class QrScanner extends Component {
     if (this.state.lastScannedUrl) {
       AsyncStorage.setItem("UnValor",this.state.lastScannedUrl);
       console.log('QR detectado');
-      /*Alert.alert(
-      '¿Abrir URL?',
-      this.state.lastScannedUrl,
-      [
-        {
-          text: 'Sí',
-          onPress: () => Linking.openURL(this.state.lastScannedUrl),
-        },
-        { text: 'No',
-         onPress: this._handlePressCancel
-        },
-      ],
-      { cancellable: false }
-    );*/
     fetch('https://javiermorenot96.000webhostapp.com/aniei/assistance.php', {
     method: 'POST',
     headers: {
@@ -183,6 +169,9 @@ export default class QrScanner extends Component {
     .then((responseText) => {
       Alert.alert(responseText);
       console.log(responseText);
+      if (responseText == "Registrado correctamente") {
+        this.props.navigation.goBack();
+      }
       }).catch((error) => {
         console.error(error);
         Alert.alert("Ocurrió un error")

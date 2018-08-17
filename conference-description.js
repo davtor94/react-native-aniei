@@ -87,7 +87,16 @@ export default class ConferenceDescriptionScreen extends React.Component {
     const endTime = state.conferenceData.endTime;
     const locationName = state.conferenceData.locationName;
 
+    const startTimeArray = startTime.split(':');
+    const endTimeArray = endTime.split(':');
+    const startHour = startTimeArray[0];
+    const startHour = endTimeArray[0];
 
+    var date = new Date();
+    if (date.getHours() == ) {
+
+    }
+    console.log(date.getHours());
 
     return (
       <View style={{backgroundColor: '#EBEBEB', flex: 1}}>
@@ -117,9 +126,13 @@ export default class ConferenceDescriptionScreen extends React.Component {
         </View>
         <TouchableOpacity
           style={styles.buttonContainer}
-          onPress={() =>this.props.navigation.navigate('QrScreen', {
+          onPress={() => {
+
+            this.props.navigation.navigate('QrScreen', {
             conferenceId:state.conferenceData.id,
-          })}
+            });
+
+          }}
         >
           <Text  style={styles.buttonText}>¡Quiero asistir!</Text>
         </TouchableOpacity>
