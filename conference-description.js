@@ -10,6 +10,7 @@ import {
   Alert,
   Button,
   ScrollView, } from 'react-native';
+  import { AsyncStorage } from "react-native";
 
 import MapView from 'react-native-maps';
 import ActionButton from 'react-native-action-button';
@@ -19,6 +20,9 @@ import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-ta
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyDwZV5fTTvjjDhjYUp7El3AFGnfQ39hhmw';
 
+const userKey = "usuario";
+const minutosFaltantes = 15
+
 export default class ConferenceDescriptionScreen extends React.Component {
   static navigationOptions = {
   title: 'Descripción',
@@ -26,7 +30,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
 
   constructor(props) {
     super(props);
-
+    const data = this.props.navigation.getParam('conferenceData', '');
     this.state = {
       latitude: null,
       longitude: null,
@@ -36,14 +40,14 @@ export default class ConferenceDescriptionScreen extends React.Component {
       x: 'false',
       destLatitude:20.658246,
       destLongitude:-103.326958,
+      conferenceData: data,
     };
-
   }
   componentDidMount() {
     this._getCurrentPosition();
     this.setState({
-      destLatitude:JSON.parse(this.props.navigation.getParam('latitude', '')),
-      destLongitude:JSON.parse(this.props.navigation.getParam('longitude', '')),
+      destLatitude:parseFloat(this.state.conferenceData.latitude),
+      destLongitude:parseFloat(this.state.conferenceData.longitude),
     });
    }
    _getCurrentPosition = () => {
@@ -74,18 +78,62 @@ export default class ConferenceDescriptionScreen extends React.Component {
         console.log(res)
       });
     }
+  _verifyDate = () => {
+    const state = this.state;
+    const startTime = state.conferenceData.startTime;
+    const endTime = state.conferenceData.endTime;
+
+    const startTimeArray = startTime.split(':');
+    const endTimeArray = endTime.split(':');
+    const startHour = startTimeArray[0];
+    const endHour = endTimeArray[0];
+    const startMinute = startTimeArray[1];
+    const endMinute = endTimeArray[1];
+
+    var currentDate = new Date();
+    var totalCurrentMinutes = currentDate.getHours() * 60 + currentDate.getMinutes();
+    var totalStartMinutes = parseInt(startHour) * 60 + parseInt(startMinute);
+    var totalEndMinutes = parseInt(endHour) * 60 + parseInt(endMinute);
+
+    if (totalStartMinutes - totalCurrentMinutes <= minutosFaltantes ) {
+      if (totalEndMinutes > totalCurrentMinutes ) {
+        return true;
+      }
+      else {
+        Alert.alert("La conferencia ya terminó o está por terminar");
+        return false;
+      }
+    }
+    else {
+      Alert.alert("Solo te puedes registrar faltando 15 minutos o menos");
+      return false;
+    }
+  }
+  _getUserName = async() =>{
+    try {
+      const value = await AsyncStorage.getItem(userKey);
+      if (value !== null) {
+        return value;
+      }else{
+        return false;
+      }
+     } catch (error) {
+       console.error(error);
+       return false;
+     }
+  };
 
   render() {
     const { navigation } = this.props;
-    const title = navigation.getParam('title', '');
-    const description = navigation.getParam('description', '');
-    const speaker = navigation.getParam('speaker', '');
-    const date = navigation.getParam('date', '');
-    const startTime = navigation.getParam('startTime', '');
-    const endTime = navigation.getParam('endTime', '');
-    const locationName = navigation.getParam('locationName', '');
-
     const state = this.state;
+
+    const title = state.conferenceData.title;
+    const description = state.conferenceData.description;
+    const speaker = state.conferenceData.speaker;
+    const date = state.conferenceData.date;
+    const startTime = state.conferenceData.startTime;
+    const endTime = state.conferenceData.endTime;
+    const locationName = state.conferenceData.locationName;
 
     return (
       <View style={{backgroundColor: '#EBEBEB', flex: 1}}>
@@ -115,7 +163,19 @@ export default class ConferenceDescriptionScreen extends React.Component {
         </View>
         <TouchableOpacity
           style={styles.buttonContainer}
-          onPress={() =>this.props.navigation.navigate('QrScreen')}
+          onPress={() => {
+            if (this._getUserName()) {
+              if (this._verifyDate()) {
+                this.props.navigation.navigate('QrScreen', {
+                conferenceId:state.conferenceData.id,
+                });
+              }
+            }
+            else {
+              Alert.alert("Necesitas iniciar sesión");
+            }
+
+          }}
         >
           <Text  style={styles.buttonText}>¡Quiero asistir!</Text>
         </TouchableOpacity>
@@ -159,7 +219,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
               }
               else {
                 this._getCurrentPosition();
-                Alert.alert("Por favor enciende tu ubicación");
+                Alert.alert("Enciende tu ubicación");
               }
             }}
           >
@@ -194,7 +254,7 @@ const styles = StyleSheet.create({
         height: 30,
         marginTop: 15,
         marginBottom: 25,
-        width: 80 + "%",
+        width: 90 + "%",
   },
   buttonText:{
     color: '#fff',

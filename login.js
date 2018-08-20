@@ -27,15 +27,6 @@ export default class Login extends React.Component {
       codigo : ""
     }
   }
-  async removeItemValue(key) {
-    try {
-      await AsyncStorage.removeItem(key);
-      return true;
-    }
-    catch(exception) {
-      return false;
-    }
-  }
 
   handleChangeCodigo = (typedText) =>{
     this.setState({codigo: typedText});

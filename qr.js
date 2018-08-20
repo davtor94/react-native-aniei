@@ -12,7 +12,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
-import { AsyncStorage } from "react-native"
+import { AsyncStorage } from "react-native";
+
+const userKey = "usuario";
 
 
 export default class QrScanner extends Component {
@@ -21,10 +23,27 @@ export default class QrScanner extends Component {
   headerRight: '',
   };
 
-  state = {
-    hasCameraPermission: null,
-    lastScannedUrl: null,
-    valorLeido: null
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hasCameraPermission: null,
+      lastScannedUrl: null,
+      valorLeido: null,
+      username:null,
+      conferenceId:this.props.navigation.getParam('conferenceId', ''),
+    }
+    this._getUserName()
+    .then((user)=> {
+      this.setState({
+        username:user,
+      });
+      console.log(this.state.username);
+      console.log(this.state.conferenceId);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   };
 
   componentDidMount() {
@@ -44,9 +63,20 @@ export default class QrScanner extends Component {
       this.setState({ lastScannedUrl: result.data });
     }
   };
-
+  _getUserName = async() =>{
+    try {
+      const value = await AsyncStorage.getItem(userKey);
+      if (value !== null) {
+        return value;
+      }else{
+        return false;
+      }
+     } catch (error) {
+       console.error(error);
+       return false;
+     }
+  };
   render() {
-    
     return (
       <View style={styles.container}>
         {this.state.hasCameraPermission === null
@@ -69,7 +99,7 @@ export default class QrScanner extends Component {
 
         <StatusBar hidden />
       </View>
-     
+
 
     );
   }
@@ -82,7 +112,7 @@ export default class QrScanner extends Component {
             Escanea el código que se encuentra en el auditorio
           </Text>
         </TouchableOpacity>
-      
+
       </View>
       );
   }
@@ -124,20 +154,29 @@ export default class QrScanner extends Component {
     if (this.state.lastScannedUrl) {
       AsyncStorage.setItem("UnValor",this.state.lastScannedUrl);
       console.log('QR detectado');
-      Alert.alert(
-      '¿Abrir URL?',
-      this.state.lastScannedUrl,
-      [
-        {
-          text: 'Sí',
-          onPress: () => Linking.openURL(this.state.lastScannedUrl),
-        },
-        { text: 'No',
-         onPress: this._handlePressCancel 
-        },
-      ],
-      { cancellable: false }
-    );    
+    fetch('https://javiermorenot96.000webhostapp.com/aniei/assistance.php', {
+    method: 'POST',
+    headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+      },
+    body: JSON.stringify({
+      username: this.state.username,
+      idConference: this.state.conferenceId,
+      qr: this.state.lastScannedUrl,
+    })}
+  ).then((response) =>  response.text())
+    .then((responseText) => {
+      Alert.alert(responseText);
+      console.log(responseText);
+      if (responseText == "Registrado correctamente") {
+        this.props.navigation.goBack();
+      }
+      }).catch((error) => {
+        console.error(error);
+        Alert.alert("Ocurrió un error")
+      });
+
     }
   };
 

@@ -30,39 +30,37 @@ class FButton extends React.Component {
       super(props);
       this.state = {
         navigateTo: 'Login',
+        renderAgain: false,
       };
     }
+
     render(){
-      var isLogged = this._loadData();
-      if(isLogged === true){
-        //this.setState({navigateTo:'Profile'});
-        this.state.navigateTo="Profile";
-      }else{
-        //this.setState({navigateTo:'Login'});
-        this.state.navigateTo="Login";
-      }
+      this._loadData().then((res) => (res===true)? this.state.navigateTo="Profile" : this.state.navigateTo="Login");
+
       return(
         <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate(this.state.navigateTo)}
         renderIcon = {()=>(<Icon name="md-person" style={styles.actionButtonIcon} />)}
         />
         );
     }
+
     _loadData = async() =>{
       try {
         const value = await AsyncStorage.getItem(userKey);
         if (value !== null) {
-          Alert.alert("Value "+value)
+          //Alert.alert("Logueado Value "+value)
           return true;
         }else{
           return false;
-
         }
        } catch (error) {
          console.error(error);
          return false;
        }
     }
+
   }
+
 class MyCard extends React.Component{
     render(){
       return(
@@ -80,7 +78,9 @@ class MyCard extends React.Component{
               backgroundColor='#03A9F4'
               buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
               title='Más información'
-              onPress={()=>{this.props.navegador.navigate('Conference', this.props.item)}}
+              onPress={() => this.props.navegador.navigate('Conference', {
+                conferenceData: this.props.item,
+              })}
               />
          </Card>
         </View>
@@ -101,6 +101,15 @@ class BaseScreen extends React.Component {
     this._loadConferencesData = _loadConferencesData.bind(this);
     this._loadConferencesData(this.companyName);
     this.imagePath = imagePath;
+
+    willFocus = this.props.navigation.addListener(
+        'willFocus',
+        payload => {
+          this.forceUpdate();
+          //this._loadData().then((res) => (res===true)? this.setState({navigateTo:"Profile"}) : this.setState({navigateTo:"Login"}) );
+          //Alert.alert("Aquí se debe de actualizar");
+        }
+      );
 
   }
   render() {
