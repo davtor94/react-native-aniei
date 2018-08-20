@@ -270,11 +270,6 @@ renderiAmStudent() {
   }
 
   onPressRegistrar = () => {
-    NetInfo.getConnectionInfo().then((connectionInfo) => {
-      console.log('Initial, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
-      return connectionInfo.effectiveType;
-    }).then((effectiveType) => {
-      if (effectiveType != 'none' && effectiveType != 'unknown') {
         var sha1 = require('sha1');
         var encryptedPassword = sha1(this.state.password);
         fetch('https://javiermorenot96.000webhostapp.com/aniei/register.php', {
@@ -304,11 +299,6 @@ renderiAmStudent() {
           console.error(error);
           Alert.alert("Ocurrió un error")
         });
-      }
-      else {
-        Alert.alert("No hay conexión a internet");
-      }
-    });
   }
 
   _saveData = async(username) => {

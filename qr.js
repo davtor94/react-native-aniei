@@ -153,39 +153,29 @@ export default class QrScanner extends Component {
 
   _onQRDetected = () => {
     if (this.state.lastScannedUrl) {
-      NetInfo.getConnectionInfo().then((connectionInfo) => {
-        console.log('Initial, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
-        return connectionInfo.effectiveType;
-      }).then((effectiveType) => {
-        if (effectiveType != 'none' && effectiveType != 'unknown') {
-          AsyncStorage.setItem("UnValor",this.state.lastScannedUrl);
-          console.log('QR detectado');
-          fetch('https://javiermorenot96.000webhostapp.com/aniei/assistance.php', {
-            method: 'POST',
-            headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            },
-          body: JSON.stringify({
-            username: this.state.username,
-            idConference: this.state.conferenceId,
-            qr: this.state.lastScannedUrl,
-          })}
-          ).then((response) =>  response.text())
-          .then((responseText) => {
-            Alert.alert(responseText);
-            console.log(responseText);
-            if (responseText == "Registrado correctamente") {
-              this.props.navigation.goBack();
-            }
-          }).catch((error) => {
-            console.error(error);
-            Alert.alert("Ocurrió un error")
-          });
+      AsyncStorage.setItem("UnValor",this.state.lastScannedUrl);
+      console.log('QR detectado');
+      fetch('https://javiermorenot96.000webhostapp.com/aniei/assistance.php', {
+        method: 'POST',
+        headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        },
+      body: JSON.stringify({
+        username: this.state.username,
+        idConference: this.state.conferenceId,
+        qr: this.state.lastScannedUrl,
+      })}
+      ).then((response) =>  response.text())
+      .then((responseText) => {
+        Alert.alert(responseText);
+        console.log(responseText);
+        if (responseText == "Registrado correctamente") {
+          this.props.navigation.goBack();
         }
-        else {
-          Alert.alert("No hay conexión a internet");
-        }
+      }).catch((error) => {
+        console.error(error);
+        Alert.alert("Ocurrió un error")
       });
     }
   };
