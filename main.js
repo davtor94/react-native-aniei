@@ -63,12 +63,31 @@ class FButton extends React.Component {
   }
 
 class MyCard extends React.Component{
+    constructor(props){
+      super(props);
+      dateValues = String(this.props.item.date).split('-');
+      startTimeValues = String(this.props.item.startTime).split(':');
+      this.state = {
+        year: dateValues[0],
+        month: dateValues[1],
+        day: dateValues[2],
+        hour: startTimeValues[0],
+        minute: startTimeValues[1],
+      }
+    }
+
     render(){
       return(
         <View style={{width: Dimensions.get('window').width}}>
           <Card
             title={this.props.item.title}
-            image={this.props.imagePath}>
+            image={null}>
+            <Text style={{fontWeight: 'bold'}}>
+              Dia: {this.state.day}/{this.state.month}/{this.state.year}
+            </Text>
+            <Text style={{fontWeight: 'bold'}}>
+              Hora: {this.state.hour}:{this.state.minute}
+            </Text>
             <Text style={{fontWeight: 'bold'}}>
               Descripción:
             </Text>
@@ -125,13 +144,24 @@ class BaseScreen extends React.Component {
           }
           data={this.state.data}
           renderItem={({item}) =>
-          	 <MyCard item={item} navegador={this.props.navigation} imagePath={this.imagePath}/>
+          	 <MyCard item={item} navegador={this.props.navigation} imagePath={this.imagePath} companyName={this.props.companyName}/>
           }
           keyExtractor={item => item.id}
           ListEmptyComponent={ListEmptyView}
+          ListHeaderComponent={this.renderHeader}
         />
         <FButton navegador={this.props.navigation}/>
 
+      </View>
+    );
+  }
+  renderHeader = () =>{
+    return(
+      <View style={{width: Dimensions.get('window').width}}>
+        <Card
+          title={null}
+          image={this.imagePath}>
+       </Card>
       </View>
     );
   }
