@@ -10,7 +10,8 @@ import {
   Button,
   ScrollView,
   KeyboardAvoidingView,
-  AsyncStorage } from 'react-native';
+  AsyncStorage,
+  NetInfo} from 'react-native';
   import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 
 
@@ -37,19 +38,28 @@ export default class Login extends React.Component {
   }
 
   onPressIngresar = () => {
-    fetch('http://148.202.152.33/ws_general.php', {
-
-  method: 'POST',
-  headers: new Headers({
-           'Content-Type': 'application/x-www-form-urlencoded',
-  }),
-  body: "codigo="+ this.state.codigo+ "&nip="+ this.state.nip
-}).then((response) =>  response.text())
-.then((responseText) => {
-  Alert.alert(responseText)
-    })
-    .catch((error) => {
-      console.error(error);
+    NetInfo.getConnectionInfo().then((connectionInfo) => {
+      console.log('Initial, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
+      return connectionInfo.effectiveType;
+    }).then((effectiveType) => {
+      if (effectiveType != 'none' && effectiveType != 'unknown') {
+        fetch('http://148.202.152.33/ws_general.php', {
+          method: 'POST',
+          headers: new Headers({
+                   'Content-Type': 'application/x-www-form-urlencoded',
+          }),
+          body: "codigo="+ this.state.codigo+ "&nip="+ this.state.nip
+        }).then((response) =>  response.text())
+        .then((responseText) => {
+          Alert.alert(responseText)
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      }
+      else {
+        Alert.alert("No hay conexión a internet");
+      }
     });
   }
 onPressRegistrar(routeName){
