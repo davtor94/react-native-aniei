@@ -16,6 +16,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const userKey = "usuario";
+const GET_USER_PROFILE_URL = "https://javiermorenot96.000webhostapp.com/aniei/getUserProfile.php"
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -43,8 +44,8 @@ export default class ProfileScreen extends React.Component {
               source={require('./src/components/images/logo_leon_udg.png')}
               resizeMode="contain"
             />
-            <View style={{flex: 1}} >
-              <Text style={styles.regularText}>Usuario: {this.state.user}</Text>
+            <Text style={styles.userText}>{this.state.user}</Text>
+            <View style={{flex: 1, marginTop: 5}} >
               <Text style={styles.regularText}>Nombre: {this.state.name}</Text>
               <Text style={styles.regularText}>Correo: {this.state.email}</Text>
               <Text style={styles.regularText}>Institución: {this.state.institution}</Text>
@@ -73,8 +74,10 @@ export default class ProfileScreen extends React.Component {
             data={this.state.assistances}
             renderItem={({item}) =>
               <View style={styles.conferenceItem}>
-                 <Text style={styles.conferenceTextTitle}>{item.title}</Text>
-                 <Text style={styles.conferenceText}>Compañia: {item.companyName}</Text>
+                <View style={styles.conferenceInfoContainer}>
+                  <Text style={styles.conferenceText}>{item.companyName}</Text>
+                </View>
+                <Text style={styles.conferenceTextTitle}>{item.title}</Text>
               </View>
             }
             keyExtractor={item => item.conferenceID}
@@ -110,7 +113,7 @@ export default class ProfileScreen extends React.Component {
       const value = await AsyncStorage.getItem(userKey);
       if (value !== null) {
         //Alert.alert("Logueado Value "+value)
-        fetch('https://javiermorenot96.000webhostapp.com/aniei/getUserProfile.php', {
+        fetch(GET_USER_PROFILE_URL, {
         method: 'POST',
         headers: new Headers({
                  'Accept': 'application/json, text/plain',
@@ -119,8 +122,6 @@ export default class ProfileScreen extends React.Component {
         body: "username="+ value
       }).then((response) =>  response.json())
         .then((responseJson) => {
-          //Alert.alert(responseJson[0]["username"])
-          //Cambiamos las props
             this.setState({
               user: responseJson[0]["username"],
               name: responseJson[0]["name"],
@@ -154,22 +155,30 @@ const styles = StyleSheet.create({
   regularText:{
     fontSize: 15,
     textAlign: 'left',
+    marginTop: 2,
+  },
+  userText:{
+    fontSize: 17,
+    fontWeight: 'bold',
+    textAlign: 'left',
   },
   titleText:{
     fontSize: 17,
     textAlign: 'left',
+    fontWeight: 'bold',
+    color: '#686868',
   },
   conferenceTextTitle:{
     fontSize: 17,
-    textAlign: 'center',
     color: '#ffffff',
     fontWeight: 'bold',
+    margin: 5,
   },
   conferenceText:{
     fontSize: 15,
-    textAlign: 'left',
+    textAlign: 'right',
+    flex:1,
     color: '#ffffff',
-    fontWeight: 'bold',
   },
   container: {
     flex: 1,
@@ -178,12 +187,13 @@ const styles = StyleSheet.create({
   },
   profileContainer: {
     backgroundColor: '#fff',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'space-around',
     top: 10,
     width: 90 + "%",
     padding: 10,
     flex:2,
+    borderRadius:5,
   },
   conferencesContainer: {
     backgroundColor: '#fff',
@@ -196,18 +206,27 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     flex:3,
+    borderRadius:5,
   },
   conferenceItem: {
-    backgroundColor: '#0ea0ba',
+    backgroundColor: '#03a9f4',
     alignItems: 'flex-start',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     width: 100 + "%",
-    padding: 10,
+    padding: 5,
     borderWidth: 1,
-    borderRadius: 2,
+    borderRadius: 5,
     borderColor: '#ddd',
     borderBottomWidth: 0,
     marginTop: 5,
+  },
+  conferenceInfoContainer: {
+    backgroundColor: '#0d9adb',
+    alignItems: 'flex-end',
+    justifyContent: 'space-around',
+    width: 100 + "%",
+    padding: 3,
+    borderRadius: 5,
   },
   logo: {
       width: 40 + "%",
