@@ -38,11 +38,6 @@ export default class Login extends React.Component {
   }
 
   onPressIngresar = () => {
-    NetInfo.getConnectionInfo().then((connectionInfo) => {
-      console.log('Initial, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
-      return connectionInfo.effectiveType;
-    }).then((effectiveType) => {
-      if (effectiveType != 'none' && effectiveType != 'unknown') {
         fetch('http://148.202.152.33/ws_general.php', {
           method: 'POST',
           headers: new Headers({
@@ -56,11 +51,6 @@ export default class Login extends React.Component {
         .catch((error) => {
           console.error(error);
         });
-      }
-      else {
-        Alert.alert("No hay conexión a internet");
-      }
-    });
   }
 onPressRegistrar(routeName){
   this.props.navigator.push({
