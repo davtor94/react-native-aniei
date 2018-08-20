@@ -10,7 +10,8 @@ import {
   Button,
   AsyncStorage,
   Keyboard,
-  ScrollView } from 'react-native';
+  ScrollView,
+  NetInfo} from 'react-native';
 import Student   from './student';
 
 const userKey = "usuario";
@@ -269,36 +270,46 @@ renderiAmStudent() {
   }
 
   onPressRegistrar = () => {
-    var sha1 = require('sha1');
-    var encryptedPassword = sha1(this.state.password);
-    fetch('https://javiermorenot96.000webhostapp.com/aniei/register.php', {
-    method: 'POST',
-    headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-      },
-    body: JSON.stringify({
-      username: this.state.usuario,
-      name: this.state.nombre,
-      password: encryptedPassword,
-      institution: this.state.institucion,
-      email: this.state.correo,
-    })}
-  ).then((response) =>  response.text())
-    .then((responseText) => {
-    if(responseText == "registrado"){
-      this._saveData(this.state.usuario);
-      //Guardado con exito
-    }else if(responseText == "usuario repetido"){
-      Alert.alert("Usuario repetido");
-    }else{
-      Alert.alert("Ocurrió un error")
-    }
-      }).catch((error) => {
-        console.error(error);
-        Alert.alert("Ocurrió un error")
-      });
-    }
+    NetInfo.getConnectionInfo().then((connectionInfo) => {
+      console.log('Initial, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
+      return connectionInfo.effectiveType;
+    }).then((effectiveType) => {
+      if (effectiveType != 'none' && effectiveType != 'unknown') {
+        var sha1 = require('sha1');
+        var encryptedPassword = sha1(this.state.password);
+        fetch('https://javiermorenot96.000webhostapp.com/aniei/register.php', {
+        method: 'POST',
+        headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+          },
+        body: JSON.stringify({
+          username: this.state.usuario,
+          name: this.state.nombre,
+          password: encryptedPassword,
+          institution: this.state.institucion,
+          email: this.state.correo,
+        })}
+        ).then((response) =>  response.text())
+        .then((responseText) => {
+        if(responseText == "registrado"){
+          this._saveData(this.state.usuario);
+          //Guardado con exito
+        }else if(responseText == "usuario repetido"){
+          Alert.alert("Usuario repetido");
+        }else{
+          Alert.alert("Ocurrió un error")
+        }
+        }).catch((error) => {
+          console.error(error);
+          Alert.alert("Ocurrió un error")
+        });
+      }
+      else {
+        Alert.alert("No hay conexión a internet");
+      }
+    });
+  }
 
   _saveData = async(username) => {
     try {

@@ -12,7 +12,8 @@ import {
   ScrollView,
   TouchableOpacity,
   AsyncStorage,
-  RefreshControl} from 'react-native';
+  RefreshControl,
+  NetInfo,} from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
 import { Card, ListItem, Button } from 'react-native-elements';
 import ActionBar from 'react-native-action-bar';
@@ -137,25 +138,37 @@ class BaseScreen extends React.Component {
 }
 
 _downloadConferencesData= function(companyName) {
-  this.setState({refreshing: true});
-  fetch('https://javiermorenot96.000webhostapp.com/aniei/getAllConferences.php', {
-  method: 'POST',
-  headers: {
-      'Accept': 'application/json, text/plain',
-      'Content-Type': 'application/json',
-      }
-    }).then((response) =>  response.json())
-      .then((responseJson) => {
-          const bases = JSON.stringify(responseJson);
-          const filteredConferences = _filterConferences(companyName,responseJson);
-          _saveDatabases(bases);
-          this.setState({refreshing: false});
-          this.setState({data:filteredConferences});
-          //Alert.alert("Desde api")
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+  NetInfo.getConnectionInfo().then((connectionInfo) => {
+    console.log('Initial, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
+    return connectionInfo.effectiveType;
+  }).then((effectiveType) => {
+    if (effectiveType != 'none' && effectiveType != 'unknown') {
+      this.setState({refreshing: true});
+      fetch('https://javiermorenot96.000webhostapp.com/aniei/getAllConferences.php', {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json, text/plain',
+          'Content-Type': 'application/json',
+          }
+        }).then((response) =>  response.json())
+          .then((responseJson) => {
+              const bases = JSON.stringify(responseJson);
+              const filteredConferences = _filterConferences(companyName,responseJson);
+              _saveDatabases(bases);
+              this.setState({refreshing: false});
+              this.setState({data:filteredConferences});
+              //Alert.alert("Desde api")
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+    }
+    else {
+      Alert.alert("No hay conexión a internet");
+    }
+
+  });
+
 }
 _loadConferencesData = async function(companyName){
   try {
