@@ -65,7 +65,7 @@ _keyboardDidHide = () => {
 }
 toggleiAmStudent = () => {
   if(!this.state.iAmStudent){
-    Alert.alert("Ingrese codigo y nip correspondiendtes a siiau")
+    //Alert.alert("Ingrese codigo y nip correspondiendtes a siiau")
   }
     this.setState({
         iAmStudent: !this.state.iAmStudent
@@ -138,7 +138,7 @@ renderiAmStudent() {
 
                        <TouchableOpacity style={styles.buttonContainer}
                           onPress={this.onPressIngresar}>
-                            <Text  style={styles.buttonText}>ingresar</Text>
+                            <Text  style={styles.buttonText}>Ingresar</Text>
                         </TouchableOpacity>
         </View>
 
@@ -155,9 +155,9 @@ renderiAmStudent() {
         const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-      <ScrollView contentContainerStyle={{}}>
-      <KeyboardAvoidingView behavior="position">
-      <View style={{alignItems: 'center'}}>
+      <ScrollView>
+      <KeyboardAvoidingView style={{flex:1}} behavior="position">
+      <View style={{flex: 1, alignItems: 'center'}}>
         {this.renderiAmStudent()}
         <TouchableOpacity style={styles.buttonStudent}
           onPress={this.toggleiAmStudent}>
@@ -347,8 +347,8 @@ const styles = StyleSheet.create({
           backgroundColor: '#84a5ba',
           height: 50,
           marginTop: 15,
-          borderRadius: 25,
-          width: 200
+          borderRadius: 15,
+          width: 100 + '%'
       },
   container: {
     flex: 1,
@@ -357,6 +357,7 @@ const styles = StyleSheet.create({
     margin: 15,
   },
   containerStudent: {
+    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
   },
@@ -364,21 +365,11 @@ const styles = StyleSheet.create({
   input : {
     textAlign: 'center',
     padding: 5,
-    marginTop: 20,
+    marginTop: 16,
     height: 40,
-    width: 300,
-    borderColor: 'black',
-    borderRadius: 25,
-    borderWidth: StyleSheet.hairlineWidth
-  },
-
-  inputSmall : {
-    textAlign: 'center',
-    marginTop: 5,
-    height: 10 ,
-    width: 300,
-    borderColor: 'black',
-    borderRadius: 25,
+    width: 100 + '%',
+    borderColor: 'gray',
+    borderRadius: 3,
     borderWidth: StyleSheet.hairlineWidth
   },
 });
