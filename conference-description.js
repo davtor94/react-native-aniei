@@ -139,6 +139,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
     const state = this.state;
 
     const title = state.conferenceData.title;
+    const company = state.conferenceData.companyName;
     const description = state.conferenceData.description;
     const speaker = state.conferenceData.speaker;
     const date = state.conferenceData.date;
@@ -154,9 +155,17 @@ export default class ConferenceDescriptionScreen extends React.Component {
         fontSize: 20,
         textAlign: 'center',
         width: 80 + "%",
-        marginVertical: 10,
+        marginTop: 10,
       }}
       >{title}</Text>
+      <Text style={{
+        fontWeight: 'bold',
+        fontSize: 13,
+        textAlign: 'center',
+        width: 80 + "%",
+        marginBottom: 10,
+      }}
+      >Impartida por {company}</Text>
         <View style={styles.descriptionContainer}>
           <Text style={{
             marginBottom: 20, fontSize: 16, borderRadius: 4, }}>{description}</Text>
