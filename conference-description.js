@@ -41,7 +41,18 @@ export default class ConferenceDescriptionScreen extends React.Component {
       destLatitude:20.658246,
       destLongitude:-103.326958,
       conferenceData: data,
+      username:null,
     };
+    this._getUserName()
+    .then((user)=> {
+      this.setState({
+        username:user,
+      });
+      console.log(this.state.username);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
   componentDidMount() {
     this._getCurrentPosition();
@@ -115,11 +126,11 @@ export default class ConferenceDescriptionScreen extends React.Component {
       if (value !== null) {
         return value;
       }else{
-        return false;
+        return null;
       }
      } catch (error) {
        console.error(error);
-       return false;
+       return null;
      }
   };
 
@@ -164,7 +175,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
         <TouchableOpacity
           style={styles.buttonContainer}
           onPress={() => {
-            if (this._getUserName()) {
+            if (this.state.username) {
               if (this._verifyDate()) {
                 this.props.navigation.navigate('QrScreen', {
                 conferenceId:state.conferenceData.id,
