@@ -197,7 +197,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
 
           }}
         >
-          <Text  style={styles.buttonText}>¡Quiero asistir!</Text>
+          <Text  style={styles.buttonText}>Asistir</Text>
         </TouchableOpacity>
           <MapView style={styles.map} initialRegion={{
             latitude: 20.656940,

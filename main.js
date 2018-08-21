@@ -24,6 +24,7 @@ const fileName = "conferencias";
 const companyNames = ["Oracle","IBM","Intel","HP","Continental"];
 const noCompany = "Others";
 const userKey = "usuario";
+const GET_ALL_CONFERENCES_LINK = "https://javiermorenot96.000webhostapp.com/aniei/getAllConferences.php"
 
 
 class FButton extends React.Component {
@@ -172,7 +173,7 @@ class BaseScreen extends React.Component {
 
 _downloadConferencesData= function(companyName) {
     this.setState({refreshing: true});
-    fetch('https://javiermorenot96.000webhostapp.com/aniei/getAllConferences.php', {
+    fetch(GET_ALL_CONFERENCES_LINK, {
     method: 'POST',
     headers: {
         'Accept': 'application/json, text/plain',

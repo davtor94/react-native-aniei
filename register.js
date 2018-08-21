@@ -15,6 +15,8 @@ import {
 import Student   from './student';
 
 const userKey = "usuario";
+const REGISTER_LINK = "https://javiermorenot96.000webhostapp.com/aniei/register.php";
+const UDG_ACCESS_LINK = "http://148.202.152.33/ws_general.php";
 
 export default class Register extends Component {
   static navigationOptions = {
@@ -72,7 +74,7 @@ toggleiAmStudent = () => {
     });
 }
 onPressIngresar = () => {
-  fetch('http://148.202.152.33/ws_general.php', {
+  fetch(UDG_ACCESS_LINK, {
     method: 'POST',
     headers: new Headers({
              'Content-Type': 'application/x-www-form-urlencoded',
@@ -107,7 +109,6 @@ renderiAmStudent() {
         return (
           <View
             style = {styles.containerStudent}>
-
                     <TextInput
                                style = {styles.input}
                                autoCapitalize="none"
@@ -138,7 +139,7 @@ renderiAmStudent() {
 
                        <TouchableOpacity style={styles.buttonContainer}
                           onPress={this.onPressIngresar}>
-                            <Text  style={styles.buttonText}>Ingresar</Text>
+                            <Text  style={styles.buttonText}>Cargar datos</Text>
                         </TouchableOpacity>
         </View>
 
@@ -152,119 +153,119 @@ renderiAmStudent() {
 }
 
   render() {
-        const { navigate } = this.props.navigation;
+    const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-      <ScrollView>
-      <KeyboardAvoidingView style={{flex:1}} behavior="position">
-      <View style={{flex: 1, alignItems: 'center'}}>
-        {this.renderiAmStudent()}
-        <TouchableOpacity style={styles.buttonStudent}
-          onPress={this.toggleiAmStudent}>
-            <Text  style={styles.buttonText}>Soy UDG</Text>
-        </TouchableOpacity>
-        <TextInput
-                  style = {styles.input}
-                   autoCapitalize="words"
-                   onSubmitEditing={() => this.nombreInput.focus()}
-                   autoCorrect={false}
-                   keyboardType='default'
-                   returnKeyType="next"
-                   value={this.state.usuario}
-                   onChangeText={(typedText) =>{
-                     this.setState({
-                       usuario: typedText,
-                     });
-                   }}
-                   value={this.state.usuario}
-                   placeholder='Usuario'>
-        </TextInput>
+        <ScrollView style={{width:"100%", padding:10}}>
+          <KeyboardAvoidingView style={{flex:1}} behavior="position">
+            <View style={{flex: 1, alignItems: 'center'}}>
+              {this.renderiAmStudent()}
+              <TouchableOpacity style={styles.buttonStudent}
+                onPress={this.toggleiAmStudent}>
+                  <Text  style={styles.buttonText}>Soy UDG</Text>
+              </TouchableOpacity>
+              <TextInput
+                        style = {styles.input}
+                         autoCapitalize="words"
+                         onSubmitEditing={() => this.nombreInput.focus()}
+                         autoCorrect={false}
+                         keyboardType='default'
+                         returnKeyType="next"
+                         value={this.state.usuario}
+                         onChangeText={(typedText) =>{
+                           this.setState({
+                             usuario: typedText,
+                           });
+                         }}
+                         value={this.state.usuario}
+                         placeholder='Usuario'>
+              </TextInput>
 
-        <TextInput
-          style = {styles.input}
-                   autoCapitalize="none"
-                   ref={(input)=> this.nombreInput = input}
-                   onSubmitEditing={() => this.passwordInput.focus()}
-                   autoCorrect={false}
-                   keyboardType='default'
-                   onChangeText={(typedText) =>{
-                     this.setState({
-                       nombre: typedText,
-                     });
-                   }}
-                   returnKeyType="next"
-                   value={this.state.nombre}
-                   placeholder='Nombre'>
-        </TextInput>
+              <TextInput
+                style = {styles.input}
+                         autoCapitalize="none"
+                         ref={(input)=> this.nombreInput = input}
+                         onSubmitEditing={() => this.passwordInput.focus()}
+                         autoCorrect={false}
+                         keyboardType='default'
+                         onChangeText={(typedText) =>{
+                           this.setState({
+                             nombre: typedText,
+                           });
+                         }}
+                         returnKeyType="next"
+                         value={this.state.nombre}
+                         placeholder='Nombre'>
+              </TextInput>
 
-        <TextInput
-          style = {styles.input}
-                autoCapitalize="none"
-                returnKeyType="next"
-                onSubmitEditing={() => this.passwordInput2.focus()}
-                ref={(input)=> this.passwordInput = input}
-                placeholder='Contraseña'
-                onChangeText={(typedText) =>{
-                  this.setState({
-                    password: typedText,
-                  });
-                }}
-                value={this.state.password}
-                secureTextEntry>
-        </TextInput>
+              <TextInput
+                style = {styles.input}
+                      autoCapitalize="none"
+                      returnKeyType="next"
+                      onSubmitEditing={() => this.passwordInput2.focus()}
+                      ref={(input)=> this.passwordInput = input}
+                      placeholder='Contraseña'
+                      onChangeText={(typedText) =>{
+                        this.setState({
+                          password: typedText,
+                        });
+                      }}
+                      value={this.state.password}
+                      secureTextEntry>
+              </TextInput>
 
-        <TextInput
-          style = {styles.input}
-                autoCapitalize="none"
-                returnKeyType="next"
-                ref={(input)=> this.passwordInput2 = input}
-                placeholder='Repetir Contraseña'
-                onChangeText={(typedText) =>{
-                  this.setState({
-                    password2: typedText,
-                  });
-                }}
-                onSubmitEditing={() => this.institucionInput.focus()}
-                value={this.state.password2}
-                secureTextEntry>
-      </TextInput>
+              <TextInput
+                style = {styles.input}
+                      autoCapitalize="none"
+                      returnKeyType="next"
+                      ref={(input)=> this.passwordInput2 = input}
+                      placeholder='Repetir Contraseña'
+                      onChangeText={(typedText) =>{
+                        this.setState({
+                          password2: typedText,
+                        });
+                      }}
+                      onSubmitEditing={() => this.institucionInput.focus()}
+                      value={this.state.password2}
+                      secureTextEntry>
+            </TextInput>
 
-        <TextInput
-          style = {styles.input}
-                autoCapitalize="none"
-                returnKeyType="next"
-                onSubmitEditing={() => this.correoInput.focus()}
-                ref={(input)=> this.institucionInput = input}
-                placeholder='Institucion'
-                onChangeText={(typedText) =>{
-                  this.setState({
-                    institucion: typedText,
-                  });
-                }}
-                value={this.state.institucion}
-                value={this.state.institucion}>
-      </TextInput>
+              <TextInput
+                style = {styles.input}
+                      autoCapitalize="none"
+                      returnKeyType="next"
+                      onSubmitEditing={() => this.correoInput.focus()}
+                      ref={(input)=> this.institucionInput = input}
+                      placeholder='Institucion'
+                      onChangeText={(typedText) =>{
+                        this.setState({
+                          institucion: typedText,
+                        });
+                      }}
+                      value={this.state.institucion}
+                      value={this.state.institucion}>
+            </TextInput>
 
-        <TextInput
-          style = {styles.input}
-                autoCapitalize="none"
-                returnKeyType="go"
-                ref={(input)=> this.correoInput = input}
-                placeholder='Correo'
-                onChangeText={(typedText) =>{
-                  this.setState({
-                    correo: typedText,
-                  });
-                }}
-                value={this.state.correo}
-            >
-      </TextInput>
-        <TouchableOpacity style={styles.buttonContainer} onPress = {this.onPressRegistrar}>
-             <Text  style={styles.buttonText}>Registrate</Text>
-         </TouchableOpacity>
-      </View>
-      </KeyboardAvoidingView>
-      </ScrollView>
+              <TextInput
+                style = {styles.input}
+                      autoCapitalize="none"
+                      returnKeyType="go"
+                      ref={(input)=> this.correoInput = input}
+                      placeholder='Correo'
+                      onChangeText={(typedText) =>{
+                        this.setState({
+                          correo: typedText,
+                        });
+                      }}
+                      value={this.state.correo}
+                  >
+            </TextInput>
+              <TouchableOpacity style={styles.buttonContainer} onPress = {this.onPressRegistrar}>
+                   <Text  style={styles.buttonText}>Registrate</Text>
+               </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </ScrollView>
       </View>
     );
   }
@@ -272,7 +273,7 @@ renderiAmStudent() {
   onPressRegistrar = () => {
         var sha1 = require('sha1');
         var encryptedPassword = sha1(this.state.password);
-        fetch('https://javiermorenot96.000webhostapp.com/aniei/register.php', {
+        fetch(REGISTER_LINK, {
         method: 'POST',
         headers: {
         Accept: 'application/json',
@@ -291,7 +292,7 @@ renderiAmStudent() {
           this._saveData(this.state.usuario);
           //Guardado con exito
         }else if(responseText == "usuario repetido"){
-          Alert.alert("Usuario repetido");
+          Alert.alert("Ya existe ese usuario");
         }else{
           Alert.alert("Ocurrió un error")
         }
@@ -300,7 +301,6 @@ renderiAmStudent() {
           Alert.alert("Ocurrió un error")
         });
   }
-
   _saveData = async(username) => {
     try {
       await AsyncStorage.setItem(userKey,username);
@@ -325,10 +325,10 @@ renderiAmStudent() {
 
 const styles = StyleSheet.create({
   buttonText:{
-
     color: '#fff',
     textAlign: 'center',
-    fontWeight: '700'
+    fontWeight: '700',
+    width: "100%"
 },
   buttonContainer:{
         alignItems: 'center',
@@ -336,8 +336,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#2980b6',
         height: 40,
         marginTop: 25,
-        borderRadius: 25,
-        width: 200,
+        borderRadius: 5,
+        width: "90%",
       alignContent: 'flex-end',
     },
     buttonStudent:{
@@ -345,19 +345,19 @@ const styles = StyleSheet.create({
           marginTop: 15,
           justifyContent: 'center',
           backgroundColor: '#84a5ba',
-          height: 50,
+          height: 40,
           marginTop: 15,
-          borderRadius: 15,
-          width: 100 + '%'
+          borderRadius: 5,
+          width: "90 %"
       },
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    margin: 15,
+    margin: 10,
   },
   containerStudent: {
-    flex: 1,
+    width: "100%",
     backgroundColor: '#fff',
     alignItems: 'center',
   },
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
     padding: 5,
     marginTop: 16,
     height: 40,
-    width: 250,
+    width: "90%",
     borderColor: 'gray',
     borderRadius: 3,
     borderWidth: StyleSheet.hairlineWidth

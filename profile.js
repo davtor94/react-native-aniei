@@ -12,7 +12,8 @@ import {
   Alert,
   AsyncStorage,
   Button,
-  ScrollView } from 'react-native';
+  ScrollView,
+  ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const userKey = "usuario";
@@ -31,6 +32,7 @@ export default class ProfileScreen extends React.Component {
       institution: '',
       assistances: null,
       refreshing: false,
+      loaded:false,
     }
     this._loadProfile();
   }
@@ -42,53 +44,61 @@ export default class ProfileScreen extends React.Component {
      </View>
    );
   }
-
   render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.profileContainer}>
-            <Image
-              style={styles.logo}
-              source={require('./src/components/images/logo_leon_udg.png')}
-              resizeMode="contain"
-            />
-            <Text style={styles.userText}>{this.state.user}</Text>
-            <View style={{flex: 1, marginTop: 5}} >
-              <Text style={styles.regularText}>Nombre: {this.state.name}</Text>
-              <Text style={styles.regularText}>Correo: {this.state.email}</Text>
-              <Text style={styles.regularText}>Institución: {this.state.institution}</Text>
-            </View>
-        </View>
-        <Button
-          backgroundColor='#03A9F4'
-          buttonStyle={[{alignSelf: 'center', width: "90%", borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, marginTop: 10}]}
-          title='Cerrar sesión'
-          onPress={() => this.exitConfirmation()}
-          />
-        <View style={styles.conferencesContainer}>
-          <Text style={styles.titleText}>Mis asistencias</Text>
-          <FlatList
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={() => {this._loadProfile()}}
+    if(this.state.loaded == true){
+      return (
+        <View style={styles.container}>
+          <View style={styles.profileContainer}>
+              <Image
+                style={styles.logo}
+                source={require('./src/components/images/logo_leon_udg.png')}
+                resizeMode="contain"
               />
-            }
-            data={this.state.assistances}
-            renderItem={({item}) =>
-              <View style={styles.conferenceItem}>
-                <View style={styles.conferenceInfoContainer}>
-                  <Text style={styles.conferenceText}>{item.companyName}</Text>
-                </View>
-                <Text style={styles.conferenceTextTitle}>{item.title}</Text>
+              <Text style={styles.userText}>{this.state.user}</Text>
+              <View style={{flex: 1, marginTop: 5}} >
+                <Text style={styles.regularText}>Nombre: {this.state.name}</Text>
+                <Text style={styles.regularText}>Correo: {this.state.email}</Text>
+                <Text style={styles.regularText}>Institución: {this.state.institution}</Text>
               </View>
-            }
-            keyExtractor={item => item.conferenceID}
-            ListEmptyComponent={this.ListEmptyItem}
-          />
+          </View>
+          <Button
+            backgroundColor='#03A9F4'
+            buttonStyle={[{alignSelf: 'center', width: "90%", borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, marginTop: 10}]}
+            title='Cerrar sesión'
+            onPress={() => this.exitConfirmation()}
+            />
+          <View style={styles.conferencesContainer}>
+            <Text style={styles.titleText}>Mis asistencias</Text>
+            <FlatList
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={() => {this._loadProfile()}}
+                />
+              }
+              data={this.state.assistances}
+              renderItem={({item}) =>
+                <View style={styles.conferenceItem}>
+                  <View style={styles.conferenceInfoContainer}>
+                    <Text style={styles.conferenceText}>{item.companyName}</Text>
+                  </View>
+                  <Text style={styles.conferenceTextTitle}>{item.title}</Text>
+                </View>
+              }
+              keyExtractor={item => item.conferenceID}
+              ListEmptyComponent={this.ListEmptyItem}
+            />
+          </View>
         </View>
-      </View>
-    );
+      );
+    }
+    else{
+      return(
+        <View style={[styles.container, styles.horizontal]}>
+          <ActivityIndicator size="large" color="#009999" />
+        </View>
+      );
+    }
   }
 
   exitConfirmation = ()=>{
@@ -147,6 +157,7 @@ export default class ProfileScreen extends React.Component {
               email: profileEmail,
               institution: profileInstitution,
               assistances: profileAssistances,
+              loaded: true,
             })
             })
             .catch((error) => {
@@ -253,5 +264,10 @@ const styles = StyleSheet.create({
       opacity : .5,
       margin: 0.4,
       alignSelf: 'center',
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
   },
 });

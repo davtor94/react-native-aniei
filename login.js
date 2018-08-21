@@ -115,13 +115,13 @@ onPressRegistrar(routeName){
               <TouchableOpacity style={styles.buttonContainer}
                              onPress={this.onPressIngresar}
                              >
-                     <Text  style={styles.buttonText}>INGRESAR</Text>
+                     <Text  style={styles.buttonText}>Ingresar</Text>
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.buttonSignin}
                           onPress={() =>this.props.navigation.navigate('Register')}
                              >
-                     <Text  style={styles.buttonText}>REGISTRAR</Text>
+                     <Text  style={styles.buttonText}>Registrarse</Text>
               </TouchableOpacity>
               </View>
             </KeyboardAvoidingView>
@@ -162,8 +162,13 @@ const styles = StyleSheet.create({
     margin: 15,
   },
   logo: {
-      height: 200,
+      height: 150,
       opacity: .5,
+      marginTop: 10,
+      marginBottom: 10,
+      marginLeft: 15,
+      marginRight: 15,
+
   },
   input : {
     textAlign: 'center',

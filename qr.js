@@ -16,7 +16,7 @@ import { BarCodeScanner, Permissions } from 'expo';
 import { AsyncStorage } from "react-native";
 
 const userKey = "usuario";
-
+const ASSISTANCE_LINK = "https://javiermorenot96.000webhostapp.com/aniei/assistance.php";
 
 export default class QrScanner extends Component {
   static navigationOptions = {
@@ -155,7 +155,7 @@ export default class QrScanner extends Component {
     if (this.state.lastScannedUrl) {
       AsyncStorage.setItem("UnValor",this.state.lastScannedUrl);
       console.log('QR detectado');
-      fetch('https://javiermorenot96.000webhostapp.com/aniei/assistance.php', {
+      fetch(ASSISTANCE_LINK, {
         method: 'POST',
         headers: {
         Accept: 'application/json',
