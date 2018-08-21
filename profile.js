@@ -35,6 +35,14 @@ export default class ProfileScreen extends React.Component {
     this._loadProfile();
   }
 
+  ListEmptyItem = () => {
+   return (
+     <View style={{margin: 20, backgroundColor: '#fff',alignItems: 'center',justifyContent: 'center',}}>
+       <Text style={{textAlign: 'center', margin:20}}>Parece que no has asistido a conferencias aún</Text>
+     </View>
+   );
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -50,11 +58,6 @@ export default class ProfileScreen extends React.Component {
               <Text style={styles.regularText}>Correo: {this.state.email}</Text>
               <Text style={styles.regularText}>Institución: {this.state.institution}</Text>
             </View>
-            <TouchableOpacity
-                           onPress={()=>this._saveData("elKuma")}
-                           >
-                   <Text  style={styles.buttonText}>PROBAR ENTRADA</Text>
-            </TouchableOpacity>
         </View>
         <Button
           backgroundColor='#03A9F4'
@@ -81,12 +84,13 @@ export default class ProfileScreen extends React.Component {
               </View>
             }
             keyExtractor={item => item.conferenceID}
-            ListEmptyComponent={ListEmptyView}
+            ListEmptyComponent={this.ListEmptyItem}
           />
         </View>
       </View>
     );
   }
+
   exitConfirmation = ()=>{
     Alert.alert(
       '¿Cerrar sesión?',
@@ -122,12 +126,27 @@ export default class ProfileScreen extends React.Component {
         body: "username="+ value
       }).then((response) =>  response.json())
         .then((responseJson) => {
+            var profileUser = null;
+            var profileName = null;
+            var profileEmail = null;
+            var profileInstitution = null;
+            var profileAssistances = null;
+            if(responseJson.length >=1){
+              profileUser = responseJson[0]["username"];
+              profileName= responseJson[0]["name"];
+              profileEmail= responseJson[0]["email"];
+              profileInstitution= responseJson[0]["institution"];
+            }
+            if(responseJson.length >=2){
+              profileAssistances = responseJson[1]["conferences"];
+            }
+
             this.setState({
-              user: responseJson[0]["username"],
-              name: responseJson[0]["name"],
-              email: responseJson[0]["email"],
-              institution: responseJson[0]["institution"],
-              assistances: responseJson[1]["conferences"],
+              user: profileUser,
+              name: profileName,
+              email: profileEmail,
+              institution: profileInstitution,
+              assistances: profileAssistances,
             })
             })
             .catch((error) => {

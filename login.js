@@ -12,8 +12,10 @@ import {
   KeyboardAvoidingView,
   AsyncStorage,
   NetInfo} from 'react-native';
-  import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
+import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 
+const SIGN_IN_LINK = 'https://javiermorenot96.000webhostapp.com/aniei/signIn.php';
+const userKey = "usuario";
 
 export default class Login extends React.Component {
   static navigationOptions = {
@@ -24,33 +26,54 @@ export default class Login extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      nip: "",
-      codigo : ""
+      user: "",
+      password : ""
     }
   }
 
-  handleChangeCodigo = (typedText) =>{
-    this.setState({codigo: typedText});
+  handleChangeUser = (typedText) =>{
+    this.setState({user: typedText});
   }
 
-  handleChangeNip = (typedText) =>{
-    this.setState({nip: typedText});
+  handleChangePassword = (typedText) =>{
+    this.setState({password: typedText});
   }
-
   onPressIngresar = () => {
-        fetch('http://148.202.152.33/ws_general.php', {
-          method: 'POST',
-          headers: new Headers({
-                   'Content-Type': 'application/x-www-form-urlencoded',
-          }),
-          body: "codigo="+ this.state.codigo+ "&nip="+ this.state.nip
-        }).then((response) =>  response.text())
+        var sha1 = require('sha1');
+        var encryptedPassword = sha1(this.state.password);
+        fetch(SIGN_IN_LINK, {
+        method: 'POST',
+        headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+          },
+        body: JSON.stringify({
+          username: this.state.user,
+          password: encryptedPassword,
+        })}
+        ).then((response) =>  response.text())
         .then((responseText) => {
-          Alert.alert(responseText)
-        })
-        .catch((error) => {
+        if(responseText == "correcto"){
+          this._saveData(this.state.user);
+          Alert.alert("Ya has ingresado");
+          this.props.navigation.goBack();
+          //Guardado con exito
+        }else if(responseText == "error en datos"){
+          Alert.alert("Combinación de usuario/contraseña incorrecta");
+        }else{
+          Alert.alert("Error al intentar ingresar")
+        }
+        }).catch((error) => {
           console.error(error);
         });
+  }
+
+  _saveData = async(username) => {
+    try {
+      await AsyncStorage.setItem(userKey,username);
+    } catch (error) {
+        console.console.error();
+    }
   }
 onPressRegistrar(routeName){
   this.props.navigator.push({
@@ -77,7 +100,7 @@ onPressRegistrar(routeName){
                        autoCorrect={false}
                        keyboardType='default'
                        returnKeyType="next"
-                       onChangeText={this.handleChangeCodigo}
+                       onChangeText={this.handleChangeUser}
                        value={this.state.codigo}
                        placeholder='USUARIO'/>
 
@@ -86,7 +109,7 @@ onPressRegistrar(routeName){
                       returnKeyType="go"
                       ref={(input)=> this.passwordInput = input}
                       placeholder='CONTRASEÑA'
-                      onChangeText={this.handleChangeNip}
+                      onChangeText={this.handleChangePassword}
                       value={this.state.nip}
                       secureTextEntry/>
               <TouchableOpacity style={styles.buttonContainer}
@@ -99,12 +122,6 @@ onPressRegistrar(routeName){
                           onPress={() =>this.props.navigation.navigate('Register')}
                              >
                      <Text  style={styles.buttonText}>REGISTRAR</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.buttonSignin}
-                          onPress={() =>this.props.navigation.navigate('Profile')}
-                             >
-                     <Text  style={styles.buttonText}>Perfil</Text>
               </TouchableOpacity>
               </View>
             </KeyboardAvoidingView>
