@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
     padding: 5,
     marginTop: 16,
     height: 40,
-    width: 100 + '%',
+    width: 250,
     borderColor: 'gray',
     borderRadius: 3,
     borderWidth: StyleSheet.hairlineWidth
