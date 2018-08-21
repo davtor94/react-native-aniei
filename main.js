@@ -67,10 +67,13 @@ class MyCard extends React.Component{
       super(props);
       dateValues = String(this.props.item.date).split('-');
       startTimeValues = String(this.props.item.startTime).split(':');
+      var conferenceYear = dateValues[0];
+      var conferenceMonth = dateValues[1];
+      var conferenceDay = dateValues[2];
       this.state = {
-        year: dateValues[0],
-        month: dateValues[1],
-        day: dateValues[2],
+        year: conferenceYear,
+        month: conferenceMonth,
+        day: conferenceDay,
         hour: startTimeValues[0],
         minute: startTimeValues[1],
       }
@@ -207,12 +210,22 @@ _filterConferences = function(companyName,conferences){
   var filtered = [];
   var i, filteredCount=0;
   const size = conferences.length;
+  var currentDate = new Date();
   if(companyName!=noCompany)
   {
     for(i=0;i<size;i++){
       if(conferences[i]['companyName']==companyName){
-        filtered[filteredCount]=conferences[i];
-        filteredCount++;
+        dateValues = String(conferences[i]['date']).split('-');
+        var conferenceYear = dateValues[0];
+        var conferenceMonth = dateValues[1];
+        var conferenceDay = dateValues[2];
+        if(Number(currentDate.getFullYear()<=Number(conferenceYear))
+            && ((Number(currentDate.getMonth()+1)<Number(conferenceMonth))
+              || ((Number(currentDate.getMonth()+1)==Number(conferenceMonth)) &&
+                  (Number(currentDate.getDate())<=Number(conferenceDay)))) ){
+              filtered[filteredCount]=conferences[i];
+              filteredCount++;
+            }
       }
     }
   }else{
@@ -227,8 +240,17 @@ _filterConferences = function(companyName,conferences){
         }
       }
       if(!existent){
-        filtered[filteredCount]=conferences[i];
-        filteredCount++;
+        dateValues = String(conferences[i]['date']).split('-');
+        var conferenceYear = dateValues[0];
+        var conferenceMonth = dateValues[1];
+        var conferenceDay = dateValues[2];
+        if(Number(currentDate.getFullYear()<=Number(conferenceYear))
+            && ((Number(currentDate.getMonth()+1)<Number(conferenceMonth))
+              || ((Number(currentDate.getMonth()+1)==Number(conferenceMonth)) &&
+                  (Number(currentDate.getDate())<=Number(conferenceDay)))) ){
+              filtered[filteredCount]=conferences[i];
+              filteredCount++;
+            }
       }
     }
   }
