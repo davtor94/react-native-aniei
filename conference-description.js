@@ -91,6 +91,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
     }
   _verifyDate = () => {
     const state = this.state;
+    const conferenceDate = state.conferenceData.date;
     const startTime = state.conferenceData.startTime;
     const endTime = state.conferenceData.endTime;
 
@@ -101,24 +102,37 @@ export default class ConferenceDescriptionScreen extends React.Component {
     const startMinute = startTimeArray[1];
     const endMinute = endTimeArray[1];
 
+    dateValues = conferenceDate.split('-');
+    const conferenceYear = dateValues[0];
+    const conferenceMonth = dateValues[1];
+    const conferenceDay = dateValues[2];
+
     var currentDate = new Date();
     var totalCurrentMinutes = currentDate.getHours() * 60 + currentDate.getMinutes();
     var totalStartMinutes = parseInt(startHour) * 60 + parseInt(startMinute);
     var totalEndMinutes = parseInt(endHour) * 60 + parseInt(endMinute);
 
-    if (totalStartMinutes - totalCurrentMinutes <= minutosFaltantes ) {
-      if (totalEndMinutes > totalCurrentMinutes ) {
-        return true;
+    if(conferenceYear==currentDate.getFullYear() &&
+     conferenceMonth==(currentDate.getMonth()+1) &&
+      conferenceDay==currentDate.getDate()){
+        if (totalStartMinutes - totalCurrentMinutes <= minutosFaltantes ) {
+          if (totalEndMinutes > totalCurrentMinutes ) {
+            return true;
+          }
+          else {
+            Alert.alert("La conferencia ya terminó o está por terminar");
+            return false;
+          }
+        }
+        else {
+          Alert.alert("Solo te puedes registrar faltando 15 minutos o menos");
+          return false;
+        }
       }
-      else {
-        Alert.alert("La conferencia ya terminó o está por terminar");
+      else{
+        Alert.alert("Hoy no es la conferencia");
         return false;
       }
-    }
-    else {
-      Alert.alert("Solo te puedes registrar faltando 15 minutos o menos");
-      return false;
-    }
   }
   _getUserName = async() =>{
     try {

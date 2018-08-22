@@ -271,40 +271,50 @@ renderiAmStudent() {
   }
 
   onPressRegistrar = () => {
-        var sha1 = require('sha1');
-        var encryptedPassword = sha1(this.state.password);
-        fetch(REGISTER_LINK, {
-        method: 'POST',
-        headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-          },
-        body: JSON.stringify({
-          username: this.state.usuario,
-          name: this.state.nombre,
-          password: encryptedPassword,
-          institution: this.state.institucion,
-          email: this.state.correo,
-        })}
-        ).then((response) =>  response.text())
-        .then((responseText) => {
-        if(responseText == "registrado"){
-          this._saveData(this.state.usuario);
-          //Guardado con exito
-        }else if(responseText == "usuario repetido"){
-          Alert.alert("Ya existe ese usuario");
-        }else{
-          Alert.alert("Ocurrió un error")
+        if(this.state.password == this.state.password2)
+        {
+          var sha1 = require('sha1');
+          var encryptedPassword = sha1(this.state.password);
+          fetch(REGISTER_LINK, {
+          method: 'POST',
+          headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+            },
+          body: JSON.stringify({
+            username: this.state.usuario,
+            name: this.state.nombre,
+            password: encryptedPassword,
+            institution: this.state.institucion,
+            email: this.state.correo,
+          })}
+          ).then((response) =>  response.text())
+          .then((responseText) => {
+          if(responseText == "registrado"){
+            this._saveData(this.state.usuario);
+            //Guardado con exito
+          }else if(responseText == "usuario repetido"){
+            Alert.alert("Ya existe ese usuario");
+          }
+          else if(responseText == "campos incompletos"){
+            Alert.alert("Por favor rellena todos los campos");
+          }
+          else{
+            Alert.alert("Ocurrió un error")
+          }
+          }).catch((error) => {
+            console.error(error);
+            Alert.alert("Ocurrió un error")
+          });
         }
-        }).catch((error) => {
-          console.error(error);
-          Alert.alert("Ocurrió un error")
-        });
+        else{
+          Alert.alert("Ingresa la misma contraseña en ambos campos");
+        }
+
   }
   _saveData = async(username) => {
     try {
       await AsyncStorage.setItem(userKey,username);
-      Alert.alert("Guardado");
     } catch (error) {
         console.console.error();
     }
