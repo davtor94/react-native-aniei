@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   NetInfo
 } from 'react-native';
-import { BarCodeScanner, Permissions } from 'expo';
+//import { BarCodeScanner, Permissions } from 'expo';
 import { AsyncStorage } from "react-native";
 
 const userKey = "usuario";
@@ -52,10 +52,10 @@ export default class QrScanner extends Component {
   }
 
   _requestCameraPermission = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    /*const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({
       hasCameraPermission: status === 'granted',
-    });
+    });*/
   };
 
   _handleBarCodeRead = result => {
@@ -80,7 +80,7 @@ export default class QrScanner extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.state.hasCameraPermission === null
+        /*{this.state.hasCameraPermission === null
           ? <Text>Pidiendo permisos de camara</Text>
           : this.state.hasCameraPermission === false
               ? <Text style={{ color: '#fff' }}>
@@ -98,7 +98,7 @@ export default class QrScanner extends Component {
         {this._showInstructions()}
         {this._showTopBar()}
 
-        <StatusBar hidden />
+        <StatusBar hidden />*/
       </View>
 
 

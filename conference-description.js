@@ -12,9 +12,8 @@ import {
   ScrollView, } from 'react-native';
   import { AsyncStorage } from "react-native";
 
-import MapView from 'react-native-maps';
+//import MapView from 'react-native-maps';
 import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {OpenMapDirections} from 'react-native-navigation-directions';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
@@ -213,7 +212,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
         >
           <Text  style={styles.buttonText}>Asistir</Text>
         </TouchableOpacity>
-          <MapView style={styles.map} initialRegion={{
+          {/*}<MapView style={styles.map} initialRegion={{
             latitude: 20.656940,
             longitude: -103.326103,
             latitudeDelta: 0.00486419504430,
@@ -236,7 +235,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
               coordinate={{"latitude":this.state.destLatitude,"longitude":this.state.destLongitude}}
               title={locationName}
             />}
-          </MapView>
+          </MapView>{*/}
           <TouchableOpacity
             style={{
               alignItems: 'center',

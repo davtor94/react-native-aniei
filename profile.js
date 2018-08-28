@@ -14,7 +14,6 @@ import {
   Button,
   ScrollView,
   ActivityIndicator } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 const userKey = "usuario";
 const GET_USER_PROFILE_URL = "https://javiermorenot96.000webhostapp.com/aniei/getUserProfile.php"
