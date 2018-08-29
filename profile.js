@@ -59,13 +59,12 @@ export default class ProfileScreen extends React.Component {
                 <Text style={styles.regularText}>Correo: {this.state.email}</Text>
                 <Text style={styles.regularText}>Institución: {this.state.institution}</Text>
               </View>
+              <TouchableOpacity style={styles.buttonContainer}
+                onPress={() => this.exitConfirmation()}
+              >
+                <Text  style={styles.buttonText}>Cerrar sesión</Text>
+              </TouchableOpacity>
           </View>
-          <Button
-            backgroundColor='#03A9F4'
-            buttonStyle={[{alignSelf: 'center', width: "90%", borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, marginTop: 10}]}
-            title='Cerrar sesión'
-            onPress={() => this.exitConfirmation()}
-            />
           <View style={styles.conferencesContainer}>
             <Text style={styles.titleText}>Mis asistencias</Text>
             <FlatList
@@ -221,6 +220,7 @@ const styles = StyleSheet.create({
     top: 10,
     width: 90 + "%",
     padding: 10,
+    paddingBottom: 20,
     flex:2,
     borderRadius:5,
   },
@@ -256,6 +256,19 @@ const styles = StyleSheet.create({
     width: 100 + "%",
     padding: 3,
     borderRadius: 5,
+  },
+  buttonContainer:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#2980b6',
+    height: 30,
+    borderRadius: 5,
+    width: 60 + "%"
+  },
+  buttonText:{
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '700'
   },
   logo: {
       width: 40 + "%",
