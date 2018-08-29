@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/1507c36b21363d0256d81e967bfe850e/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/1507c36b21363d0256d81e967bfe850e/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/1507c36b21363d0256d81e967bfe850e/res/layout-v21/notification_template_custom_big.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/layout-v21/notification_action.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/1507c36b21363d0256d81e967bfe850e/res/layout-v21/notification_action.xml"
+    }
+]
