@@ -11,7 +11,9 @@ import {
   AsyncStorage,
   Keyboard,
   ScrollView,
-  NetInfo} from 'react-native';
+  NetInfo,
+  Platform,
+} from 'react-native';
 import Student   from './student';
 
 const userKey = "usuario";
@@ -378,8 +380,15 @@ const styles = StyleSheet.create({
     marginTop: 16,
     height: 40,
     width: "90%",
-    borderColor: 'gray',
+    ...Platform.select({
+      ios: {
+        backgroundColor: '#E6E6E6',
+      },
+      android: {
+        borderColor: 'gray',
+        borderWidth: StyleSheet.hairlineWidth,
+      },
+    }),
     borderRadius: 3,
-    borderWidth: StyleSheet.hairlineWidth
   },
 });

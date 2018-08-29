@@ -11,7 +11,9 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   AsyncStorage,
-  NetInfo} from 'react-native';
+  NetInfo,
+  Platform,
+} from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 
 const SIGN_IN_LINK = 'https://javiermorenot96.000webhostapp.com/aniei/signIn.php';
@@ -175,8 +177,15 @@ const styles = StyleSheet.create({
     marginTop: 5,
     height: 30,
     width: 60 + "%",
-    borderColor: 'gray',
+    ...Platform.select({
+      ios: {
+        backgroundColor: '#E6E6E6',
+      },
+      android: {
+        borderColor: 'gray',
+        borderWidth: StyleSheet.hairlineWidth,
+      },
+    }),
     borderRadius: 25,
-    borderWidth: StyleSheet.hairlineWidth
   },
 });

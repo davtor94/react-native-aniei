@@ -161,57 +161,57 @@ export default class ConferenceDescriptionScreen extends React.Component {
     const locationName = state.conferenceData.locationName;
 
     return (
-      <View style={{backgroundColor: '#EBEBEB', flex: 1}}>
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
-      <Text style={{
-        fontWeight: 'bold',
-        fontSize: 20,
-        textAlign: 'center',
-        width: 80 + "%",
-        marginTop: 10,
-      }}
-      >{title}</Text>
-      <Text style={{
-        fontWeight: 'bold',
-        fontSize: 13,
-        textAlign: 'center',
-        width: 80 + "%",
-        marginBottom: 10,
-      }}
-      >Impartida por {company}</Text>
+        <Text style={{
+          fontWeight: 'bold',
+          fontSize: 20,
+          textAlign: 'center',
+          width: 80 + "%",
+          marginTop: 10,
+        }}
+        >{title}</Text>
+        <Text style={{
+          fontWeight: 'bold',
+          fontSize: 13,
+          textAlign: 'center',
+          width: 80 + "%",
+          marginBottom: 10,
+        }}
+        >Impartida por {company}</Text>
         <View style={styles.descriptionContainer}>
           <Text style={{
-            marginBottom: 20, fontSize: 16, borderRadius: 4, }}>{description}</Text>
-
-          <View style={{flex: 1, backgroundColor: '#fff', width: 100 + "%"}}>
-          <Table borderStyle={{borderColor: '#C1C0B9'}}>
-            <TableWrapper style={styles.wrapper}>
-              <Col data={["Auditorio","Ponente","Fecha","Hora"]}
-              style={styles.title}  textStyle={styles.textTitleTable}/>
-              <Rows data={[[locationName],[speaker],[date],[startTime+" - "+endTime]]}
-              flexArr={[2]} style={styles.row} textStyle={styles.textTable}/>
-            </TableWrapper>
-          </Table>
-          </View>
-        </View>
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={() => {
-            if (this.state.username) {
-              if (this._verifyDate()) {
-                this.props.navigation.navigate('QrScreen', {
-                conferenceId:state.conferenceData.id,
-                });
+            fontSize: 16, borderRadius: 4, }}>{description}
+          </Text>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => {
+              if (this.state.username) {
+                if (this._verifyDate()) {
+                  this.props.navigation.navigate('QrScreen', {
+                  conferenceId:state.conferenceData.id,
+                  });
+                }
               }
-            }
-            else {
-              Alert.alert("Necesitas iniciar sesión");
-            }
+              else {
+                Alert.alert("Necesitas iniciar sesión");
+              }
 
-          }}
-        >
-          <Text  style={styles.buttonText}>Asistir</Text>
-        </TouchableOpacity>
+            }}
+          >
+            <Text  style={styles.buttonText}>Asistir</Text>
+          </TouchableOpacity>
+          <View style={{flex: 1, backgroundColor: '#fff', width: 100 + "%"}}>
+            <Table borderStyle={{borderColor: '#C1C0B9'}}>
+              <TableWrapper style={styles.wrapper}>
+                <Col data={["Auditorio","Ponente","Fecha","Hora"]}
+                style={styles.title}  textStyle={styles.textTitleTable}/>
+                <Rows data={[[locationName],[speaker],[date],[startTime+" - "+endTime]]}
+                flexArr={[2]} style={styles.row} textStyle={styles.textTable}/>
+              </TableWrapper>
+            </Table>
+          </View>
+
           {/*}<MapView style={styles.map} initialRegion={{
             latitude: 20.656940,
             longitude: -103.326103,
@@ -237,15 +237,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
             />}
           </MapView>{*/}
           <TouchableOpacity
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: '#2B8EB5',
-              height: 30,
-              width: 80 + "%",
-              marginTop: 10,
-              marginBottom: 40,
-            }}
+            style={styles.buttonContainer}
             onPress={() => {
               if (this.state.latitude != null){
                 this._callShowDirections();
@@ -258,14 +250,21 @@ export default class ConferenceDescriptionScreen extends React.Component {
           >
             <Text  style={styles.buttonText}>Cómo llegar</Text>
           </TouchableOpacity>
+        </View>
       </ScrollView>
-      </View>
+    </View>
     );
   }
 }
 
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    margin: 15,
+  },
   contentContainer: {
     backgroundColor: '#fff',
     alignItems: 'center',
@@ -278,16 +277,17 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'space-around',
     top: 10,
-    width: 80 + "%",
+    width: 90 + "%",
   },
   buttonContainer:{
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#2B8EB5',
-        height: 30,
-        marginTop: 15,
-        marginBottom: 25,
-        width: 90 + "%",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#2B8EB5',
+    height: 30,
+    marginTop: 15,
+    marginBottom: 15,
+    width: 100 + "%",
+    borderRadius: 3,
   },
   buttonText:{
     color: '#fff',
