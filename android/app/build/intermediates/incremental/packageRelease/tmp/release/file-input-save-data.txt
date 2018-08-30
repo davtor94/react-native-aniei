@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Wed Aug 29 16:41:50 CDT 2018
+#Thu Aug 30 09:56:32 CDT 2018
 5.base=/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/transforms/mergeJniLibs/release/0
 42.base=/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/assets/release
 22.path=lib/armeabi-v7a/libreactnativejni.so

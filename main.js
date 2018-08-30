@@ -189,7 +189,7 @@ _downloadConferencesData= function(companyName) {
         //Alert.alert("Desde api")
       })
       .catch((error) => {
-        console.error(error);
+        //console.error(error);
       });
 }
 _loadConferencesData = async function(companyName){

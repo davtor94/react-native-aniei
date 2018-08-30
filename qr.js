@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   Linking,
+  View,
 } from 'react-native';
 import { AsyncStorage } from "react-native";
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -68,10 +69,24 @@ export default class QrScanner extends Component {
         onRead={this.onSuccess.bind(this)}
         showMarker={true}
         checkAndroid6Permissions={true}
-        permissionDialogTitle="No tienes permisos"
+        permissionDialogTitle="Uso de cámara"
         permissionDialogMessage="Necesitas dar permisos de cámara"
         topViewStyle={{backgroundColor:"#000"}}
         bottomViewStyle={{backgroundColor:"#000"}}
+        notAuthorizedView={
+          <View style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <Text style={{
+              textAlign: 'center',
+              fontSize: 16,
+            }}>
+              Parece que no tenemos permisos de cámara
+            </Text>
+          </View>
+        }
         topContent={
           <Text style={styles.centerText}>
             Escanea el código que se encuentra en el auditorio

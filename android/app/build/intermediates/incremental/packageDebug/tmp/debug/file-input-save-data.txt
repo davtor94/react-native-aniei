@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Wed Aug 29 15:21:18 CDT 2018
+#Thu Aug 30 11:01:34 CDT 2018
 5.base=/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/assets/debug
 22.path=lib/x86/libjsc.so
 32.set=ASSET
