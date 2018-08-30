@@ -42,6 +42,7 @@ class FButton extends React.Component {
       return(
         <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate(this.state.navigateTo)}
         renderIcon = {()=>(<Icon name="md-person" style={styles.actionButtonIcon} />)}
+        offsetY={15} offsetX={15}
         />
         );
     }

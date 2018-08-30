@@ -162,7 +162,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
 
     return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
+      <ScrollView style={{width: 100 + "%",}} contentContainerStyle={styles.contentContainer}>
         <Text style={{
           fontWeight: 'bold',
           fontSize: 20,
@@ -270,7 +270,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 15,
     paddingBottom: 30,
-    margin: 15,
   },
   descriptionContainer: {
     backgroundColor: '#fff',
@@ -286,7 +285,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2B8EB5',
     height: 30,
     marginTop: 15,
-    marginBottom: 30,
+    marginBottom: 15,
     width: 100 + "%",
     borderRadius: 3,
   },
