@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   input : {
     textAlign: 'center',
     marginTop: 5,
-    height: 30,
+    height: 35,
     width: 60 + "%",
     ...Platform.select({
       ios: {
@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
       android: {
         borderColor: 'gray',
         borderWidth: StyleSheet.hairlineWidth,
+        fontSize: 12,
       },
     }),
     borderRadius: 25,

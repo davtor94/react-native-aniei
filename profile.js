@@ -167,6 +167,9 @@ export default class ProfileScreen extends React.Component {
       }
      } catch (error) {
        //console.error(error);
+       this.setState({
+         refreshing:false,
+       })
        return false;
      }
   }

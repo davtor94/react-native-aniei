@@ -158,8 +158,8 @@ renderiAmStudent() {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        <ScrollView style={{width:"100%", padding:10}}>
-          <KeyboardAvoidingView style={{flex:1}} behavior="position">
+        <ScrollView style={{width:"100%", padding:10}} keyboardShouldPersistTaps="handled">
+          <KeyboardAvoidingView style={{flex:1}} behavior="padding" keyboardShouldPersistTaps='handled'>
             <View style={{flex: 1, alignItems: 'center'}}>
               {this.renderiAmStudent()}
               <TouchableOpacity style={styles.buttonStudent}
@@ -238,7 +238,7 @@ renderiAmStudent() {
                       returnKeyType="next"
                       onSubmitEditing={() => this.correoInput.focus()}
                       ref={(input)=> this.institucionInput = input}
-                      placeholder='Institucion'
+                      placeholder='Institución'
                       onChangeText={(typedText) =>{
                         this.setState({
                           institucion: typedText,
@@ -262,7 +262,7 @@ renderiAmStudent() {
                       value={this.state.correo}
                   >
             </TextInput>
-              <TouchableOpacity style={styles.buttonContainer} onPress = {this.onPressRegistrar}>
+              <TouchableOpacity style={[styles.buttonContainer,{marginBottom:25}]} onPress = {this.onPressRegistrar}>
                    <Text  style={styles.buttonText}>Registrate</Text>
                </TouchableOpacity>
             </View>

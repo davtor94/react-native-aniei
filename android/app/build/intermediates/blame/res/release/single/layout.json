@@ -56,12 +56,12 @@
         "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/layout/abc_list_menu_item_checkbox.xml"
     },
     {
-        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/layout/select_dialog_item_material.xml",
-        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/layout/select_dialog_item_material.xml"
-    },
-    {
         "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/layout/abc_dialog_title_material.xml",
         "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/layout/abc_dialog_title_material.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/layout/select_dialog_item_material.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/layout/select_dialog_item_material.xml"
     },
     {
         "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/layout/abc_action_bar_view_list_nav_layout.xml",

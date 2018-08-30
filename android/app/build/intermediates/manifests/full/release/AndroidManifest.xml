@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="16"
-        android:targetSdkVersion="22" />
+        android:targetSdkVersion="23" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -27,8 +27,9 @@
     <application
         android:name="com.aniei.MainApplication"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_aniei"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_aniei_round"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.aniei.MainActivity"
@@ -43,6 +44,9 @@
         </activity>
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
 
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
         <meta-data
             android:name="android.support.VERSION"
             android:value="26.1.0" />

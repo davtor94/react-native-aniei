@@ -4,20 +4,20 @@
         "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/layout/abc_action_bar_title_item.xml"
     },
     {
-        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/debug/layout/notification_template_big_media_narrow_custom.xml",
-        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/d0f9e50dbd9f9e7c0e8c2776d3f5894f/res/layout/notification_template_big_media_narrow_custom.xml"
-    },
-    {
-        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/debug/layout/abc_action_bar_view_list_nav_layout.xml",
-        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/layout/abc_action_bar_view_list_nav_layout.xml"
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/debug/layout/notification_template_big_media_custom.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/d0f9e50dbd9f9e7c0e8c2776d3f5894f/res/layout/notification_template_big_media_custom.xml"
     },
     {
         "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/debug/layout/support_simple_spinner_dropdown_item.xml",
         "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/layout/support_simple_spinner_dropdown_item.xml"
     },
     {
-        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/debug/layout/notification_template_big_media_custom.xml",
-        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/d0f9e50dbd9f9e7c0e8c2776d3f5894f/res/layout/notification_template_big_media_custom.xml"
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/debug/layout/abc_action_bar_view_list_nav_layout.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/layout/abc_action_bar_view_list_nav_layout.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/debug/layout/notification_template_big_media_narrow_custom.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/d0f9e50dbd9f9e7c0e8c2776d3f5894f/res/layout/notification_template_big_media_narrow_custom.xml"
     },
     {
         "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/debug/layout/redbox_view.xml",

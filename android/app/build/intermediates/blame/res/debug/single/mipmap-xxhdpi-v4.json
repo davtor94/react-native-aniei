@@ -1,6 +1,14 @@
 [
     {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/debug/mipmap-xxhdpi-v4/ic_launcher_aniei.png",
+        "source": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_aniei.png"
+    },
+    {
         "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/debug/mipmap-xxhdpi-v4/ic_launcher.png",
         "source": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/debug/mipmap-xxhdpi-v4/ic_launcher_aniei_round.png",
+        "source": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_aniei_round.png"
     }
 ]
