@@ -102,7 +102,7 @@ onPressIngresar = () => {
         });
     }})
     .catch((error) => {
-      console.error(error);
+      //console.error(error);
       Alert.alert("Conexion a internet interrumpida")
     });
 }
@@ -305,7 +305,7 @@ renderiAmStudent() {
             Alert.alert("Ocurrió un error")
           }
           }).catch((error) => {
-            console.error(error);
+            //console.error(error);
             Alert.alert("Ocurrió un error")
           });
         }
@@ -318,7 +318,7 @@ renderiAmStudent() {
     try {
       await AsyncStorage.setItem(userKey,username);
     } catch (error) {
-        console.console.error();
+        //console.console.error();
     }
   }
   _loadData = async() =>{
@@ -329,7 +329,7 @@ renderiAmStudent() {
       }
       return false;
      } catch (error) {
-       console.error(error);
+       //console.error(error);
        return false;
      }
   }

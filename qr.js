@@ -50,7 +50,7 @@ export default class QrScanner extends Component {
         return false;
       }
      } catch (error) {
-       console.error(error);
+       //console.error(error);
        return false;
      }
   };
