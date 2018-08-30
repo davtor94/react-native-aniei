@@ -67,7 +67,7 @@ export default class ProfileScreen extends React.Component {
           </View>
           <View style={styles.conferencesContainer}>
             <Text style={styles.titleText}>Mis asistencias</Text>
-            <FlatList
+            <FlatList style={{width:100 + '%'}}
               refreshControl={
                 <RefreshControl
                   refreshing={this.state.refreshing}

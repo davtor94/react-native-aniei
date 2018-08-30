@@ -13,7 +13,8 @@ import {
   TouchableOpacity,
   AsyncStorage,
   RefreshControl,
-  NetInfo,} from 'react-native';
+  NetInfo,
+} from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
 import { Card, ListItem, Button } from 'react-native-elements';
 import ActionBar from 'react-native-action-bar';
