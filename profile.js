@@ -159,14 +159,14 @@ export default class ProfileScreen extends React.Component {
             })
             })
             .catch((error) => {
-              console.error(error);
+              //console.error(error);
             });
         return true;
       }else{
         return false;
       }
      } catch (error) {
-       console.error(error);
+       //console.error(error);
        return false;
      }
   }
@@ -174,7 +174,7 @@ export default class ProfileScreen extends React.Component {
     try {
       await AsyncStorage.setItem(userKey,anything);
     } catch (error) {
-        console.console.error();
+        //console.console.error();
     }
   }
 }

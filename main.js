@@ -58,7 +58,7 @@ class FButton extends React.Component {
           return false;
         }
        } catch (error) {
-         console.error(error);
+         //console.error(error);
          return false;
        }
     }
@@ -191,7 +191,8 @@ _downloadConferencesData= function(companyName) {
         //Alert.alert("Desde api")
       })
       .catch((error) => {
-        console.error(error);
+        //console.error(error);
+        this.setState({refreshing: false});
       });
 }
 _loadConferencesData = async function(companyName){
@@ -206,7 +207,7 @@ _loadConferencesData = async function(companyName){
       this._downloadConferencesData();
     }
    } catch (error) {
-     console.error(error);
+     //console.error(error);
    }
 }
 _filterConferences = function(companyName,conferences){
@@ -264,7 +265,7 @@ _saveDatabases = async(basesString) => {
   try {
     await AsyncStorage.setItem(fileName, basesString);
   } catch (error) {
-      console.console.error();
+      //console.console.error();
   }
 }//Esta funcion no es usada, pero sirve de ejemplo
 _getLocalDatabases = async() =>{ //Esta funcion es de prueba
@@ -275,7 +276,7 @@ _getLocalDatabases = async() =>{ //Esta funcion es de prueba
       Alert.alert(valueJson[0].title);
     }
    } catch (error) {
-     console.error(error);
+     //console.error(error);
    }
 }
 ListEmptyView = () => {

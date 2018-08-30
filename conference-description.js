@@ -159,6 +159,10 @@ export default class ConferenceDescriptionScreen extends React.Component {
     const startTime = state.conferenceData.startTime;
     const endTime = state.conferenceData.endTime;
     const locationName = state.conferenceData.locationName;
+    var mesageEnded = "";
+    if(!this._verifyDate()){
+      mesageEnded = "(Terminada)";
+    }
 
     return (
     <View style={styles.container}>
@@ -206,7 +210,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
               <TableWrapper style={styles.wrapper}>
                 <Col data={["Auditorio","Ponente","Fecha","Hora"]}
                 style={styles.title}  textStyle={styles.textTitleTable}/>
-                <Rows data={[[locationName],[speaker],[date],[startTime+" - "+endTime]]}
+                <Rows data={[[locationName],[speaker],[date],[startTime+" - "+endTime+mesageEnded]]}
                 flexArr={[2]} style={styles.row} textStyle={styles.textTable}/>
               </TableWrapper>
             </Table>

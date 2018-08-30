@@ -66,7 +66,7 @@ export default class Login extends React.Component {
           Alert.alert("Error al intentar ingresar")
         }
         }).catch((error) => {
-          console.error(error);
+          //console.error(error);
         });
   }
 
@@ -74,7 +74,7 @@ export default class Login extends React.Component {
     try {
       await AsyncStorage.setItem(userKey,username);
     } catch (error) {
-        console.console.error();
+        //console.console.error();
     }
   }
 onPressRegistrar(routeName){
