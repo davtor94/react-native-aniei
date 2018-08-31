@@ -246,7 +246,6 @@ export default class ConferenceDescriptionScreen extends React.Component {
                 this._getCurrentPosition();
                 Alert.alert("Enciende tu ubicación");
               }
-              Alert.alert(this.state.latitude)
             }}
           >
             <Text  style={styles.buttonText}>Cómo llegar</Text>
