@@ -21,6 +21,7 @@ import ActionBar from 'react-native-action-bar';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+
 const fileName = "conferencias";
 const companyNames = ["Oracle","IBM","Intel","HP","Continental"];
 const noCompany = "Others";
@@ -87,7 +88,13 @@ class MyCard extends React.Component{
         <View style={{width: Dimensions.get('window').width}}>
           <Card
             title={this.props.item.title}
-            image={null}>
+            image={null}
+          >
+            {this.props.companyName == noCompany ?
+            <View style={{flex: 1, alignItems: 'center'}}>
+              <Text style={{fontSize: 18, fontWeight: 'bold'}}>{this.props.item.companyName}</Text>
+            </View>
+            : <View/>}
             <Text style={{fontWeight: 'bold'}}>
               Dia: {this.state.day}/{this.state.month}/{this.state.year}
             </Text>
@@ -115,14 +122,13 @@ class MyCard extends React.Component{
     }
   }
 class BaseScreen extends React.Component {
-
-  constructor(props,companyName,imagePath){
+  constructor(props,company,imagePath){
     super(props);
     this.state = {
       refreshing: false,
       data: null,
     };
-    this.companyName = companyName;
+    this.companyName=company;
     this._downloadConferencesData = _downloadConferencesData.bind(this);
     this._loadConferencesData = _loadConferencesData.bind(this);
     this._loadConferencesData(this.companyName);
@@ -150,7 +156,11 @@ class BaseScreen extends React.Component {
           }
           data={this.state.data}
           renderItem={({item}) =>
-          	 <MyCard item={item} navegador={this.props.navigation} imagePath={this.imagePath} companyName={this.props.companyName}/>
+          	 <MyCard
+               item={item} navegador={this.props.navigation}
+               imagePath={this.imagePath}
+               companyName={this.companyName}
+             />
           }
           keyExtractor={item => item.id}
           ListEmptyComponent={ListEmptyView}
@@ -332,12 +342,55 @@ const styles = StyleSheet.create({
   },
 
 });
-export default createBottomTabNavigator({
-  Oracle: OracleScreen,
-  IBM: IbmScreen,
-  Intel: IntelScreen,
-  HP: HpScreen,
-  Continental: ContinentalScreen,
-  Más: OthersScreen,
-},
+export default createBottomTabNavigator(
+  {
+    Oracle: OracleScreen,
+    IBM: IbmScreen,
+    Intel: IntelScreen,
+    HP: HpScreen,
+    Continental: ContinentalScreen,
+    Más: OthersScreen,
+  },
+  {
+    navigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, tintColor }) => {
+        const { routeName } = navigation.state;
+        let iconPath;
+        let size;
+        let selected = 40;
+        let unselected = 30;
+        if (routeName === 'Oracle') {
+          iconPath = require('./iconos-empresas/oracle.png');
+          focused ? size = selected : size = unselected;
+        } else if (routeName === 'IBM') {
+          iconPath = require('./iconos-empresas/ibm.png');
+          focused ? size = selected : size = unselected;
+        } else if (routeName === 'Intel') {
+          iconPath = require('./iconos-empresas/intel.png');
+          focused ? size = selected : size = unselected;
+        } else if (routeName === 'HP') {
+          iconPath = require('./iconos-empresas/hp.png');
+          focused ? size = selected : size = unselected;
+        } else if (routeName === 'Continental') {
+          iconPath = require('./iconos-empresas/continental.png');
+          focused ? size = selected : size = unselected;
+        } else if (routeName === 'Más') {
+          iconPath = require('./iconos-empresas/mas.png');
+          focused ? size = selected : size = unselected;
+        }
+        // You can return any component that you like here! We usually use an
+        // icon component from react-native-vector-icons
+        return (
+          <Image
+            style={{width: size, height: size}}
+            source={iconPath}
+          />
+        );
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: 'tomato',
+      inactiveTintColor: 'gray',
+    },
+  }
 );

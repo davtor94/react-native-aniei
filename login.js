@@ -66,7 +66,7 @@ export default class Login extends React.Component {
           Alert.alert("Error al intentar ingresar")
         }
         }).catch((error) => {
-          //console.error(error);
+          Alert.alert("Comprueba tu conexión a internet")
         });
   }
 

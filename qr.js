@@ -114,14 +114,10 @@ export default class QrScanner extends Component {
       .then((responseText) => {
         Alert.alert(responseText);
         console.log(responseText);
-        if (responseText == "Registrado correctamente") {
-          this.props.navigation.goBack();
-        }else{
-          this.props.navigation.goBack();
-        }
+        this.props.navigation.goBack();
       }).catch((error) => {
-        //console.error(error);
         Alert.alert("Ocurrió un error");
+        this.props.navigation.goBack();
       });
     }
   };
