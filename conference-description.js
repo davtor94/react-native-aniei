@@ -9,7 +9,9 @@ import {
   TouchableOpacity,
   Alert,
   Button,
-  ScrollView, } from 'react-native';
+  ScrollView,
+  Platform,
+} from 'react-native';
   import { AsyncStorage } from "react-native";
 
 //import MapView from 'react-native-maps';
@@ -236,6 +238,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
               title={locationName}
             />}
           </MapView>{*/}
+          {Platform.OS === 'android' ?
           <TouchableOpacity
             style={styles.buttonContainer}
             onPress={() => {
@@ -250,6 +253,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
           >
             <Text  style={styles.buttonText}>Cómo llegar</Text>
           </TouchableOpacity>
+          : <View/>}
         </View>
       </ScrollView>
     </View>
