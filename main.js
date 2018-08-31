@@ -16,7 +16,7 @@ import {
   NetInfo,
 } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
-import { Card, ListItem, Button } from 'react-native-elements';
+import { Card, ListItem, Button,} from 'react-native-elements';
 import ActionBar from 'react-native-action-bar';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -65,7 +65,6 @@ class FButton extends React.Component {
     }
 
   }
-
 class MyCard extends React.Component{
     constructor(props){
       super(props);
@@ -127,6 +126,7 @@ class BaseScreen extends React.Component {
     this.state = {
       refreshing: false,
       data: null,
+      isVisible: true,
     };
     this.companyName=company;
     this._downloadConferencesData = _downloadConferencesData.bind(this);
@@ -167,7 +167,12 @@ class BaseScreen extends React.Component {
           ListHeaderComponent={this.renderHeader}
         />
         <FButton navegador={this.props.navigation}/>
-
+        <ActionButton buttonColor="#00a35b" onPress={() => this.props.navigation.navigate('About')}
+          renderIcon = {()=>(<Icon name="md-information" style={styles.actionButtonIcon} />)}
+          offsetY={85}
+          offsetX={24}
+          size={35}
+        />
       </View>
     );
   }
