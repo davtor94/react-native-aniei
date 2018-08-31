@@ -13,10 +13,11 @@ import {
   AsyncStorage,
   Button,
   ScrollView,
-  ActivityIndicator } from 'react-native';
+  ActivityIndicator
+} from 'react-native';
+import * as links from './links.js';
 
 const userKey = "usuario";
-const GET_USER_PROFILE_URL = "https://javiermorenot96.000webhostapp.com/aniei/getUserProfile.php"
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -125,7 +126,7 @@ export default class ProfileScreen extends React.Component {
       const value = await AsyncStorage.getItem(userKey);
       if (value !== null) {
         //Alert.alert("Logueado Value "+value)
-        fetch(GET_USER_PROFILE_URL, {
+        fetch(links.GET_USER_PROFILE_LINK, {
         method: 'POST',
         headers: new Headers({
                  'Accept': 'application/json, text/plain',
@@ -159,14 +160,12 @@ export default class ProfileScreen extends React.Component {
             })
             })
             .catch((error) => {
-              //console.error(error);
             });
         return true;
       }else{
         return false;
       }
      } catch (error) {
-       //console.error(error);
        this.setState({
          refreshing:false,
        })
@@ -177,7 +176,6 @@ export default class ProfileScreen extends React.Component {
     try {
       await AsyncStorage.setItem(userKey,anything);
     } catch (error) {
-        //console.console.error();
     }
   }
 }

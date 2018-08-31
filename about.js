@@ -20,7 +20,9 @@ export default class About extends React.Component{
   }
   render(){
       return(
-            <ImageBackground source={require('./technology.jpg')} style={{width: '100%', height: '100%', justifyContent: 'center',alignItems: 'center'}}>
+            <ImageBackground source={require('./technology.jpg')}
+              style={{width: '100%', height: '100%', justifyContent: 'center',alignItems: 'center'}}
+            >
               <View style={{padding:10, backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
                 <Text style={styles.text}>XXXI Congreso Nacional y XVII Congreso Internacional de Informática y Computación de la ANIEI.</Text>
                 <Text style={styles.text}>(CNCIIC-ANIEI 2018)</Text>

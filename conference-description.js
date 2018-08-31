@@ -14,12 +14,9 @@ import {
 } from 'react-native';
   import { AsyncStorage } from "react-native";
 
-//import MapView from 'react-native-maps';
 import ActionButton from 'react-native-action-button';
 import {OpenMapDirections} from 'react-native-navigation-directions';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
-
-const GOOGLE_MAPS_APIKEY = 'AIzaSyDwZV5fTTvjjDhjYUp7El3AFGnfQ39hhmw';
 
 const userKey = "usuario";
 const minutosFaltantes = 15
@@ -213,31 +210,6 @@ export default class ConferenceDescriptionScreen extends React.Component {
               </TableWrapper>
             </Table>
           </View>
-
-          {/*}<MapView style={styles.map} initialRegion={{
-            latitude: 20.656940,
-            longitude: -103.326103,
-            latitudeDelta: 0.00486419504430,
-            longitudeDelta: 0.00401428176900,
-          }}
-          showsUserLocation={true}
-          showsMyLocationButton={false}
-          showsPointsOfInterest={false}
-          showsTraffic={false}
-          toolbarEnabled={false}
-
-          onUserLocationChange={(e) => {
-            this.setState({
-              latitude: e.nativeEvent.coordinate.latitude,
-              longitude: e.nativeEvent.coordinate.longitude,
-            });
-          }}
-          >
-           {!!this.state.destLatitude && !!this.state.destLongitude && <MapView.Marker
-              coordinate={{"latitude":this.state.destLatitude,"longitude":this.state.destLongitude}}
-              title={locationName}
-            />}
-          </MapView>{*/}
           {Platform.OS === 'android' ?
           <TouchableOpacity
             style={styles.buttonContainer}
@@ -260,7 +232,6 @@ export default class ConferenceDescriptionScreen extends React.Component {
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {

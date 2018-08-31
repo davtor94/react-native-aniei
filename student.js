@@ -11,19 +11,17 @@ import {
   ScrollView } from 'react-native';
 
 export default class Student extends Component{
-
   constructor(props){
     super(props)
     this.state = {
       iAmStudent: false
     }
   }
-
-    toggleiAmStudent = () => {
-        this.setState({
-            iAmStudent: !this.state.iAmStudent
-        });
-    }
+  toggleiAmStudent = () => {
+      this.setState({
+          iAmStudent: !this.state.iAmStudent
+      });
+  }
 
     renderiAmStudent() {
         if (this.state.iAmStudent) {

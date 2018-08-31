@@ -14,11 +14,11 @@ import {
   NetInfo,
   Platform,
 } from 'react-native';
-import Student   from './student';
+import Student from './student';
+import * as links from './links.js';
 
 const userKey = "usuario";
-const REGISTER_LINK = "https://javiermorenot96.000webhostapp.com/aniei/register.php";
-const UDG_ACCESS_LINK = "http://148.202.152.33/ws_general.php";
+
 
 export default class Register extends Component {
   static navigationOptions = {
@@ -68,15 +68,12 @@ _keyboardDidHide = () => {
   });
 }
 toggleiAmStudent = () => {
-  if(!this.state.iAmStudent){
-    //Alert.alert("Ingrese codigo y nip correspondiendtes a siiau")
-  }
     this.setState({
         iAmStudent: !this.state.iAmStudent
     });
 }
 onPressIngresar = () => {
-  fetch(UDG_ACCESS_LINK, {
+  fetch(links.UDG_ACCESS_LINK, {
     method: 'POST',
     headers: new Headers({
              'Content-Type': 'application/x-www-form-urlencoded',
@@ -84,7 +81,6 @@ onPressIngresar = () => {
     body: "codigo="+ this.state.codigo+ "&nip="+ this.state.nip
     }).then((response) =>  response.text())
     .then((responseText) => {
-    //Alert.alert(responseText)
     if(responseText == "0"){
       Alert.alert("Codigo o nip invalido")
       this.setState({
@@ -102,7 +98,6 @@ onPressIngresar = () => {
         });
     }})
     .catch((error) => {
-      //console.error(error);
       Alert.alert("Conexion a internet interrumpida")
     });
 }
@@ -262,9 +257,12 @@ renderiAmStudent() {
                       value={this.state.correo}
                   >
             </TextInput>
-              <TouchableOpacity style={[styles.buttonContainer,{marginBottom:25}]} onPress = {this.onPressRegistrar}>
-                   <Text  style={styles.buttonText}>Registrate</Text>
-               </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.buttonContainer,{marginBottom:25}]}
+                onPress = {this.onPressRegistrar}
+              >
+                <Text  style={styles.buttonText}>Registrate</Text>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </ScrollView>
@@ -277,7 +275,7 @@ renderiAmStudent() {
         {
           var sha1 = require('sha1');
           var encryptedPassword = sha1(this.state.password);
-          fetch(REGISTER_LINK, {
+          fetch(links.REGISTER_LINK, {
           method: 'POST',
           headers: {
           Accept: 'application/json',
@@ -294,7 +292,8 @@ renderiAmStudent() {
           .then((responseText) => {
           if(responseText == "registrado"){
             this._saveData(this.state.usuario);
-            //Guardado con exito
+            Alert.alert("Registrado correctamente");
+            this.props.navigation.goBack();
           }else if(responseText == "usuario repetido"){
             Alert.alert("Ya existe ese usuario");
           }
@@ -305,7 +304,6 @@ renderiAmStudent() {
             Alert.alert("Ocurrió un error")
           }
           }).catch((error) => {
-            //console.error(error);
             Alert.alert("Ocurrió un error")
           });
         }
@@ -318,7 +316,6 @@ renderiAmStudent() {
     try {
       await AsyncStorage.setItem(userKey,username);
     } catch (error) {
-        //console.console.error();
     }
   }
   _loadData = async() =>{
@@ -329,7 +326,6 @@ renderiAmStudent() {
       }
       return false;
      } catch (error) {
-       //console.error(error);
        return false;
      }
   }

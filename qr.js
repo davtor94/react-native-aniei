@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import { AsyncStorage } from "react-native";
 import QRCodeScanner from 'react-native-qrcode-scanner';
+import * as links from './links.js';
 
 const userKey = "usuario";
-const ASSISTANCE_LINK = "https://javiermorenot96.000webhostapp.com/aniei/assistance.php";
 
 export default class QrScanner extends Component {
   static navigationOptions = {
@@ -37,7 +37,6 @@ export default class QrScanner extends Component {
       console.log(this.state.conferenceId);
     })
     .catch((error) => {
-      //console.error(error);
     });
   };
 
@@ -50,7 +49,6 @@ export default class QrScanner extends Component {
         return false;
       }
      } catch (error) {
-       //console.error(error);
        return false;
      }
   };
@@ -99,7 +97,7 @@ export default class QrScanner extends Component {
     if (this.state.lastScannedUrl) {
       AsyncStorage.setItem("UnValor",this.state.lastScannedUrl);
       console.log('QR detectado');
-      fetch(ASSISTANCE_LINK, {
+      fetch(links.ASSISTANCE_LINK, {
         method: 'POST',
         headers: {
         Accept: 'application/json',

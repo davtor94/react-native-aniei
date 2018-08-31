@@ -20,13 +20,13 @@ import { Card, ListItem, Button,} from 'react-native-elements';
 import ActionBar from 'react-native-action-bar';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
+import * as links from './links.js';
 
 
 const fileName = "conferencias";
 const companyNames = ["Oracle","IBM","Intel","HP","Continental"];
 const noCompany = "Others";
 const userKey = "usuario";
-const GET_ALL_CONFERENCES_LINK = "https://javiermorenot96.000webhostapp.com/aniei/getAllConferences.php"
 
 
 class FButton extends React.Component {
@@ -138,8 +138,6 @@ class BaseScreen extends React.Component {
         'willFocus',
         payload => {
           this.forceUpdate();
-          //this._loadData().then((res) => (res===true)? this.setState({navigateTo:"Profile"}) : this.setState({navigateTo:"Login"}) );
-          //Alert.alert("Aquí se debe de actualizar");
         }
       );
 
@@ -190,7 +188,7 @@ class BaseScreen extends React.Component {
 
 _downloadConferencesData= function(companyName) {
     this.setState({refreshing: true});
-    fetch(GET_ALL_CONFERENCES_LINK, {
+    fetch(links.GET_ALL_CONFERENCES_LINK, {
     method: 'POST',
     headers: {
         'Accept': 'application/json, text/plain',
@@ -203,10 +201,8 @@ _downloadConferencesData= function(companyName) {
         _saveDatabases(bases);
         this.setState({refreshing: false});
         this.setState({data:filteredConferences});
-        //Alert.alert("Desde api")
       })
       .catch((error) => {
-        //console.error(error);
         this.setState({refreshing: false});
       });
 }
@@ -217,12 +213,10 @@ _loadConferencesData = async function(companyName){
       const valueJson = JSON.parse(value);
       const filteredConferences = _filterConferences(companyName,valueJson);
       this.setState({data:filteredConferences});
-      //Alert.alert("Desde local")
     }else{
       this._downloadConferencesData();
     }
    } catch (error) {
-     //console.error(error);
    }
 }
 _filterConferences = function(companyName,conferences){
@@ -280,19 +274,7 @@ _saveDatabases = async(basesString) => {
   try {
     await AsyncStorage.setItem(fileName, basesString);
   } catch (error) {
-      //console.console.error();
   }
-}//Esta funcion no es usada, pero sirve de ejemplo
-_getLocalDatabases = async() =>{ //Esta funcion es de prueba
-  try {
-    const value = await AsyncStorage.getItem(fileName);
-    if (value !== null) {
-      const valueJson = JSON.parse(value);
-      Alert.alert(valueJson[0].title);
-    }
-   } catch (error) {
-     //console.error(error);
-   }
 }
 ListEmptyView = () => {
  return (
@@ -383,8 +365,6 @@ export default createBottomTabNavigator(
           iconPath = require('./iconos-empresas/mas.png');
           focused ? size = selected : size = unselected;
         }
-        // You can return any component that you like here! We usually use an
-        // icon component from react-native-vector-icons
         return (
           <Image
             style={{width: size, height: size}}
