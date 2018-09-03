@@ -38,7 +38,6 @@ constructor(props){
     nombre: "",
     institucion: "",
   }
-  this._loadData();
 }
 
 handleChange = (event) => {
@@ -102,7 +101,7 @@ onPressIngresar = () => {
     });
 }
 renderiAmStudent() {
-    if (this.state.iAmStudent) {
+    if (this.state.i0AmStudent) {
         return (
           <View
             style = {styles.containerStudent}>
@@ -291,8 +290,7 @@ renderiAmStudent() {
           ).then((response) =>  response.text())
           .then((responseText) => {
           if(responseText == "registrado"){
-            this._saveData(this.state.usuario);
-            Alert.alert("Registrado correctamente");
+            Alert.alert("Registrado correctamente, ya puedes iniciar sesión");
             this.props.navigation.goBack();
           }else if(responseText == "usuario repetido"){
             Alert.alert("Ya existe ese usuario");
@@ -311,23 +309,6 @@ renderiAmStudent() {
           Alert.alert("Ingresa la misma contraseña en ambos campos");
         }
 
-  }
-  _saveData = async(username) => {
-    try {
-      await AsyncStorage.setItem(userKey,username);
-    } catch (error) {
-    }
-  }
-  _loadData = async() =>{
-    try {
-      const value = await AsyncStorage.getItem(userKey);
-      if (value !== null) {
-        return true;
-      }
-      return false;
-     } catch (error) {
-       return false;
-     }
   }
 }
 
