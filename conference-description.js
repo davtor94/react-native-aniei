@@ -53,7 +53,9 @@ export default class ConferenceDescriptionScreen extends React.Component {
     });
   }
   componentDidMount() {
-    this._getCurrentPosition();
+    if (Platform.OS === 'android'){
+      this._getCurrentPosition();
+    }
     this.setState({
       destLatitude:parseFloat(this.state.conferenceData.latitude),
       destLongitude:parseFloat(this.state.conferenceData.longitude),

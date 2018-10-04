@@ -49,6 +49,7 @@ export default class ProfileScreen extends React.Component {
       return (
         <View style={styles.container}>
           <View style={styles.profileContainer}>
+
               <Image
                 style={styles.logo}
                 source={require('./src/components/images/logo_leon_udg.png')}
@@ -65,6 +66,7 @@ export default class ProfileScreen extends React.Component {
               >
                 <Text  style={styles.buttonText}>Cerrar sesión</Text>
               </TouchableOpacity>
+
           </View>
           <View style={styles.conferencesContainer}>
             <Text style={styles.titleText}>Mis asistencias</Text>
@@ -217,11 +219,10 @@ const styles = StyleSheet.create({
   profileContainer: {
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     top: 10,
     width: 90 + "%",
     padding: 10,
-    paddingBottom: 20,
     flex:2,
     borderRadius:5,
   },
@@ -235,7 +236,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 5,
     marginBottom: 5,
-    flex:3,
+    flex:2,
     borderRadius:5,
   },
   conferenceItem: {
@@ -264,7 +265,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2980b6',
     height: 30,
     borderRadius: 5,
-    width: 60 + "%"
+    width: 60 + "%",
   },
   buttonText:{
     color: '#fff',

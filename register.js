@@ -101,10 +101,14 @@ onPressIngresar = () => {
     });
 }
 renderiAmStudent() {
-    if (this.state.i0AmStudent) {
+    if (this.state.iAmStudent) {
         return (
           <View
             style = {styles.containerStudent}>
+              <TouchableOpacity style={styles.buttonStudent}
+                onPress={this.toggleiAmStudent}>
+                  <Text  style={styles.buttonText}>No soy UDG</Text>
+              </TouchableOpacity>
                     <TextInput
                                style = {styles.input}
                                autoCapitalize="none"
@@ -152,14 +156,17 @@ renderiAmStudent() {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        <ScrollView style={{width:"100%", padding:10}} keyboardShouldPersistTaps="handled">
-          <KeyboardAvoidingView style={{flex:1}} behavior="padding" keyboardShouldPersistTaps='handled'>
-            <View style={{flex: 1, alignItems: 'center'}}>
-              {this.renderiAmStudent()}
+
+        <ScrollView style={{width: 100+"%"}} >
+        {this.renderiAmStudent()}
+          {!this.state.iAmStudent &&
+          <KeyboardAvoidingView style={{flex: 1}} behavior="position" keyboardVerticalOffset={30}>
+            <View style={{width:100+"%",alignItems: 'center'}}>
               <TouchableOpacity style={styles.buttonStudent}
                 onPress={this.toggleiAmStudent}>
                   <Text  style={styles.buttonText}>Soy UDG</Text>
               </TouchableOpacity>
+
               <TextInput
                         style = {styles.input}
                          autoCapitalize="words"
@@ -263,7 +270,8 @@ renderiAmStudent() {
                 <Text  style={styles.buttonText}>Registrate</Text>
               </TouchableOpacity>
             </View>
-          </KeyboardAvoidingView>
+
+          </KeyboardAvoidingView>}
         </ScrollView>
       </View>
     );
@@ -317,7 +325,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     fontWeight: '700',
-    width: "100%"
+    width: 100+"%"
 },
   buttonContainer:{
         alignItems: 'center',
@@ -326,7 +334,7 @@ const styles = StyleSheet.create({
         height: 40,
         marginTop: 25,
         borderRadius: 5,
-        width: "90%",
+        width: 90+"%",
       alignContent: 'flex-end',
     },
     buttonStudent:{
@@ -337,7 +345,7 @@ const styles = StyleSheet.create({
           height: 40,
           marginTop: 15,
           borderRadius: 5,
-          width: "90 %"
+          width: 90+"%",
       },
   container: {
     flex: 1,
@@ -346,7 +354,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   containerStudent: {
-    width: "100%",
+    width: 100+'%',
     backgroundColor: '#fff',
     alignItems: 'center',
   },
@@ -356,7 +364,7 @@ const styles = StyleSheet.create({
     padding: 5,
     marginTop: 16,
     height: 40,
-    width: "90%",
+    width: 90+"%",
     ...Platform.select({
       ios: {
         backgroundColor: '#E6E6E6',
