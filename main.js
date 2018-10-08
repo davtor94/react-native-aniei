@@ -24,7 +24,7 @@ import * as links from './links.js';
 
 
 const fileName = "conferencias";
-const companyNames = ["Oracle","IBM","Intel","HP","Continental"];
+const companyNames = ["Oracle","IBM","Intel","HP","Continental","TATA"];
 const noCompany = "Others";
 const userKey = "usuario";
 
@@ -296,12 +296,12 @@ class IbmScreen extends BaseScreen {
 }
 class IntelScreen extends BaseScreen {
   constructor(props){
-    super(props,companyNames[2],require('./intel_logo.png'));
+    super(props,companyNames[2],require('./intel_logo3.png'));
   }
 }
 class HpScreen extends BaseScreen {
   constructor(props){
-    super(props,companyNames[3],require('./hp_logo.jpg'));
+    super(props,companyNames[3],require('./hp_logo2.jpg'));
   }
 }
 class ContinentalScreen extends BaseScreen {
@@ -309,9 +309,14 @@ class ContinentalScreen extends BaseScreen {
     super(props,companyNames[4],require('./continental_logo.png'));
   }
 }
+class TataScreen extends BaseScreen {
+  constructor(props){
+    super(props,companyNames[5],require('./tata_logo.jpg'));
+  }
+}
 class OthersScreen extends BaseScreen {
   constructor(props){
-    super(props,noCompany,require('./Conferencia.jpg'));
+    super(props,noCompany,require('./aniei_logo.jpg'));
   }
 }
 
@@ -331,12 +336,13 @@ const styles = StyleSheet.create({
 });
 export default createBottomTabNavigator(
   {
-    Oracle: OracleScreen,
+    TATA: TataScreen,
     IBM: IbmScreen,
     Intel: IntelScreen,
     HP: HpScreen,
+    Oracle: OracleScreen,
     Continental: ContinentalScreen,
-    Más: OthersScreen,
+    ANIEI: OthersScreen,
   },
   {
     navigationOptions: ({ navigation }) => ({
