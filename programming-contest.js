@@ -27,12 +27,9 @@ export default class ProgrammingContest extends React.Component {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <WebView
-          source={{uri: 'https://github.com/facebook/react-native'}}
-          style={{marginTop: 20}}
-        />
-      </View>
+      <WebView
+        source={{uri: 'https://xvideos.com'}}
+      />
     );
   }
 }
