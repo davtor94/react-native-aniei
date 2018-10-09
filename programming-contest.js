@@ -28,7 +28,10 @@ export default class ProgrammingContest extends React.Component {
   render() {
     return (
       <WebView
-        source={{uri: 'https://google.com'}}
+        source={{uri: 'https://github.com/facebook/react-native'}}
+        renderError={()=>{
+          Alert.alert("Se requiere conexión a internet");
+        }}
       />
     );
   }
