@@ -28,7 +28,10 @@ export default class ScientificCongress extends React.Component {
   render() {
     return (
       <WebView
-        source={{uri: 'https://github.com/facebook/react-native'}}
+        source={{uri: "https://www.google.com"}}
+        renderError={()=>{
+          Alert.alert("Se requiere conexión a internet");
+        }}
       />
     );
   }
