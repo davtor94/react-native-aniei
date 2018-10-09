@@ -70,6 +70,7 @@ const workshopStack = StackNavigator(
     QrScreen: QrScanner,
     Login: Login,
     Register: Register,
+    Profile: ProfileScreen,
   },
   {
     headerMode: 'float',
@@ -133,6 +134,9 @@ const contestStack = StackNavigator(
 const visitsStack = StackNavigator(
   {
     Visits: Visits,
+    Login: Login,
+    Register: Register,
+    Profile: ProfileScreen,
   },
   {
     headerMode: 'float',
@@ -154,6 +158,9 @@ const visitsStack = StackNavigator(
 const fairStack = StackNavigator(
   {
     EmploymentFair: EmploymentFair,
+    Login: Login,
+    Register: Register,
+    Profile: ProfileScreen,
   },
   {
     headerMode: 'float',

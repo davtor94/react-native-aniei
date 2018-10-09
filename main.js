@@ -361,8 +361,11 @@ export default createBottomTabNavigator(
         } else if (routeName === 'Continental') {
           iconPath = require('./iconos-empresas/continental.png');
           focused ? size = selected : size = unselected;
-        } else if (routeName === 'Más') {
-          iconPath = require('./iconos-empresas/mas.png');
+        } else if (routeName === 'TATA') {
+          iconPath = require('./iconos-empresas/tata2.png');
+          focused ? size = selected : size = unselected;
+        }else if (routeName === 'ANIEI') {
+          iconPath = require('./iconos-empresas/aniei.png');
           focused ? size = selected : size = unselected;
         }
         return (

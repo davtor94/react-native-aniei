@@ -154,7 +154,7 @@ import {
                />
             }
             keyExtractor={item => item.id}
-            ListEmptyComponent={ListEmptyView}
+            ListEmptyComponent={ListEmptyViewWorkshop}
             ListHeaderComponent={this.renderHeader}
           />
           <FButton navegador={this.props.navigation}/>
@@ -234,7 +234,7 @@ import {
     } catch (error) {
     }
   }
-  ListEmptyView = () => {
+  ListEmptyViewWorkshop = () => {
    return (
      <View style={{margin: 20, backgroundColor: '#fff',alignItems: 'center',justifyContent: 'center',}}>
        <Text style={{textAlign: 'center', margin:20}}>Parece que no hay talleres, desliza hacia abajo para actualizar</Text>
@@ -305,5 +305,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
   },
 });

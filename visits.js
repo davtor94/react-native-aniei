@@ -156,7 +156,7 @@ class FButton extends React.Component {
                  />
               }
               keyExtractor={item => item.id}
-              ListEmptyComponent={ListEmptyView}
+              ListEmptyComponent={ListEmptyViewVisit}
               ListHeaderComponent={this.renderHeader}
             />
             <FButton navegador={this.props.navigation}/>
@@ -211,7 +211,7 @@ class FButton extends React.Component {
       } catch (error) {
       }
     }
-    ListEmptyView = () => {
+    ListEmptyViewVisit = () => {
      return (
        <View style={{margin: 20, backgroundColor: '#fff',alignItems: 'center',justifyContent: 'center',}}>
          <Text style={{textAlign: 'center', margin:20}}>Parece que no hay visitas a empresas, desliza hacia abajo para actualizar</Text>

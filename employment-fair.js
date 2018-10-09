@@ -156,7 +156,7 @@ class FButton extends React.Component {
                  />
               }
               keyExtractor={item => item.id}
-              ListEmptyComponent={ListEmptyView}
+              ListEmptyComponent={ListEmptyViewFair}
               ListHeaderComponent={this.renderHeader}
             />
             <FButton navegador={this.props.navigation}/>
@@ -211,10 +211,10 @@ class FButton extends React.Component {
       } catch (error) {
       }
     }
-    ListEmptyView = () => {
+    ListEmptyViewFair = () => {
      return (
        <View style={{margin: 20, backgroundColor: '#fff',alignItems: 'center',justifyContent: 'center',}}>
-         <Text style={{textAlign: 'center', margin:20}}>Parece que no hay ninguna feria del empleo, desliza hacia abajo para actualizar</Text>
+         <Text style={{textAlign: 'center', margin:20}}>Parece que no hay eventos, desliza hacia abajo para actualizar</Text>
        </View>
      );
     }
