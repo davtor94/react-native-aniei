@@ -8,18 +8,18 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Alert,
-  Button,
   ScrollView,
   FlatList,
   RefreshControl,
   Dimensions,
+  AsyncStorage,
 } from 'react-native';
-import { Card } from 'react-native-elements';
+import { Card, ListItem, Button,} from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as links from './links.js';
 
-const fileName = "visitas";
+const fileNameVisit = "visitas";
 const companyNames = ["Oracle","IBM","Intel","HP","Continental","TATA"];
 const noCompany = "Others";
 const userKey = "usuario";
@@ -60,7 +60,7 @@ class FButton extends React.Component {
     }
 
   }
-  class MyCard extends React.Component{
+  class MyCardVisit extends React.Component{
       constructor(props){
         super(props);
         dateValues = String(this.props.item.date).split('-');
@@ -115,7 +115,7 @@ class FButton extends React.Component {
         );
       }
     }
-    class BaseScreen extends React.Component {
+    class BaseScreenVisit extends React.Component {
       constructor(props,company,imagePath){
         super(props);
         this.state = {
@@ -149,7 +149,7 @@ class FButton extends React.Component {
               }
               data={this.state.data}
               renderItem={({item}) =>
-              	 <MyCard
+              	 <MyCardVisit
                    item={item} navegador={this.props.navigation}
                    imagePath={this.imagePath}
                    companyName={this.companyName}
@@ -185,7 +185,7 @@ class FButton extends React.Component {
           }).then((response) =>  response.json())
           .then((responseJson) => {
             const bases = JSON.stringify(responseJson);
-            _saveDatabases(bases);
+            _saveDatabasesVisit(bases);
             this.setState({refreshing: false});
             this.setState({data:responseJson});
           })
@@ -195,19 +195,24 @@ class FButton extends React.Component {
     }
     _loadVisitsData = async function(companyName){
       try {
-        const value = await AsyncStorage.getItem(fileName);
+        const value = await AsyncStorage.getItem(fileNameVisit);
         if (value !== null) {
+          //Alert.alert("Value no null");
           const valueJson = JSON.parse(value);
           this.setState({data:valueJson});
         }else{
+          //Alert.alert("Value null");
+
           this._downloadVisitsData();
         }
        } catch (error) {
        }
     }
-    _saveDatabases = async(basesString) => {
+    _saveDatabasesVisit = async(basesString) => {
+      //Alert.alert("Inicio guardar visit");
+
       try {
-        await AsyncStorage.setItem(fileName, basesString);
+        await AsyncStorage.setItem(fileNameVisit, basesString);
       } catch (error) {
       }
     }
@@ -219,7 +224,7 @@ class FButton extends React.Component {
      );
     }
 
-export default class Visits extends BaseScreen {
+export default class Visits extends BaseScreenVisit {
   static navigationOptions = {
   title: 'Visitas',
   };

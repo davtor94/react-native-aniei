@@ -205,7 +205,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
           <View style={{flex: 1, backgroundColor: '#fff', width: 100 + "%"}}>
             <Table borderStyle={{borderColor: '#C1C0B9'}}>
               <TableWrapper style={styles.wrapper}>
-                <Col data={["Auditorio","Ponente","Fecha","Hora"]}
+                <Col data={["Ubicación","Ponente","Fecha","Hora"]}
                 style={styles.title}  textStyle={styles.textTitleTable}/>
                 <Rows data={[[locationName],[speaker],[date],[startTime+" - "+endTime]]}
                 flexArr={[2]} style={styles.row} textStyle={styles.textTable}/>

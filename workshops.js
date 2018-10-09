@@ -18,7 +18,7 @@ import {
   import * as links from './links.js';
 
 
-  const fileName = "talleres";
+  const fileNameWorkshop = "talleres";
   const locationNames = ["Alfa","Beta","T24"];
   const noCompany = "Others";
   const userKey = "usuario";
@@ -185,7 +185,7 @@ import {
         .then((responseJson) => {
           const bases = JSON.stringify(responseJson);
           const filteredWorkshops = _filterWorkshops(locationName,responseJson);
-          _saveDatabases(bases);
+          _saveDatabasesWorkshop(bases);
           this.setState({refreshing: false});
           this.setState({data:filteredWorkshops});
         })
@@ -195,7 +195,7 @@ import {
   }
   _loadWorkshopsData = async function(locationName){
     try {
-      const value = await AsyncStorage.getItem(fileName);
+      const value = await AsyncStorage.getItem(fileNameWorkshop);
       if (value !== null) {
         const valueJson = JSON.parse(value);
         const filteredWorkshops = _filterWorkshops(locationName,valueJson);
@@ -228,9 +228,10 @@ import {
       }
     return filtered;
   }
-  _saveDatabases = async(basesString) => {
+  _saveDatabasesWorkshop = async(basesString) => {
+    //Alert.alert("Inicio guardar workshop");
     try {
-      await AsyncStorage.setItem(fileName, basesString);
+      await AsyncStorage.setItem(fileNameWorkshop, basesString);
     } catch (error) {
     }
   }

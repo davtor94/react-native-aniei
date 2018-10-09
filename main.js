@@ -23,8 +23,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import * as links from './links.js';
 
 
-const fileName = "conferencias";
-const companyNames = ["Oracle","IBM","Intel","HP","Continental","TATA"];
+const fileNameMain = "conferencias";
+const companyNames = ["Oracle","IBM","Intel","HP","TATA"];
 const noCompany = "Others";
 const userKey = "usuario";
 
@@ -131,7 +131,9 @@ class BaseScreen extends React.Component {
     this.companyName=company;
     this._downloadConferencesData = _downloadConferencesData.bind(this);
     this._loadConferencesData = _loadConferencesData.bind(this);
+    this._saveDatabasesMain = _saveDatabasesMain.bind(this);
     this._loadConferencesData(this.companyName);
+    //this._downloadConferencesData(this.companyName);
     this.imagePath = imagePath;
 
     willFocus = this.props.navigation.addListener(
@@ -140,7 +142,9 @@ class BaseScreen extends React.Component {
           this.forceUpdate();
         }
       );
-
+  }
+  componentDidMount(){
+    //this._loadConferencesData(this.companyName);
   }
   render() {
     return (
@@ -181,6 +185,8 @@ class BaseScreen extends React.Component {
 }
 
 _downloadConferencesData= function(companyName) {
+  //Alert.alert("_downloadConferencesData");
+
     this.setState({refreshing: true});
     fetch(links.GET_ALL_CONFERENCES_LINK, {
     method: 'POST',
@@ -192,7 +198,7 @@ _downloadConferencesData= function(companyName) {
       .then((responseJson) => {
         const bases = JSON.stringify(responseJson);
         const filteredConferences = _filterConferences(companyName,responseJson);
-        _saveDatabases(bases);
+        this._saveDatabasesMain(bases);
         this.setState({refreshing: false});
         this.setState({data:filteredConferences});
       })
@@ -201,16 +207,21 @@ _downloadConferencesData= function(companyName) {
       });
 }
 _loadConferencesData = async function(companyName){
+  //Alert.alert("_loadConferencesData");
   try {
-    const value = await AsyncStorage.getItem(fileName);
+    const value = await AsyncStorage.getItem(fileNameMain);
     if (value !== null) {
+      //Alert.alert("No null");
+
       const valueJson = JSON.parse(value);
       const filteredConferences = _filterConferences(companyName,valueJson);
       this.setState({data:filteredConferences});
     }else{
+      //Alert.alert("Null? "+value);
       this._downloadConferencesData();
     }
    } catch (error) {
+     //Alert.alert("Error en load");
    }
 }
 _filterConferences = function(companyName,conferences){
@@ -261,13 +272,16 @@ _filterConferences = function(companyName,conferences){
       }
     }
   }
-
   return filtered;
 }
-_saveDatabases = async(basesString) => {
+_saveDatabasesMain = async(basesString) => {
+  //Alert.alert("Inicio guardar");
   try {
-    await AsyncStorage.setItem(fileName, basesString);
+    //Alert.alert("Guardado");
+
+    await AsyncStorage.setItem(fileNameMain, basesString);
   } catch (error) {
+    //Alert.alert("Error guardado"+error);
   }
 }
 ListEmptyView = () => {
@@ -298,14 +312,16 @@ class HpScreen extends BaseScreen {
     super(props,companyNames[3],require('./hp_logo2.jpg'));
   }
 }
+/*
 class ContinentalScreen extends BaseScreen {
   constructor(props){
     super(props,companyNames[4],require('./continental_logo.png'));
   }
 }
+*/
 class TataScreen extends BaseScreen {
   constructor(props){
-    super(props,companyNames[5],require('./tata_logo.jpg'));
+    super(props,companyNames[4],require('./tata_logo.jpg'));
   }
 }
 class OthersScreen extends BaseScreen {
@@ -335,7 +351,6 @@ export default createBottomTabNavigator(
     Intel: IntelScreen,
     HP: HpScreen,
     Oracle: OracleScreen,
-    Continental: ContinentalScreen,
     ANIEI: OthersScreen,
   },
   {

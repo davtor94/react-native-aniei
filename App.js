@@ -17,7 +17,6 @@ import RatingConference from './rating-conference';
 import ProfileScreen from './profile';
 import About from './about';
 import Workshops from './workshops';
-import ScientificCongress from './scientific-congress';
 import ProgrammingContest from './programming-contest';
 import Visits from './visits';
 import EmploymentFair from './employment-fair';
@@ -77,27 +76,6 @@ const workshopStack = StackNavigator(
     initialRouteName: 'Workshops',
     navigationOptions:({navigation}) => ({
       title: 'Talleres',
-      headerRight: <MenuButton navigation={navigation}/>,
-      headerStyle: {
-        backgroundColor: '#2980b6',
-      },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-    }),
-  }
-);
-
-const congressStack = StackNavigator(
-  {
-    ScientificCongress: ScientificCongress,
-  },
-  {
-    headerMode: 'float',
-    initialRouteName: 'ScientificCongress',
-    navigationOptions:({navigation}) => ({
-      title: 'Congreso científico',
       headerRight: <MenuButton navigation={navigation}/>,
       headerStyle: {
         backgroundColor: '#2980b6',
@@ -233,9 +211,6 @@ const Drawer = createDrawerNavigator({
   },
   'Feria del empleo': {
     screen:fairStack,
-  },
-  'Congreso científico': {
-    screen:congressStack,
   },
   'Concurso de programación': {
     screen:contestStack,

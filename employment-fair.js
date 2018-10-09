@@ -8,18 +8,18 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Alert,
-  Button,
   ScrollView,
   FlatList,
   RefreshControl,
   Dimensions,
+  AsyncStorage,
 } from 'react-native';
-import { Card } from 'react-native-elements';
+import { Card, ListItem, Button,} from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as links from './links.js';
 
-const fileName = "visitas";
+const fileNameFair = "visitas";
 const companyNames = ["Oracle","IBM","Intel","HP","Continental","TATA"];
 const noCompany = "Others";
 const userKey = "usuario";
@@ -60,7 +60,7 @@ class FButton extends React.Component {
     }
 
   }
-  class MyCard extends React.Component{
+  class MyCardFair extends React.Component{
       constructor(props){
         super(props);
         dateValues = String(this.props.item.date).split('-');
@@ -115,7 +115,7 @@ class FButton extends React.Component {
         );
       }
     }
-    class BaseScreen extends React.Component {
+    class BaseScreenFair extends React.Component {
       constructor(props,company,imagePath){
         super(props);
         this.state = {
@@ -149,7 +149,7 @@ class FButton extends React.Component {
               }
               data={this.state.data}
               renderItem={({item}) =>
-              	 <MyCard
+              	 <MyCardFair
                    item={item} navegador={this.props.navigation}
                    imagePath={this.imagePath}
                    companyName={this.companyName}
@@ -185,7 +185,7 @@ class FButton extends React.Component {
           }).then((response) =>  response.json())
           .then((responseJson) => {
             const bases = JSON.stringify(responseJson);
-            _saveDatabases(bases);
+            _saveDatabasesFair(bases);
             this.setState({refreshing: false});
             this.setState({data:responseJson});
           })
@@ -195,7 +195,7 @@ class FButton extends React.Component {
     }
     _loadFairsData = async function(companyName){
       try {
-        const value = await AsyncStorage.getItem(fileName);
+        const value = await AsyncStorage.getItem(fileNameFair);
         if (value !== null) {
           const valueJson = JSON.parse(value);
           this.setState({data:valueJson});
@@ -205,9 +205,11 @@ class FButton extends React.Component {
        } catch (error) {
        }
     }
-    _saveDatabases = async(basesString) => {
+    _saveDatabasesFair = async(basesString) => {
+      //Alert.alert("Inicio guardar fair");
+
       try {
-        await AsyncStorage.setItem(fileName, basesString);
+        await AsyncStorage.setItem(fileNameFair, basesString);
       } catch (error) {
       }
     }
@@ -219,7 +221,7 @@ class FButton extends React.Component {
      );
     }
 
-export default class EmploymentFair extends BaseScreen {
+export default class EmploymentFair extends BaseScreenFair {
   static navigationOptions = {
   title: 'Feria del empleo',
   };
