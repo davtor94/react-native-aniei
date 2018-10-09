@@ -28,7 +28,7 @@ export default class ProgrammingContest extends React.Component {
   render() {
     return (
       <WebView
-        source={{uri: 'https://xvideos.com'}}
+        source={{uri: 'https://google.com'}}
       />
     );
   }

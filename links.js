@@ -8,6 +8,7 @@ export const UDG_ACCESS_LINK = "http://148.202.152.33/ws_general.php";
 */
 export const GET_ALL_VISITS_LINK = "https://javiermorenot96.000webhostapp.com/anieiV5.2/getAllVisits.php";
 export const GET_ALL_FAIRS_LINK = "https://javiermorenot96.000webhostapp.com/anieiV5.2/getAllFairs.php";
+export const GET_ALL_WORKSHOPS_LINK = "https://javiermorenot96.000webhostapp.com/anieiV5.2/getAllWorkshops.php";
 
 export const GET_ALL_CONFERENCES_LINK = "http://148.202.152.33/aniei/getAllConferences.php";
 export const SIGN_IN_LINK = 'http://148.202.152.33/aniei/signIn.php';

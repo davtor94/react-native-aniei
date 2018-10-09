@@ -68,6 +68,8 @@ const workshopStack = StackNavigator(
     Workshops: Workshops,
     Conference: ConferenceDescriptionScreen,
     QrScreen: QrScanner,
+    Login: Login,
+    Register: Register,
   },
   {
     headerMode: 'float',
@@ -191,6 +193,27 @@ const mapStack = StackNavigator(
   }
 );
 
+const aboutStack = StackNavigator(
+  {
+    About: About,
+  },
+  {
+    headerMode: 'float',
+    initialRouteName: 'About',
+    navigationOptions:({navigation}) => ({
+      title: 'Acerca de...',
+      headerRight: <MenuButton navigation={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#2980b6',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }),
+  }
+);
+
 const Drawer = createDrawerNavigator({
   'Conferencias': {
     screen: ConferencesStack,
@@ -212,6 +235,9 @@ const Drawer = createDrawerNavigator({
   },
   'Ubicaciones': {
     screen:mapStack,
+  },
+  'Acerca de...': {
+    screen:aboutStack,
   }
 }, {
   drawerWidth: 300,

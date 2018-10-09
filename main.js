@@ -165,12 +165,6 @@ class BaseScreen extends React.Component {
           ListHeaderComponent={this.renderHeader}
         />
         <FButton navegador={this.props.navigation}/>
-        <ActionButton buttonColor="#00a35b" onPress={() => this.props.navigation.navigate('About')}
-          renderIcon = {()=>(<Icon name="md-information" style={styles.actionButtonIcon} />)}
-          offsetY={85}
-          offsetX={24}
-          size={35}
-        />
       </View>
     );
   }

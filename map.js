@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   Alert,
   Button,
-  ScrollView } from 'react-native';
+  ScrollView,
+  Dimensions} from 'react-native';
 
 export default class Map extends React.Component {
   static navigationOptions = {
@@ -24,8 +25,15 @@ export default class Map extends React.Component {
 
   }
   render() {
+    const screenWidth = Dimensions.get('window').width;
     return (
       <View style={styles.container}>
+        <ScrollView style={{width:'100%'}} contentContainerStyle={{alignItems: 'center'}}>
+          <View style={{width:'100%'}}>
+            <Image style={{ width:screenWidth}} resizeMode='stretch' source={require('./lugares.png')}/>
+            <Image style={{width:'80%'}}source={require('./informacion-lugares.png')}/>
+          </View>
+        </ScrollView>
 
       </View>
     );
