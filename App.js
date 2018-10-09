@@ -6,10 +6,13 @@ import {
   StyleSheet,
   Button,
   TouchableOpacity,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  Image,
 } from 'react-native';
-import { createStackNavigator, StackNavigator } from 'react-navigation';
+import { createStackNavigator, StackNavigator, DrawerItems } from 'react-navigation';
 import Login from './login';
-import Register from './register';
 import Main from './main';
 import QrScanner from './qr';
 import ConferenceDescriptionScreen from './conference-description';
@@ -23,6 +26,7 @@ import EmploymentFair from './employment-fair';
 import Map from './map';
 import {createDrawerNavigator, NavigationActions} from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Register from './register';
 
 
 const MenuButton =(props)=> {
@@ -199,6 +203,20 @@ const aboutStack = StackNavigator(
   }
 );
 
+const customDrawerComponent = (props) => {
+  return(
+  <SafeAreaView style={{flex: 1 }}>
+    <View style={{height: 150, backgroundColor: 'white', alignItems:'center', justifyContent:'center'}}>
+      <Image source={require('./aniei_logo.jpg')} style={{height:120, width: 120, borderRadius:60}}/>
+    </View>
+    <ScrollView>
+      <DrawerItems {...props} />
+    </ScrollView>
+  </SafeAreaView>
+);
+
+}
+
 const Drawer = createDrawerNavigator({
   'Conferencias': {
     screen: ConferencesStack,
@@ -231,6 +249,7 @@ const Drawer = createDrawerNavigator({
     activeBackgroundColor :'#1999CE',
     inactiveBackgroundColor :'#ffffff',
     },
+  contentComponent:customDrawerComponent,
 });
 
 export default class App extends React.Component {
