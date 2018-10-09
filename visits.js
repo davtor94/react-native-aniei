@@ -20,7 +20,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import * as links from './links.js';
 
 const fileNameVisit = "visitas";
-const companyNames = ["Oracle","IBM","Intel","HP","Continental","TATA"];
 const noCompany = "Others";
 const userKey = "usuario";
 
