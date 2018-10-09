@@ -13,6 +13,7 @@ import Register from './register';
 import Main from './main';
 import QrScanner from './qr';
 import ConferenceDescriptionScreen from './conference-description';
+import WorkshopDescriptionScreen from './workshop-description';
 import RatingConference from './rating-conference';
 import ProfileScreen from './profile';
 import About from './about';
@@ -65,7 +66,7 @@ const ConferencesStack = StackNavigator({
 const workshopStack = StackNavigator(
   {
     Workshops: Workshops,
-    Conference: ConferenceDescriptionScreen,
+    WorkshopDescription: WorkshopDescriptionScreen,
     QrScreen: QrScanner,
     Login: Login,
     Register: Register,

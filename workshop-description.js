@@ -12,7 +12,8 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-  import { AsyncStorage } from "react-native";
+import { AsyncStorage } from "react-native";
+import * as links from './links.js';
 
 import ActionButton from 'react-native-action-button';
 import {OpenMapDirections} from 'react-native-navigation-directions';
@@ -21,7 +22,7 @@ import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-ta
 const userKey = "usuario";
 const minutosFaltantes = 15
 
-export default class ConferenceDescriptionScreen extends React.Component {
+export default class WorkshopDescriptionScreen extends React.Component {
   static navigationOptions = {
   title: 'Descripción',
   };
@@ -39,8 +40,10 @@ export default class ConferenceDescriptionScreen extends React.Component {
       destLatitude:20.658246,
       destLongitude:-103.326958,
       conferenceData: data,
+      room: null,
       username:null,
     };
+    this._getRoom();
     this._getUserName()
     .then((user)=> {
       this.setState({
@@ -120,7 +123,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
             return true;
           }
           else {
-            Alert.alert("La conferencia ya terminó o está por terminar");
+            Alert.alert("El taller ya terminó o está por terminar");
             return false;
           }
         }
@@ -130,7 +133,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
         }
       }
       else{
-        Alert.alert("Hoy no es la conferencia");
+        Alert.alert("Hoy no es el taller");
         return false;
       }
   }
@@ -147,6 +150,43 @@ export default class ConferenceDescriptionScreen extends React.Component {
        return null;
      }
   };
+  _getRoom = () => {
+    fetch(links.GET_WORKSHOP_ROOM_LINK, {
+      method: 'POST',
+      headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      },
+    body: JSON.stringify({
+      idWorkshop: this.state.conferenceData.id,
+    })}
+    ).then((response) =>  response.text())
+    .then((responseText) => {
+      this.setState({room: responseText});
+    }).catch((error) => {
+    });
+  }
+  _assist = () => {
+    fetch(links.WORKSHOP_ASSISTANCE_LINK, {
+      method: 'POST',
+      headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      },
+    body: JSON.stringify({
+      username: this.state.username,
+      idWorkshop: this.state.conferenceData.id,
+    })}
+    ).then((response) =>  response.text())
+    .then((responseText) => {
+      Alert.alert(responseText);
+      console.log(responseText);
+      this.props.navigation.goBack();
+    }).catch((error) => {
+      Alert.alert("Ocurrió un error");
+      this.props.navigation.goBack();
+    });
+  }
 
   render() {
     const { navigation } = this.props;
@@ -155,7 +195,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
     const title = state.conferenceData.title;
     const company = state.conferenceData.companyName;
     const description = state.conferenceData.description;
-    const speaker = state.conferenceData.speaker;
+    const room = state.room;
     const date = state.conferenceData.date;
     const startTime = state.conferenceData.startTime;
     const endTime = state.conferenceData.endTime;
@@ -189,9 +229,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
             onPress={() => {
               if (this.state.username) {
                 if (this._verifyDate()) {
-                  this.props.navigation.navigate('QrScreen', {
-                  conferenceId:state.conferenceData.id,
-                  });
+                  this._assist();
                 }
               }
               else {
@@ -205,9 +243,9 @@ export default class ConferenceDescriptionScreen extends React.Component {
           <View style={{flex: 1, backgroundColor: '#fff', width: 100 + "%"}}>
             <Table borderStyle={{borderColor: '#C1C0B9'}}>
               <TableWrapper style={styles.wrapper}>
-                <Col data={["Ubicación","Ponente","Fecha","Hora"]}
+                <Col data={["Ubicación","Cupo","Fecha","Hora"]}
                 style={styles.title}  textStyle={styles.textTitleTable}/>
-                <Rows data={[[locationName],[speaker],[date],[startTime+" - "+endTime]]}
+                <Rows data={[[locationName],[room],[date],[startTime+" - "+endTime]]}
                 flexArr={[2]} style={styles.row} textStyle={styles.textTable}/>
               </TableWrapper>
             </Table>
