@@ -64,6 +64,7 @@ class FButton extends React.Component {
         super(props);
         dateValues = String(this.props.item.date).split('-');
         startTimeValues = String(this.props.item.startTime).split(':');
+        endTimeValues = String(this.props.item.endTime).split(':');
         var conferenceYear = dateValues[0];
         var conferenceMonth = dateValues[1];
         var conferenceDay = dateValues[2];
@@ -73,6 +74,8 @@ class FButton extends React.Component {
           day: conferenceDay,
           hour: startTimeValues[0],
           minute: startTimeValues[1],
+          endHour: endTimeValues[0],
+          endMinute: endTimeValues[1],
         }
       }
 
@@ -83,31 +86,21 @@ class FButton extends React.Component {
               title={this.props.item.title}
               image={null}
             >
-              {this.props.companyName == noCompany ?
-              <View style={{flex: 1, alignItems: 'center'}}>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>{this.props.item.companyName}</Text>
-              </View>
-              : <View/>}
               <Text style={{fontWeight: 'bold'}}>
                 Dia: {this.state.day}/{this.state.month}/{this.state.year}
               </Text>
               <Text style={{fontWeight: 'bold'}}>
-                Hora: {this.state.hour}:{this.state.minute}
+                Hora: {this.state.hour}:{this.state.minute} - {this.state.endHour}:{this.state.endMinute}
               </Text>
               <Text style={{fontWeight: 'bold'}}>
-                Descripción:
+                Cupo: {this.props.item.room}
+              </Text>
+              <Text style={{fontWeight: 'bold'}}>
+                Punto de reunión:
               </Text>
               <Text numberOfLines={3} style={{marginBottom: 10}}>
-                {this.props.item.description}
+                {this.props.item.locationName}
               </Text>
-              <Button
-                backgroundColor='#03A9F4'
-                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                title='Más información'
-                onPress={() => this.props.navegador.navigate('Conference', {
-                  conferenceData: this.props.item,
-                })}
-                />
            </Card>
           </View>
 
