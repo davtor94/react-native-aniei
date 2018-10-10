@@ -19,7 +19,7 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as links from './links.js';
 
-const fileNameFair = "visitas";
+const fileNameFair = "ferias";
 const noCompany = "Others";
 const userKey = "usuario";
 
