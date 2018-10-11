@@ -36,9 +36,9 @@ export default class About extends React.Component{
       lastTextTouched:0,
       combination:[],
       rightCombination:[0,0,0,3,2],
-      easters:[new EasterEgg([0,1,2,3],"Creada por Javier Moreno y Josué Ruiz"),
-                new EasterEgg([3,2,1,0],"Hay más huevos :D"),
-                new EasterEgg([0,0,0,1,3],"Programado en React Native"),
+      easters:[new EasterEgg([0,1,2,3],"Creada por El zurdo Moreno y El kata Ruiz"),
+                new EasterEgg([3,2,1,0],"me gusta mi companero"),
+                new EasterEgg([0,0,0,1,3],"Programado por $1000,00 MX"),
                 ],
     }
   }
@@ -93,8 +93,9 @@ export default class About extends React.Component{
 
   }
 */
+/*
   touched = (value) =>{
-    /*
+
     var eggs = this.state.easters;
     var eggsCount = eggs.length;
     var combinationLenght = this.state.combination.length;
@@ -112,7 +113,11 @@ export default class About extends React.Component{
       }
     }
   }
-  */
+
+}
+*/
+touched = (value) =>{}
+
 }
 const styles = StyleSheet.create({
     backgroundImage: {
