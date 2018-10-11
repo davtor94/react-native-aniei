@@ -11,6 +11,7 @@ import {
   Button,
   ScrollView,
   WebView,
+  Linking,
 } from 'react-native';
 import * as links from './links.js';
 
@@ -30,9 +31,16 @@ export default class ProgrammingContest extends React.Component {
   render() {
     return (
       <WebView
+        ref={(ref) => { this.webview = ref; }}
         source={{uri: links.GET_CONTEST_LINK}}
         renderError={()=>{
           Alert.alert("Ocurrió un error");
+        }}
+        onNavigationStateChange={(event) => {
+          if(event.url !== links.GET_CONTEST_LINK){
+            this.webview.stopLoading();
+            Linking.openURL(event.url);
+          }
         }}
       />
     );
