@@ -5,12 +5,18 @@ export const GET_USER_PROFILE_LINK = "https://javiermorenot96.000webhostapp.com/
 export const ASSISTANCE_LINK = "https://javiermorenot96.000webhostapp.com/aniei/assistance.php";
 export const REGISTER_LINK = "https://javiermorenot96.000webhostapp.com/aniei/register.php";
 export const UDG_ACCESS_LINK = "http://148.202.152.33/ws_general.php";
-*/
+
 export const GET_ALL_VISITS_LINK = "https://javiermorenot96.000webhostapp.com/anieiV5.2/getAllVisits.php";
 export const GET_ALL_FAIRS_LINK = "https://javiermorenot96.000webhostapp.com/anieiV5.2/getAllFairs.php";
 export const GET_ALL_WORKSHOPS_LINK = "https://javiermorenot96.000webhostapp.com/anieiV5.2/getAllWorkshops.php";
 export const WORKSHOP_ASSISTANCE_LINK = "https://javiermorenot96.000webhostapp.com/anieiV5.2/workshop_assistance.php";
 export const GET_WORKSHOP_ROOM_LINK = "https://javiermorenot96.000webhostapp.com/anieiV5.2/getRoomByWorkshopID.php";
+*/
+export const GET_ALL_VISITS_LINK = "http://148.202.152.33/aniei/getAllVisits.php";
+export const GET_ALL_FAIRS_LINK = "http://148.202.152.33/aniei/getAllFairs.php";
+export const GET_ALL_WORKSHOPS_LINK = "http://148.202.152.33/aniei/getAllWorkshops.php";
+export const WORKSHOP_ASSISTANCE_LINK = "http://148.202.152.33/aniei/workshop_assistance.php";
+export const GET_WORKSHOP_ROOM_LINK = "http://148.202.152.33/aniei/getRoomByWorkshopID.php";
 
 export const GET_ALL_CONFERENCES_LINK = "http://148.202.152.33/aniei/getAllConferences.php";
 export const SIGN_IN_LINK = 'http://148.202.152.33/aniei/signIn.php';
