@@ -208,7 +208,7 @@ const customDrawerComponent = (props) => {
   return(
   <SafeAreaView style={{flex: 1 }}>
     <View style={{height: 150, backgroundColor: 'white', alignItems:'center', justifyContent:'center'}}>
-      <Image source={require('./aniei_logo.jpg')} style={{height:120, width: 120, borderRadius:60}}/>
+      <Image source={require('./iconos-empresas/aniei_udg.png')} style={{height:120, width: "100%",    resizeMode: 'contain'}}/>
     </View>
     <ScrollView>
       <DrawerItems {...props} />

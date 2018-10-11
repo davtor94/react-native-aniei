@@ -18,3 +18,4 @@ export const GET_USER_PROFILE_LINK = "http://148.202.152.33/aniei/getUserProfile
 export const ASSISTANCE_LINK = "http://148.202.152.33/aniei/assistance.php";
 export const REGISTER_LINK = "http://148.202.152.33/aniei/register.php";
 export const UDG_ACCESS_LINK = "http://148.202.152.33/ws_general.php";
+export const GET_CONTEST_LINK = "http://148.202.152.33/aniei/cprogramacion.html";

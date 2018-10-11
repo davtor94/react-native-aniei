@@ -12,6 +12,8 @@ import {
   ScrollView,
   WebView,
 } from 'react-native';
+import * as links from './links.js';
+
 
 export default class ProgrammingContest extends React.Component {
   static navigationOptions = {
@@ -28,9 +30,9 @@ export default class ProgrammingContest extends React.Component {
   render() {
     return (
       <WebView
-        source={{uri: 'https://github.com/facebook/react-native'}}
+        source={{uri: links.GET_CONTEST_LINK}}
         renderError={()=>{
-          Alert.alert("Se requiere conexión a internet");
+          Alert.alert("Ocurrió un error");
         }}
       />
     );
