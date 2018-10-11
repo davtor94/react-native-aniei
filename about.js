@@ -7,6 +7,8 @@ import {
   View,
   TouchableOpacity,
   Alert,
+  ToastAndroid,
+  Platform,
 } from 'react-native';
 import {
   Button,
@@ -30,16 +32,42 @@ export default class About extends React.Component{
   static navigationOptions = {
   title: 'Acerca de',
   };
+  //Reglas para los EasterEgg, ninguna empieza con 1, ninguno empieza con uno ya existente completo (nunca se podría acceder a él)
   constructor(props){
     super(props);
     this.state={
       lastTextTouched:0,
       combination:[],
-      rightCombination:[0,0,0,3,2],
-      easters:[new EasterEgg([0,1,2,3],"Creada por El zurdo Moreno y El kata Ruiz"),
-                new EasterEgg([3,2,1,0],"me gusta mi companero"),
-                new EasterEgg([0,0,0,1,3],"Programado por $1000,00 MX"),
-                ],
+      easters:[new EasterEgg([0,1,2,3],"Creada por Javier Moreno, Josué Ruiz y David"),
+                new EasterEgg([3,3,3,3,3,3],"Hay más huevos :D"),
+                new EasterEgg([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"Eres muy persistente, sigue así"),
+                new EasterEgg([3,2,1,0],"Desarrollada en CuceiMobile"),
+                new EasterEgg([0,0,1,1,1,2,2,2,2,3,3,3,3,3],"Busca bien"),
+                new EasterEgg([3,3,3,0,0,0],"No te ama"),
+                new EasterEgg([2,3,1,1,2,0,2],"Deja de picarle al azar"),
+                new EasterEgg([0,3,1,2],"Este estuvo fácil"),
+                new EasterEgg([3,0,2,1],"Sencillo pero efectivo"),
+                new EasterEgg([2,1,0,3],"Combinación correcta, ve a tu perfil"),
+                new EasterEgg([2,3,0,1],"Todos los mensajes mentimos"),
+                new EasterEgg([3,3,3,3,3,2,2,2,2,1,1,1,0,0],"Un mamut chiquitito quería volar"),
+                new EasterEgg([2,2,2,2,2],"El número que usted marcó, no existe"),
+                new EasterEgg([3,2,3,1,3,0,3],"Eres un genio de los patrones"),
+                new EasterEgg([3,0,3,1,3,2,3],"Por tí tiendo a infinito, bb"),
+                new EasterEgg([0,1,0,2,0,3,0],"Te debería dar un premio, pero no"),
+                new EasterEgg([0,3,0,2,0,1,0],"Eres la base de mis datos"),
+                new EasterEgg([0,0,3,3,1,1,2,2],"Hoy tu día será hermoso, bb <3"),
+                new EasterEgg([0,0,3,3,0,0,2,2,0,0,1,1,0,0],"Tú eres importante, recuérdalo"),
+                new EasterEgg([3,2,1,2,1,0],"Antes de criticarme intenta superarme"),
+                new EasterEgg([0,1,2,1,2,3],"Black Mirror es real"),
+                new EasterEgg([0,0,1,1,2,2,3,3],"Confía en el corazón de las cartas"),
+                new EasterEgg([3,3,2,2,1,1,0,0],"Tú programas mi felicidad"),
+                new EasterEgg([2,1,3,0],"Feliz día del taco"),
+                new EasterEgg([2,2,3,3],"Pícale mucho al primero"),
+                new EasterEgg([2,3,2,3],"Patrón = 1-2-4-3"),
+                new EasterEgg([0,1,3,2],"Ahora = 1-1-4-2"),
+                new EasterEgg([0,0,3,1],"Sigue = 4-2-3-2"),
+                new EasterEgg([3,1,2,1],"Patrón = 3-3-4-4"),
+              ],
     }
   }
   render(){
@@ -67,21 +95,24 @@ export default class About extends React.Component{
             </ImageBackground>
       );
   }
-/*
   touched = (value) =>{
-    var eggsCount = this.state.easters.length;
+    this.state.combination[this.state.combination.length] = value;
+    var eggs = this.state.easters;
     var isAnyMatch = false;
-    for(var i=0;i<eggsCount;i++){
-      var length = this.state.combination.length;
-      if(length < this.state.easters[i].getCombination().length){
-        if(this.state.easters[i].getCombination()[length] == value){
-          this.state.combination[length]=value;
-          isAnyMatch = true;
-        }
-        length = this.state.combination.length;
-        if(length == this.state.easters[i].getCombination().length){
-          Alert.alert(this.state.easters[i].getMessage());
+    for(var i=0;i<eggs.length;i++){
+      if(eggs[i].getCombination().length >= this.state.combination.length){
+        var correctPart = eggs[i].getCombination().slice(0,this.state.combination.length);
+        if(eggs[i].getCombination().toString() === this.state.combination.toString()){
+          if(Platform.OS === 'android')
+          {
+            ToastAndroid.show(eggs[i].getMessage(), ToastAndroid.SHORT);
+          }else{
+            Alert.alert(eggs[i].getMessage());
+          }
           isAnyMatch = false;
+          break;
+        }else if(correctPart.toString() === this.state.combination.toString()){
+          isAnyMatch = true;
           break;
         }
       }
@@ -89,35 +120,7 @@ export default class About extends React.Component{
     if(isAnyMatch == false){
       this.state.combination = [];
     }
-    //Alert.alert(""+eggsCount);
-
   }
-*/
-/*
-  touched = (value) =>{
-
-    var eggs = this.state.easters;
-    var eggsCount = eggs.length;
-    var combinationLenght = this.state.combination.length;
-    var isAnyMatch = false;
-    var combination = this.state.combination;
-    combination[combinationLenght]=value;
-
-    for(var i=0;i<eggsCount;i++){
-      if(combination.length <= eggs[i].getCombination().length){
-        var rightOne = eggs[i].getCombination().slice(0,combinationLenght-1);
-        Alert.alert(rightOne+"/"+combination);
-        if(rightOne == combination){
-          Alert.alert("Encontrada");
-        }
-      }
-    }
-  }
-
-}
-*/
-touched = (value) =>{}
-
 }
 const styles = StyleSheet.create({
     backgroundImage: {
