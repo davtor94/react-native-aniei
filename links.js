@@ -12,6 +12,9 @@ export const GET_ALL_WORKSHOPS_LINK = "https://javiermorenot96.000webhostapp.com
 export const WORKSHOP_ASSISTANCE_LINK = "https://javiermorenot96.000webhostapp.com/anieiV5.2/workshop_assistance.php";
 export const GET_WORKSHOP_ROOM_LINK = "https://javiermorenot96.000webhostapp.com/anieiV5.2/getRoomByWorkshopID.php";
 */
+
+export const GET_MAP_LINK = "http://148.202.152.33/aniei/mapa.html";
+
 export const GET_ALL_VISITS_LINK = "http://148.202.152.33/aniei/getAllVisits.php";
 export const GET_ALL_FAIRS_LINK = "http://148.202.152.33/aniei/getAllFairs.php";
 export const GET_ALL_WORKSHOPS_LINK = "http://148.202.152.33/aniei/getAllWorkshops.php";

@@ -10,7 +10,9 @@ import {
   Alert,
   Button,
   ScrollView,
+  WebView,
   Dimensions} from 'react-native';
+import * as links from './links.js';
 
 export default class Map extends React.Component {
   static navigationOptions = {
@@ -27,15 +29,12 @@ export default class Map extends React.Component {
   render() {
     const screenWidth = Dimensions.get('window').width;
     return (
-      <View style={styles.container}>
-        <ScrollView style={{width:'100%'}} contentContainerStyle={{alignItems: 'center'}}>
-          <View style={{width:'100%'}}>
-            <Image style={{ width:screenWidth}} resizeMode='stretch' source={require('./lugares.png')}/>
-            <Image style={{width:'80%'}}source={require('./informacion-lugares.png')}/>
-          </View>
-        </ScrollView>
-
-      </View>
+      <WebView
+        source={{uri: links.GET_MAP_LINK}}
+        renderError={()=>{
+          Alert.alert("Ocurrió un error");
+        }}
+      />
     );
   }
 }
