@@ -11,15 +11,20 @@ import {
   Button,
   ScrollView,
   Platform,
+  RefreshControl,
+  FlatList,
 } from 'react-native';
-  import { AsyncStorage } from "react-native";
-
+import { AsyncStorage } from "react-native";
 import ActionButton from 'react-native-action-button';
 import {OpenMapDirections} from 'react-native-navigation-directions';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
+import { NavigationActions } from 'react-navigation';
+
+import * as links from './links.js';
 
 const userKey = "usuario";
-const minutosFaltantes = 15
+const fileNameMain = "conferencias";
+const minutosFaltantes = 15;
 
 export default class ConferenceDescriptionScreen extends React.Component {
   static navigationOptions = {
@@ -40,7 +45,10 @@ export default class ConferenceDescriptionScreen extends React.Component {
       destLongitude:-103.326958,
       conferenceData: data,
       username:null,
+      recomendationsData: null,
+      refreshing: false,
     };
+    this._downloadRecomendations();
     this._getUserName()
     .then((user)=> {
       this.setState({
@@ -148,6 +156,81 @@ export default class ConferenceDescriptionScreen extends React.Component {
      }
   };
 
+  _filterRecomendations = async function(recomendations){
+    try {
+      const localValues = await AsyncStorage.getItem(fileNameMain);
+      if (localValues !== null) {
+        const allJSON = JSON.parse(localValues);
+        //const filteredConferences = _filterConferences(companyName,valueJson);
+        //this.setState({data:filteredConferences});
+        var filteredData = [];
+        var i,r, filteredCount=0;
+        var actualId;
+        const maxRecomendations = 5;
+        const allSize = allJSON.length;
+        const recomendationsSize = recomendations.length;
+        var currentDate = new Date();
+        for(r=0;r<recomendationsSize;r++){
+          actualId = recomendations[r]['id'];
+          for(i=0;i<allSize;i++){
+              if(allJSON[i]['id'] === actualId){
+                dateValues = String(allJSON[i]['date']).split('-');
+                var conferenceYear = dateValues[0];
+                var conferenceMonth = dateValues[1];
+                var conferenceDay = dateValues[2];
+                if(Number(currentDate.getFullYear()<=Number(conferenceYear))
+                    && ((Number(currentDate.getMonth()+1)<Number(conferenceMonth))
+                      || ((Number(currentDate.getMonth()+1)==Number(conferenceMonth)) &&
+                          (Number(currentDate.getDate())<=Number(conferenceDay)))) ){
+                    filteredData[filteredCount]=allJSON[i];
+                    filteredCount++;
+                    break;
+
+                  }
+                }
+              }
+            if(filteredCount>=maxRecomendations){
+              break;
+            }
+
+        }
+        this.setState({refreshing: false});
+        this.setState({recomendationsData:filteredData});
+        return filteredData;
+      }else{
+        //this._downloadConferencesData();
+        Alert.alert("Sin local");
+
+      }
+     } catch (error) {
+       //Alert.alert("Error en load");
+     }
+  }
+
+  _downloadRecomendations = function(companyName) {
+    try{
+      this.setState({refreshing: true});
+      fetch(links.GET_RECOMENDATIONS_LINK, {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json, text/plain',
+          'Content-Type': 'application/json',
+          }
+        }).then((response) =>  response.json())
+        .then((responseJson) => {
+          this._filterRecomendations(responseJson);
+          //const filteredRecomendations = responseJson;
+          //this.setState({refreshing: false});
+          //this.setState({recomendationsData:filteredRecomendations});
+        })
+        .catch((error) => {
+          this.setState({refreshing: false});
+        });
+      }catch(erro){
+
+      }
+  }
+
   render() {
     const { navigation } = this.props;
     const state = this.state;
@@ -229,9 +312,53 @@ export default class ConferenceDescriptionScreen extends React.Component {
           </TouchableOpacity>
           : <View/>}
         </View>
+
+        <View style={styles.conferencesContainer}>
+          <Text style={styles.titleText}>Relacionadas:</Text>
+          <FlatList style={{width:100 + '%'}}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={() => {this._downloadRecomendations()}}
+              />
+            }
+            data={this.state.recomendationsData}
+            renderItem={({item}) =>
+            <TouchableOpacity onPress={() => this.toNextConference(item)}>
+              <View style={styles.conferenceItem}>
+                  <View style={styles.conferenceInfoContainer}>
+                    <Text style={styles.conferenceText}>{item.companyName}</Text>
+                  </View>
+                  <Text style={styles.conferenceTextTitle}>{item.title}</Text>
+              </View>
+            </TouchableOpacity>
+            }
+            keyExtractor={item => item.id}
+            ListEmptyComponent={this.ListEmptyRecomendations}
+          />
+        </View>
+
       </ScrollView>
     </View>
     );
+  }
+  toNextConference =(target) =>{
+    this.props.navigation.navigate({
+      routeName:'Conference',
+      params:{
+        conferenceData: target,
+        },
+      key: target['id'],
+    }
+  );
+  }
+
+  ListEmptyRecomendations = () => {
+   return (
+     <View style={{margin: 20, backgroundColor: '#fff',alignItems: 'center',justifyContent: 'center',}}>
+       <Text style={{textAlign: 'center', margin:20}}>Parece que no hay recomendaciones para mostrar</Text>
+     </View>
+   );
   }
 }
 
@@ -285,5 +412,50 @@ const styles = StyleSheet.create({
   title: { flex: 1, backgroundColor: '#f6f8fa' },
   row: {  height: 50 },
   textTable: { paddingHorizontal: 10 },
-  textTitleTable: { textAlign: 'center', fontWeight: 'bold' }
+  textTitleTable: { textAlign: 'center', fontWeight: 'bold' },
+  conferenceItem: {
+    backgroundColor: '#03a9f4',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    width: 100 + "%",
+    padding: 5,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: '#ddd',
+    borderBottomWidth: 0,
+    marginTop: 5,
+  },
+  conferencesContainer: {
+    backgroundColor: '#fff',
+    alignItems: 'flex-start',
+    top: 10,
+    width: 95 + "%",
+    marginTop: 5,
+  },
+  conferenceInfoContainer: {
+    backgroundColor: '#0d9adb',
+    alignItems: 'flex-end',
+    justifyContent: 'space-around',
+    width: 100 + "%",
+    padding: 3,
+    borderRadius: 5,
+  },
+  conferenceText:{
+    fontSize: 15,
+    textAlign: 'right',
+    flex:1,
+    color: '#ffffff',
+  },
+  conferenceTextTitle:{
+    fontSize: 17,
+    color: '#ffffff',
+    fontWeight: 'bold',
+    margin: 5,
+  },
+  titleText:{
+    fontSize: 17,
+    textAlign: 'left',
+    fontWeight: 'bold',
+    color: '#686868',
+  },
 });

@@ -110,9 +110,11 @@ class MyCard extends React.Component{
               backgroundColor='#03A9F4'
               buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
               title='Más información'
-              onPress={() => this.props.navegador.navigate('Conference', {
+              onPress={() => this.props.navegador.navigate({routeName:'Conference', params:{
                 conferenceData: this.props.item,
-              })}
+              },
+              key: this.props.item['id'],}
+            )}
               />
          </Card>
         </View>

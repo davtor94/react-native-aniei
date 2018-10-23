@@ -31,6 +31,7 @@ export default class ProfileScreen extends React.Component {
       email: '',
       institution: '',
       assistances: null,
+      workshops: null,
       refreshing: false,
       loaded:false,
     }
@@ -89,6 +90,25 @@ export default class ProfileScreen extends React.Component {
               keyExtractor={item => item.conferenceID}
               ListEmptyComponent={this.ListEmptyItem}
             />
+            <FlatList style={{width:100 + '%'}}
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={() => {this._loadProfile()}}
+                />
+              }
+              data={this.state.workshops}
+              renderItem={({item}) =>
+                <View style={styles.conferenceItem}>
+                  <View style={styles.conferenceInfoContainer}>
+                    <Text style={styles.conferenceText}>{item.companyName}</Text>
+                  </View>
+                  <Text style={styles.conferenceTextTitle}>{item.title}</Text>
+                </View>
+              }
+              keyExtractor={item => item.workshopID}
+              ListEmptyComponent={this.ListEmptyItem}
+            />
           </View>
         </View>
       );
@@ -142,6 +162,8 @@ export default class ProfileScreen extends React.Component {
             var profileEmail = null;
             var profileInstitution = null;
             var profileAssistances = null;
+            var profileWorkshops = null;
+            Alert.alert("d: "+responseJson.length);
             if(responseJson.length >=1){
               profileUser = responseJson[0]["username"];
               profileName= responseJson[0]["name"];
@@ -151,6 +173,10 @@ export default class ProfileScreen extends React.Component {
             if(responseJson.length >=2){
               profileAssistances = responseJson[1]["conferences"];
             }
+            if(responseJson.length >=3){
+              profileWorkshops = responseJson[2]["workshops"];
+
+            }
 
             this.setState({
               user: profileUser,
@@ -158,6 +184,7 @@ export default class ProfileScreen extends React.Component {
               email: profileEmail,
               institution: profileInstitution,
               assistances: profileAssistances,
+              workshops: profileWorkshops,
               loaded: true,
             })
             })

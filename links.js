@@ -12,7 +12,7 @@ export const GET_ALL_WORKSHOPS_LINK = "https://javiermorenot96.000webhostapp.com
 export const WORKSHOP_ASSISTANCE_LINK = "https://javiermorenot96.000webhostapp.com/anieiV5.2/workshop_assistance.php";
 export const GET_WORKSHOP_ROOM_LINK = "https://javiermorenot96.000webhostapp.com/anieiV5.2/getRoomByWorkshopID.php";
 */
-
+export const GET_RECOMENDATIONS_LINK = "http://148.202.152.33/aniei/getAllConferences.php"
 export const GET_MAP_LINK = "http://148.202.152.33/aniei/mapa.html";
 
 export const GET_ALL_VISITS_LINK = "http://148.202.152.33/aniei/getAllVisits.php";
@@ -23,7 +23,9 @@ export const GET_WORKSHOP_ROOM_LINK = "http://148.202.152.33/aniei/getRoomByWork
 
 export const GET_ALL_CONFERENCES_LINK = "http://148.202.152.33/aniei/getAllConferences.php";
 export const SIGN_IN_LINK = 'http://148.202.152.33/aniei/signIn.php';
-export const GET_USER_PROFILE_LINK = "http://148.202.152.33/aniei/getUserProfile.php";
+//export const GET_USER_PROFILE_LINK = "http://148.202.152.33/aniei/getUserProfile.php";
+export const GET_USER_PROFILE_LINK = "https://javiermorenot96.000webhostapp.com/anieiV5.2/getUserProfile.php";
+
 export const ASSISTANCE_LINK = "http://148.202.152.33/aniei/assistance.php";
 export const REGISTER_LINK = "http://148.202.152.33/aniei/register.php";
 export const UDG_ACCESS_LINK = "http://148.202.152.33/ws_general.php";
