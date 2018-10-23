@@ -163,7 +163,6 @@ export default class ProfileScreen extends React.Component {
             var profileInstitution = null;
             var profileAssistances = null;
             var profileWorkshops = null;
-            Alert.alert("d: "+responseJson.length);
             if(responseJson.length >=1){
               profileUser = responseJson[0]["username"];
               profileName= responseJson[0]["name"];
@@ -175,7 +174,6 @@ export default class ProfileScreen extends React.Component {
             }
             if(responseJson.length >=3){
               profileWorkshops = responseJson[2]["workshops"];
-
             }
 
             this.setState({
