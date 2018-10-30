@@ -156,6 +156,54 @@ export default class ConferenceDescriptionScreen extends React.Component {
      }
   };
 
+  _verifyDateRecomendations = (recomendation) => {
+    const state = this.state;
+    const conferenceDate = recomendation.date;
+    const startTime = recomendation.startTime;
+    const endTime = recomendation.endTime;
+
+    const startTimeArray = startTime.split(':');
+    const endTimeArray = endTime.split(':');
+    const startHour = startTimeArray[0];
+    const endHour = endTimeArray[0];
+    const startMinute = startTimeArray[1];
+    const endMinute = endTimeArray[1];
+
+    dateValues = conferenceDate.split('-');
+    const conferenceYear = dateValues[0];
+    const conferenceMonth = dateValues[1];
+    const conferenceDay = dateValues[2];
+
+
+    var currentDate = new Date();
+    var totalCurrentMinutes = currentDate.getHours() * 60 + currentDate.getMinutes();
+    var totalStartMinutes = parseInt(startHour) * 60 + parseInt(startMinute);
+    var totalEndMinutes = parseInt(endHour) * 60 + parseInt(endMinute);
+
+
+
+    if(conferenceYear<=currentDate.getFullYear() &&
+     conferenceMonth<=(currentDate.getMonth()+1)){
+        if (conferenceDay==currentDate.getDate()) {//Hora mayor a actual
+          if (startHour > currentDate.getHours() ) {
+            //Alert.alert("Si");
+            return true;
+          }else{
+            return false;
+          }
+        }
+        else if(conferenceDay>currentDate.getDate()){
+            return true;
+          //Alert.alert("Si 2");
+        }
+        else {
+          //Alert.alert("No 2");
+
+          return false;
+        }
+      }
+  }
+
   _filterRecomendations = async function(recomendations){
     try {
       const localValues = await AsyncStorage.getItem(fileNameMain);
@@ -170,6 +218,7 @@ export default class ConferenceDescriptionScreen extends React.Component {
         const allSize = allJSON.length;
         const recomendationsSize = recomendations.length;
         var currentDate = new Date();
+        //Alert.alert(""+recomendationsSize);
         for(r=0;r<recomendationsSize;r++){
           actualId = recomendations[r]['id'];
           for(i=0;i<allSize;i++){
@@ -182,10 +231,11 @@ export default class ConferenceDescriptionScreen extends React.Component {
                     && ((Number(currentDate.getMonth()+1)<Number(conferenceMonth))
                       || ((Number(currentDate.getMonth()+1)==Number(conferenceMonth)) &&
                           (Number(currentDate.getDate())<=Number(conferenceDay)))) ){
-                    filteredData[filteredCount]=allJSON[i];
-                    filteredCount++;
-                    break;
-
+                            if(this._verifyDateRecomendations(allJSON[i])){
+                              filteredData[filteredCount]=allJSON[i];
+                              filteredCount++;
+                              break;
+                            }
                   }
                 }
               }
@@ -212,12 +262,14 @@ export default class ConferenceDescriptionScreen extends React.Component {
       this.setState({refreshing: true});
       fetch(links.GET_RECOMENDATIONS_LINK, {
       method: 'POST',
-      headers: {
-          'Accept': 'application/json, text/plain',
-          'Content-Type': 'application/json',
-          }
-        }).then((response) =>  response.json())
+      headers: new Headers({
+               'Accept': 'application/json, text/plain',
+               'Content-Type': 'application/x-www-form-urlencoded',
+      }),
+        body: "conferenceId="+this.state.conferenceData.id
+      }).then((response) =>  response.json())
         .then((responseJson) => {
+          //Alert.alert(this.state.conferenceData.id+" - "+JSON.stringify(responseJson));
           this._filterRecomendations(responseJson);
           //const filteredRecomendations = responseJson;
           //this.setState({refreshing: false});
