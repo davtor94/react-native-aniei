@@ -1,22 +1,19 @@
+'use strict';
 import React, { Component } from 'react';
 import {
   Alert,
-  Button,
-  Linking,
-  Dimensions,
-  LayoutAnimation,
-  Text,
-  View,
-  StatusBar,
+  AppRegistry,
   StyleSheet,
+  Text,
   TouchableOpacity,
-  NetInfo
+  Linking,
+  View,
 } from 'react-native';
-import { BarCodeScanner, Permissions } from 'expo';
 import { AsyncStorage } from "react-native";
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import * as links from './links.js';
 
 const userKey = "usuario";
-const ASSISTANCE_LINK = "https://javiermorenot96.000webhostapp.com/aniei/assistance.php";
 
 export default class QrScanner extends Component {
   static navigationOptions = {
@@ -24,13 +21,10 @@ export default class QrScanner extends Component {
   headerRight: '',
   };
 
-  constructor(props) {
+  constructor(props){
     super(props);
-
     this.state = {
-      hasCameraPermission: null,
       lastScannedUrl: null,
-      valorLeido: null,
       username:null,
       conferenceId:this.props.navigation.getParam('conferenceId', ''),
     }
@@ -43,27 +37,9 @@ export default class QrScanner extends Component {
       console.log(this.state.conferenceId);
     })
     .catch((error) => {
-      console.error(error);
     });
   };
 
-  componentDidMount() {
-    this._requestCameraPermission();
-  }
-
-  _requestCameraPermission = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({
-      hasCameraPermission: status === 'granted',
-    });
-  };
-
-  _handleBarCodeRead = result => {
-    if (result.data !== this.state.lastScannedUrl) {
-      LayoutAnimation.spring();
-      this.setState({ lastScannedUrl: result.data });
-    }
-  };
   _getUserName = async() =>{
     try {
       const value = await AsyncStorage.getItem(userKey);
@@ -73,89 +49,55 @@ export default class QrScanner extends Component {
         return false;
       }
      } catch (error) {
-       console.error(error);
        return false;
      }
   };
+
+  onSuccess(e) {
+      if (e.data != this.state.lastScannedUrl) {
+        this.state.lastScannedUrl = e.data;
+        this._onQRDetected();
+      }
+
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        {this.state.hasCameraPermission === null
-          ? <Text>Pidiendo permisos de camara</Text>
-          : this.state.hasCameraPermission === false
-              ? <Text style={{ color: '#fff' }}>
-                  Se requieren permisos de cámara para tomar asistencia
-                </Text>
-              : <BarCodeScanner
-                  onBarCodeRead={this._handleBarCodeRead}
-                  style={{
-                    height: Dimensions.get('window').height,
-                    width: Dimensions.get('window').width,
-                  }}
-                />
-                }
-        {this._onQRDetected()}
-        {this._showInstructions()}
-        {this._showTopBar()}
-
-        <StatusBar hidden />
-      </View>
-
-
-    );
-  }
-
-  _showInstructions =() =>{
-    return(
-      <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.url}>
-          <Text style={styles.urlText}>
+      <QRCodeScanner
+        onRead={this.onSuccess.bind(this)}
+        showMarker={true}
+        checkAndroid6Permissions={true}
+        permissionDialogTitle="Uso de cámara"
+        permissionDialogMessage="Necesitas dar permisos de cámara"
+        topViewStyle={{backgroundColor:"#000"}}
+        bottomViewStyle={{backgroundColor:"#000"}}
+        notAuthorizedView={
+          <View style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <Text style={{
+              textAlign: 'center',
+              fontSize: 16,
+            }}>
+              Parece que no tenemos permisos de cámara
+            </Text>
+          </View>
+        }
+        topContent={
+          <Text style={styles.centerText}>
             Escanea el código que se encuentra en el auditorio
           </Text>
-        </TouchableOpacity>
-
-      </View>
-      );
-  }
-
-  _showTopBar =() =>{
-    return(
-      <View style={styles.topBar}>
-      </View>
-      );
-  }
-
-  _showLeftBar =() =>{
-    return(
-      <View style={styles.leftBar}>
-      </View>
-      );
-  }
-
-  _handlePressUrl = () => {
-    Alert.alert(
-      'En este lugar se debe guardar la hora y enviar al servidor',
-      this.state.lastScannedUrl,
-      [
-        {
-          text: 'Sí',
-          onPress: this._handlePressCancel//() => Linking.openURL(this.state.lastScannedUrl),
-        },
-        { text: 'No', onPress: this._handlePressCancel },
-      ],
-      { cancellable: false }
+        }
+      />
     );
-  };
-
-  _handlePressCancel = () => {
-    this.setState({ lastScannedUrl: null });
-  };
-
+  }
   _onQRDetected = () => {
     if (this.state.lastScannedUrl) {
       AsyncStorage.setItem("UnValor",this.state.lastScannedUrl);
       console.log('QR detectado');
-      fetch(ASSISTANCE_LINK, {
+      fetch(links.ASSISTANCE_LINK, {
         method: 'POST',
         headers: {
         Accept: 'application/json',
@@ -170,88 +112,31 @@ export default class QrScanner extends Component {
       .then((responseText) => {
         Alert.alert(responseText);
         console.log(responseText);
-        if (responseText == "Registrado correctamente") {
-          this.props.navigation.goBack();
-        }
+        this.props.navigation.goBack();
       }).catch((error) => {
-        console.error(error);
-        Alert.alert("Ocurrió un error")
+        Alert.alert("Ocurrió un error");
+        this.props.navigation.goBack();
       });
     }
-  };
-
-  _maybeRenderUrl = () => {
-    if (!this.state.lastScannedUrl) {
-      return;
-    }
-    return (
-      <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.url} onPress={this._handlePressUrl}>
-          <Text numberOfLines={1} style={styles.urlText}>
-            {this.state.lastScannedUrl}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={this._handlePressCancel}>
-          <Text style={styles.cancelButtonText}>
-            Cancel
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
   };
 }
 
 const styles = StyleSheet.create({
-  container: {
+  centerText: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#000',
-  },
-  bottomBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    padding: 20,
-    flexDirection: 'row',
-  },
-  topBar: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    padding: 50,
-    flexDirection: 'row',
-  },
-  leftBar: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    padding: 50,
-    flexDirection: 'column',
-  },
-  url: {
-    flex: 1,
-  },
-  urlText: {
-    color: '#fff',
-    fontSize: 20,
-  },
-  cancelButton: {
-    marginLeft: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cancelButtonText: {
-    color: 'rgba(255,255,255,0.8)',
     fontSize: 18,
+    padding: 32,
+    color: '#fff',
   },
-
+  textBold: {
+    fontWeight: '500',
+    color: '#000',
+  },
+  buttonText: {
+    fontSize: 21,
+    color: 'rgb(0,122,255)',
+  },
+  buttonTouchable: {
+    padding: 16,
+  },
 });

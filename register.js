@@ -11,12 +11,14 @@ import {
   AsyncStorage,
   Keyboard,
   ScrollView,
-  NetInfo} from 'react-native';
-import Student   from './student';
+  NetInfo,
+  Platform,
+} from 'react-native';
+import Student from './student';
+import * as links from './links.js';
 
 const userKey = "usuario";
-const REGISTER_LINK = "https://javiermorenot96.000webhostapp.com/aniei/register.php";
-const UDG_ACCESS_LINK = "http://148.202.152.33/ws_general.php";
+
 
 export default class Register extends Component {
   static navigationOptions = {
@@ -36,7 +38,6 @@ constructor(props){
     nombre: "",
     institucion: "",
   }
-  this._loadData();
 }
 
 handleChange = (event) => {
@@ -66,15 +67,12 @@ _keyboardDidHide = () => {
   });
 }
 toggleiAmStudent = () => {
-  if(!this.state.iAmStudent){
-    //Alert.alert("Ingrese codigo y nip correspondiendtes a siiau")
-  }
     this.setState({
         iAmStudent: !this.state.iAmStudent
     });
 }
 onPressIngresar = () => {
-  fetch(UDG_ACCESS_LINK, {
+  fetch(links.UDG_ACCESS_LINK, {
     method: 'POST',
     headers: new Headers({
              'Content-Type': 'application/x-www-form-urlencoded',
@@ -82,7 +80,6 @@ onPressIngresar = () => {
     body: "codigo="+ this.state.codigo+ "&nip="+ this.state.nip
     }).then((response) =>  response.text())
     .then((responseText) => {
-    //Alert.alert(responseText)
     if(responseText == "0"){
       Alert.alert("Codigo o nip invalido")
       this.setState({
@@ -100,7 +97,6 @@ onPressIngresar = () => {
         });
     }})
     .catch((error) => {
-      console.error(error);
       Alert.alert("Conexion a internet interrumpida")
     });
 }
@@ -109,6 +105,10 @@ renderiAmStudent() {
         return (
           <View
             style = {styles.containerStudent}>
+              <TouchableOpacity style={styles.buttonStudent}
+                onPress={this.toggleiAmStudent}>
+                  <Text  style={styles.buttonText}>No soy UDG</Text>
+              </TouchableOpacity>
                     <TextInput
                                style = {styles.input}
                                autoCapitalize="none"
@@ -156,14 +156,17 @@ renderiAmStudent() {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        <ScrollView style={{width:"100%", padding:10}}>
-          <KeyboardAvoidingView style={{flex:1}} behavior="position">
-            <View style={{flex: 1, alignItems: 'center'}}>
-              {this.renderiAmStudent()}
+
+        <ScrollView style={{width: 100+"%"}} >
+        {this.renderiAmStudent()}
+          {!this.state.iAmStudent &&
+          <KeyboardAvoidingView style={{flex: 1}} behavior="position" keyboardVerticalOffset={30}>
+            <View style={{width:100+"%",alignItems: 'center'}}>
               <TouchableOpacity style={styles.buttonStudent}
                 onPress={this.toggleiAmStudent}>
                   <Text  style={styles.buttonText}>Soy UDG</Text>
               </TouchableOpacity>
+
               <TextInput
                         style = {styles.input}
                          autoCapitalize="words"
@@ -236,7 +239,7 @@ renderiAmStudent() {
                       returnKeyType="next"
                       onSubmitEditing={() => this.correoInput.focus()}
                       ref={(input)=> this.institucionInput = input}
-                      placeholder='Institucion'
+                      placeholder='Institución'
                       onChangeText={(typedText) =>{
                         this.setState({
                           institucion: typedText,
@@ -260,11 +263,15 @@ renderiAmStudent() {
                       value={this.state.correo}
                   >
             </TextInput>
-              <TouchableOpacity style={styles.buttonContainer} onPress = {this.onPressRegistrar}>
-                   <Text  style={styles.buttonText}>Registrate</Text>
-               </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.buttonContainer,{marginBottom:25}]}
+                onPress = {this.onPressRegistrar}
+              >
+                <Text  style={styles.buttonText}>Registrate</Text>
+              </TouchableOpacity>
             </View>
-          </KeyboardAvoidingView>
+
+          </KeyboardAvoidingView>}
         </ScrollView>
       </View>
     );
@@ -275,7 +282,7 @@ renderiAmStudent() {
         {
           var sha1 = require('sha1');
           var encryptedPassword = sha1(this.state.password);
-          fetch(REGISTER_LINK, {
+          fetch(links.REGISTER_LINK, {
           method: 'POST',
           headers: {
           Accept: 'application/json',
@@ -291,8 +298,8 @@ renderiAmStudent() {
           ).then((response) =>  response.text())
           .then((responseText) => {
           if(responseText == "registrado"){
-            this._saveData(this.state.usuario);
-            //Guardado con exito
+            Alert.alert("Registrado correctamente, ya puedes iniciar sesión");
+            this.props.navigation.goBack();
           }else if(responseText == "usuario repetido"){
             Alert.alert("Ya existe ese usuario");
           }
@@ -303,7 +310,6 @@ renderiAmStudent() {
             Alert.alert("Ocurrió un error")
           }
           }).catch((error) => {
-            console.error(error);
             Alert.alert("Ocurrió un error")
           });
         }
@@ -312,25 +318,6 @@ renderiAmStudent() {
         }
 
   }
-  _saveData = async(username) => {
-    try {
-      await AsyncStorage.setItem(userKey,username);
-    } catch (error) {
-        console.console.error();
-    }
-  }
-  _loadData = async() =>{
-    try {
-      const value = await AsyncStorage.getItem(userKey);
-      if (value !== null) {
-        return true;
-      }
-      return false;
-     } catch (error) {
-       console.error(error);
-       return false;
-     }
-  }
 }
 
 const styles = StyleSheet.create({
@@ -338,7 +325,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     fontWeight: '700',
-    width: "100%"
+    width: 100+"%"
 },
   buttonContainer:{
         alignItems: 'center',
@@ -347,7 +334,7 @@ const styles = StyleSheet.create({
         height: 40,
         marginTop: 25,
         borderRadius: 5,
-        width: "90%",
+        width: 90+"%",
       alignContent: 'flex-end',
     },
     buttonStudent:{
@@ -358,7 +345,7 @@ const styles = StyleSheet.create({
           height: 40,
           marginTop: 15,
           borderRadius: 5,
-          width: "90 %"
+          width: 90+"%",
       },
   container: {
     flex: 1,
@@ -367,7 +354,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   containerStudent: {
-    width: "100%",
+    width: 100+'%',
     backgroundColor: '#fff',
     alignItems: 'center',
   },
@@ -377,9 +364,16 @@ const styles = StyleSheet.create({
     padding: 5,
     marginTop: 16,
     height: 40,
-    width: "90%",
-    borderColor: 'gray',
+    width: 90+"%",
+    ...Platform.select({
+      ios: {
+        backgroundColor: '#E6E6E6',
+      },
+      android: {
+        borderColor: 'gray',
+        borderWidth: StyleSheet.hairlineWidth,
+      },
+    }),
     borderRadius: 3,
-    borderWidth: StyleSheet.hairlineWidth
   },
 });

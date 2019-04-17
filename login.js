@@ -11,10 +11,12 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   AsyncStorage,
-  NetInfo} from 'react-native';
-import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
+  NetInfo,
+  Platform,
+} from 'react-native';
+import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
+import * as links from './links.js';
 
-const SIGN_IN_LINK = 'https://javiermorenot96.000webhostapp.com/aniei/signIn.php';
 const userKey = "usuario";
 
 export default class Login extends React.Component {
@@ -41,7 +43,7 @@ export default class Login extends React.Component {
   onPressIngresar = () => {
         var sha1 = require('sha1');
         var encryptedPassword = sha1(this.state.password);
-        fetch(SIGN_IN_LINK, {
+        fetch(links.SIGN_IN_LINK, {
         method: 'POST',
         headers: {
         Accept: 'application/json',
@@ -57,14 +59,13 @@ export default class Login extends React.Component {
           this._saveData(this.state.user);
           Alert.alert("Ya has ingresado");
           this.props.navigation.goBack();
-          //Guardado con exito
         }else if(responseText == "error en datos"){
           Alert.alert("Combinación de usuario/contraseña incorrecta");
         }else{
           Alert.alert("Error al intentar ingresar")
         }
         }).catch((error) => {
-          console.error(error);
+          Alert.alert("Comprueba tu conexión a internet")
         });
   }
 
@@ -72,7 +73,6 @@ export default class Login extends React.Component {
     try {
       await AsyncStorage.setItem(userKey,username);
     } catch (error) {
-        console.console.error();
     }
   }
 onPressRegistrar(routeName){
@@ -173,10 +173,18 @@ const styles = StyleSheet.create({
   input : {
     textAlign: 'center',
     marginTop: 5,
-    height: 30,
+    height: 35,
     width: 60 + "%",
-    borderColor: 'gray',
+    ...Platform.select({
+      ios: {
+        backgroundColor: '#E6E6E6',
+      },
+      android: {
+        borderColor: 'gray',
+        borderWidth: StyleSheet.hairlineWidth,
+        fontSize: 12,
+      },
+    }),
     borderRadius: 25,
-    borderWidth: StyleSheet.hairlineWidth
   },
 });

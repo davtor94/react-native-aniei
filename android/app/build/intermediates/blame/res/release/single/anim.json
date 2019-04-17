@@ -1,0 +1,74 @@
+[
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/abc_popup_exit.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/anim/abc_popup_exit.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/abc_slide_out_top.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/anim/abc_slide_out_top.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/abc_fade_out.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/anim/abc_fade_out.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/tooltip_enter.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/anim/tooltip_enter.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/abc_slide_out_bottom.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/anim/abc_slide_out_bottom.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/catalyst_slide_up.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/react-native-0.55.4.aar/a38a1774b6f433f17bec49d4a7ea8eb7/res/anim/catalyst_slide_up.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/catalyst_fade_out.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/react-native-0.55.4.aar/a38a1774b6f433f17bec49d4a7ea8eb7/res/anim/catalyst_fade_out.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/abc_slide_in_top.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/anim/abc_slide_in_top.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/abc_slide_in_bottom.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/anim/abc_slide_in_bottom.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/abc_popup_enter.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/anim/abc_popup_enter.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/catalyst_slide_down.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/react-native-0.55.4.aar/a38a1774b6f433f17bec49d4a7ea8eb7/res/anim/catalyst_slide_down.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/abc_shrink_fade_out_from_bottom.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/anim/abc_shrink_fade_out_from_bottom.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/abc_grow_fade_in_from_bottom.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/anim/abc_grow_fade_in_from_bottom.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/catalyst_push_up_out.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/react-native-0.55.4.aar/a38a1774b6f433f17bec49d4a7ea8eb7/res/anim/catalyst_push_up_out.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/tooltip_exit.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/anim/tooltip_exit.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/abc_fade_in.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/be6954ee3bb8de9d5772390ae494671f/res/anim/abc_fade_in.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/catalyst_fade_in.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/react-native-0.55.4.aar/a38a1774b6f433f17bec49d4a7ea8eb7/res/anim/catalyst_fade_in.xml"
+    },
+    {
+        "merged": "/Users/cfe/Desktop/anieiJosueVersion/react-native-aniei/android/app/build/intermediates/res/merged/release/anim/catalyst_push_up_in.xml",
+        "source": "/Users/cfe/.gradle/caches/transforms-1/files-1.1/react-native-0.55.4.aar/a38a1774b6f433f17bec49d4a7ea8eb7/res/anim/catalyst_push_up_in.xml"
+    }
+]

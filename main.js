@@ -13,18 +13,20 @@ import {
   TouchableOpacity,
   AsyncStorage,
   RefreshControl,
-  NetInfo,} from 'react-native';
+  NetInfo,
+} from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
-import { Card, ListItem, Button } from 'react-native-elements';
+import { Card, ListItem, Button,} from 'react-native-elements';
 import ActionBar from 'react-native-action-bar';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
+import * as links from './links.js';
 
-const fileName = "conferencias";
-const companyNames = ["Oracle","IBM","Intel","HP","Continental"];
+
+const fileNameMain = "conferencias";
+const companyNames = ["Oracle","IBM","Intel","HP","TATA"];
 const noCompany = "Others";
 const userKey = "usuario";
-const GET_ALL_CONFERENCES_LINK = "https://javiermorenot96.000webhostapp.com/aniei/getAllConferences.php"
 
 
 class FButton extends React.Component {
@@ -42,6 +44,7 @@ class FButton extends React.Component {
       return(
         <ActionButton buttonColor="#009999" onPress={() => this.props.navegador.navigate(this.state.navigateTo)}
         renderIcon = {()=>(<Icon name="md-person" style={styles.actionButtonIcon} />)}
+        offsetY={15} offsetX={15}
         />
         );
     }
@@ -56,13 +59,12 @@ class FButton extends React.Component {
           return false;
         }
        } catch (error) {
-         console.error(error);
+         //console.error(error);
          return false;
        }
     }
 
   }
-
 class MyCard extends React.Component{
     constructor(props){
       super(props);
@@ -85,7 +87,13 @@ class MyCard extends React.Component{
         <View style={{width: Dimensions.get('window').width}}>
           <Card
             title={this.props.item.title}
-            image={null}>
+            image={null}
+          >
+            {this.props.companyName == noCompany ?
+            <View style={{flex: 1, alignItems: 'center'}}>
+              <Text style={{fontSize: 18, fontWeight: 'bold'}}>{this.props.item.companyName}</Text>
+            </View>
+            : <View/>}
             <Text style={{fontWeight: 'bold'}}>
               Dia: {this.state.day}/{this.state.month}/{this.state.year}
             </Text>
@@ -102,9 +110,11 @@ class MyCard extends React.Component{
               backgroundColor='#03A9F4'
               buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
               title='Más información'
-              onPress={() => this.props.navegador.navigate('Conference', {
+              onPress={() => this.props.navegador.navigate({routeName:'Conference', params:{
                 conferenceData: this.props.item,
-              })}
+              },
+              key: this.props.item['id'],}
+            )}
               />
          </Card>
         </View>
@@ -113,28 +123,30 @@ class MyCard extends React.Component{
     }
   }
 class BaseScreen extends React.Component {
-
-  constructor(props,companyName,imagePath){
+  constructor(props,company,imagePath){
     super(props);
     this.state = {
       refreshing: false,
       data: null,
+      isVisible: true,
     };
-    this.companyName = companyName;
+    this.companyName=company;
     this._downloadConferencesData = _downloadConferencesData.bind(this);
     this._loadConferencesData = _loadConferencesData.bind(this);
+    this._saveDatabasesMain = _saveDatabasesMain.bind(this);
     this._loadConferencesData(this.companyName);
+    //this._downloadConferencesData(this.companyName);
     this.imagePath = imagePath;
 
     willFocus = this.props.navigation.addListener(
         'willFocus',
         payload => {
           this.forceUpdate();
-          //this._loadData().then((res) => (res===true)? this.setState({navigateTo:"Profile"}) : this.setState({navigateTo:"Login"}) );
-          //Alert.alert("Aquí se debe de actualizar");
         }
       );
-
+  }
+  componentDidMount(){
+    //this._loadConferencesData(this.companyName);
   }
   render() {
     return (
@@ -148,14 +160,17 @@ class BaseScreen extends React.Component {
           }
           data={this.state.data}
           renderItem={({item}) =>
-          	 <MyCard item={item} navegador={this.props.navigation} imagePath={this.imagePath} companyName={this.props.companyName}/>
+          	 <MyCard
+               item={item} navegador={this.props.navigation}
+               imagePath={this.imagePath}
+               companyName={this.companyName}
+             />
           }
           keyExtractor={item => item.id}
           ListEmptyComponent={ListEmptyView}
           ListHeaderComponent={this.renderHeader}
         />
         <FButton navegador={this.props.navigation}/>
-
       </View>
     );
   }
@@ -172,8 +187,10 @@ class BaseScreen extends React.Component {
 }
 
 _downloadConferencesData= function(companyName) {
+  //Alert.alert("_downloadConferencesData");
+
     this.setState({refreshing: true});
-    fetch(GET_ALL_CONFERENCES_LINK, {
+    fetch(links.GET_ALL_CONFERENCES_LINK, {
     method: 'POST',
     headers: {
         'Accept': 'application/json, text/plain',
@@ -183,28 +200,30 @@ _downloadConferencesData= function(companyName) {
       .then((responseJson) => {
         const bases = JSON.stringify(responseJson);
         const filteredConferences = _filterConferences(companyName,responseJson);
-        _saveDatabases(bases);
+        this._saveDatabasesMain(bases);
         this.setState({refreshing: false});
         this.setState({data:filteredConferences});
-        //Alert.alert("Desde api")
       })
       .catch((error) => {
-        console.error(error);
+        this.setState({refreshing: false});
       });
 }
 _loadConferencesData = async function(companyName){
+  //Alert.alert("_loadConferencesData");
   try {
-    const value = await AsyncStorage.getItem(fileName);
+    const value = await AsyncStorage.getItem(fileNameMain);
     if (value !== null) {
+      //Alert.alert("No null");
+
       const valueJson = JSON.parse(value);
       const filteredConferences = _filterConferences(companyName,valueJson);
       this.setState({data:filteredConferences});
-      //Alert.alert("Desde local")
     }else{
+      //Alert.alert("Null? "+value);
       this._downloadConferencesData();
     }
    } catch (error) {
-     console.error(error);
+     //Alert.alert("Error en load");
    }
 }
 _filterConferences = function(companyName,conferences){
@@ -255,26 +274,17 @@ _filterConferences = function(companyName,conferences){
       }
     }
   }
-
   return filtered;
 }
-_saveDatabases = async(basesString) => {
+_saveDatabasesMain = async(basesString) => {
+  //Alert.alert("Inicio guardar");
   try {
-    await AsyncStorage.setItem(fileName, basesString);
+    //Alert.alert("Guardado");
+
+    await AsyncStorage.setItem(fileNameMain, basesString);
   } catch (error) {
-      console.console.error();
+    //Alert.alert("Error guardado"+error);
   }
-}//Esta funcion no es usada, pero sirve de ejemplo
-_getLocalDatabases = async() =>{ //Esta funcion es de prueba
-  try {
-    const value = await AsyncStorage.getItem(fileName);
-    if (value !== null) {
-      const valueJson = JSON.parse(value);
-      Alert.alert(valueJson[0].title);
-    }
-   } catch (error) {
-     console.error(error);
-   }
 }
 ListEmptyView = () => {
  return (
@@ -296,22 +306,29 @@ class IbmScreen extends BaseScreen {
 }
 class IntelScreen extends BaseScreen {
   constructor(props){
-    super(props,companyNames[2],require('./intel_logo.png'));
+    super(props,companyNames[2],require('./intel_logo3.png'));
   }
 }
 class HpScreen extends BaseScreen {
   constructor(props){
-    super(props,companyNames[3],require('./hp_logo.jpg'));
+    super(props,companyNames[3],require('./hp_logo2.jpg'));
   }
 }
+/*
 class ContinentalScreen extends BaseScreen {
   constructor(props){
     super(props,companyNames[4],require('./continental_logo.png'));
   }
 }
+*/
+class TataScreen extends BaseScreen {
+  constructor(props){
+    super(props,companyNames[4],require('./tata_logo.jpg'));
+  }
+}
 class OthersScreen extends BaseScreen {
   constructor(props){
-    super(props,noCompany,require('./Conferencia.jpg'));
+    super(props,noCompany,require('./aniei_logo.jpg'));
   }
 }
 
@@ -329,12 +346,56 @@ const styles = StyleSheet.create({
   },
 
 });
-export default createBottomTabNavigator({
-  Oracle: OracleScreen,
-  IBM: IbmScreen,
-  Intel: IntelScreen,
-  HP: HpScreen,
-  Continental: ContinentalScreen,
-  Más: OthersScreen,
-},
+export default createBottomTabNavigator(
+  {
+    TATA: TataScreen,
+    IBM: IbmScreen,
+    Intel: IntelScreen,
+    HP: HpScreen,
+    Oracle: OracleScreen,
+    ANIEI: OthersScreen,
+  },
+  {
+    navigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, tintColor }) => {
+        const { routeName } = navigation.state;
+        let iconPath;
+        let size;
+        let selected = 40;
+        let unselected = 30;
+        if (routeName === 'Oracle') {
+          iconPath = require('./iconos-empresas/oracle.png');
+          focused ? size = selected : size = unselected;
+        } else if (routeName === 'IBM') {
+          iconPath = require('./iconos-empresas/ibm.png');
+          focused ? size = selected : size = unselected;
+        } else if (routeName === 'Intel') {
+          iconPath = require('./iconos-empresas/intel.png');
+          focused ? size = selected : size = unselected;
+        } else if (routeName === 'HP') {
+          iconPath = require('./iconos-empresas/hp.png');
+          focused ? size = selected : size = unselected;
+        } else if (routeName === 'Continental') {
+          iconPath = require('./iconos-empresas/continental.png');
+          focused ? size = selected : size = unselected;
+        } else if (routeName === 'TATA') {
+          iconPath = require('./iconos-empresas/tata2.png');
+          focused ? size = selected : size = unselected;
+        }else if (routeName === 'ANIEI') {
+          iconPath = require('./iconos-empresas/aniei.png');
+          focused ? size = selected : size = unselected;
+        }
+        return (
+          <Image
+            style={{width: size, height: size}}
+            source={iconPath}
+          />
+        );
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: 'tomato',
+      inactiveTintColor: 'gray',
+    },
+  }
 );

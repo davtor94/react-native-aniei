@@ -13,11 +13,11 @@ import {
   AsyncStorage,
   Button,
   ScrollView,
-  ActivityIndicator } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+  ActivityIndicator
+} from 'react-native';
+import * as links from './links.js';
 
 const userKey = "usuario";
-const GET_USER_PROFILE_URL = "https://javiermorenot96.000webhostapp.com/aniei/getUserProfile.php"
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -49,6 +49,7 @@ export default class ProfileScreen extends React.Component {
       return (
         <View style={styles.container}>
           <View style={styles.profileContainer}>
+
               <Image
                 style={styles.logo}
                 source={require('./src/components/images/logo_leon_udg.png')}
@@ -60,16 +61,16 @@ export default class ProfileScreen extends React.Component {
                 <Text style={styles.regularText}>Correo: {this.state.email}</Text>
                 <Text style={styles.regularText}>Institución: {this.state.institution}</Text>
               </View>
+              <TouchableOpacity style={styles.buttonContainer}
+                onPress={() => this.exitConfirmation()}
+              >
+                <Text  style={styles.buttonText}>Cerrar sesión</Text>
+              </TouchableOpacity>
+
           </View>
-          <Button
-            backgroundColor='#03A9F4'
-            buttonStyle={[{alignSelf: 'center', width: "90%", borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, marginTop: 10}]}
-            title='Cerrar sesión'
-            onPress={() => this.exitConfirmation()}
-            />
           <View style={styles.conferencesContainer}>
             <Text style={styles.titleText}>Mis asistencias</Text>
-            <FlatList
+            <FlatList style={{width:100 + '%'}}
               refreshControl={
                 <RefreshControl
                   refreshing={this.state.refreshing}
@@ -127,7 +128,7 @@ export default class ProfileScreen extends React.Component {
       const value = await AsyncStorage.getItem(userKey);
       if (value !== null) {
         //Alert.alert("Logueado Value "+value)
-        fetch(GET_USER_PROFILE_URL, {
+        fetch(links.GET_USER_PROFILE_LINK, {
         method: 'POST',
         headers: new Headers({
                  'Accept': 'application/json, text/plain',
@@ -161,14 +162,15 @@ export default class ProfileScreen extends React.Component {
             })
             })
             .catch((error) => {
-              console.error(error);
             });
         return true;
       }else{
         return false;
       }
      } catch (error) {
-       console.error(error);
+       this.setState({
+         refreshing:false,
+       })
        return false;
      }
   }
@@ -176,7 +178,6 @@ export default class ProfileScreen extends React.Component {
     try {
       await AsyncStorage.setItem(userKey,anything);
     } catch (error) {
-        console.console.error();
     }
   }
 }
@@ -218,7 +219,7 @@ const styles = StyleSheet.create({
   profileContainer: {
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     top: 10,
     width: 90 + "%",
     padding: 10,
@@ -235,7 +236,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 5,
     marginBottom: 5,
-    flex:3,
+    flex:2,
     borderRadius:5,
   },
   conferenceItem: {
@@ -257,6 +258,19 @@ const styles = StyleSheet.create({
     width: 100 + "%",
     padding: 3,
     borderRadius: 5,
+  },
+  buttonContainer:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#2980b6',
+    height: 30,
+    borderRadius: 5,
+    width: 60 + "%",
+  },
+  buttonText:{
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '700'
   },
   logo: {
       width: 40 + "%",
